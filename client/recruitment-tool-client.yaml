@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recruitment-tool-client
+  labels:
+    app: recruitment-tool-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recruitment-tool-client
+  template:
+    metadata:
+      labels:
+        app: recruitment-tool-client
+    spec:
+      containers:
+      - name: recruitment-tool-client
+        image: rekrysofta/recruitmenttool_client
+        ports:
+        - containerPort: 3000

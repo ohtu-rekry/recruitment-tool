@@ -1,0 +1,22 @@
+{
+    "name": "recruitment_tool",
+    "version": "1.0.0",
+    "description": "A tool for handling applications and managing recruitment process",
+    "author": "Ohtu-rekry team",
+    "main": "src/server.js",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/ohtu-rekry/recruitment-tool.git"
+    },
+    "license": "MIT",
+    "scripts": {
+        "start": "node src/server.js"
+    },
+    "dependencies": {
+        "express": "^4.16.3",
+        "path": "^0.12.7"
+    },
+    "devDependencies": {
+        "nodemon": "^1.18.4"
+    }
+}

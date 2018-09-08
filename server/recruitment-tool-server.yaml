@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recruitment-tool-server
+  labels:
+    app: recruitment-tool-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recruitment-tool-server
+  template:
+    metadata:
+      labels:
+        app: recruitment-tool-server
+    spec:
+      containers:
+      - name: recruitment-tool-server
+        image: rekrysofta/recruitmenttool_server
+        ports:
+        - containerPort: 8080
