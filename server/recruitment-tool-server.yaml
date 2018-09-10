@@ -19,3 +19,6 @@ spec:
         image: rekrysofta/recruitmenttool_server
         ports:
         - containerPort: 8080
+        envFrom:
+        - secretRef:
+            name: database-staging
