@@ -1,5 +1,24 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
+import { applyMiddleware, createStore, combineReducers } from 'redux'
+import { Provider } from 'react-redux'
+import createSagaMiddleware from 'redux-saga'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+import App from './components/App'
+import reducer from './redux/reducers/reducer'
+
+const sagaMiddleware = createSagaMiddleware()
+
+const store = createStore(
+  combineReducers({ reducer }),
+  applyMiddleware(sagaMiddleware)
+)
+
+//sagaMiddleware.run(sagas)
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
