@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-RUN chmod o+r -R .
+RUN RUN find . -not -path ".**/node_modules/*" -exec echo chmod o+r {} \;
 RUN chmod a+x src/ public/
 
 USER 1000
