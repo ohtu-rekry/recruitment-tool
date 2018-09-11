@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm install && npm cache clean --force
 
 COPY . . 
-RUN chmod o+r -R .
+RUN find . -not -path ".**/node_modules/*" -exec echo chmod o+r {} \;
 
 USER 1000
 EXPOSE 8080
