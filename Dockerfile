@@ -1,6 +1,6 @@
 # Setup and build the client
 
-FROM node:8 as client
+FROM node:8-alpine as client
 
 WORKDIR /usr/src/client
 COPY client/package*.json ./
@@ -11,7 +11,7 @@ RUN npm run build
 
 # Setup the server
 
-FROM node:8
+FROM node:8-alpine
 
 WORKDIR /usr/src/
 COPY --from=client /usr/app/client/build/ ./client/build

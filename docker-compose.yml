@@ -4,6 +4,8 @@ services:
   server:
     build:
       context: ./server/
+    ## TODO: change this so that it matches kubernetes environment
+    user: root
     command: /usr/app/node_modules/.bin/nodemon src/server.js
     volumes:
       - ./server/:/usr/app
@@ -17,6 +19,7 @@ services:
   client:
     build:
       context: ./client/
+    user: root
     command: npm start
     volumes:
       - ./client/:/usr/app
