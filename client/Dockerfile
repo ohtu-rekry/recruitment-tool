@@ -1,4 +1,4 @@
-FROM node:8
+FROM node:8-alpine
 
 WORKDIR /usr/app
 
@@ -7,8 +7,8 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-RUN RUN find . -not -path ".**/node_modules/*" -exec echo chmod o+r {} \;
-RUN chmod a+x src/ public/
+RUN find -not -path "./node_modules/*" -exec chmod o+r {} \;
+RUN chmod a+rx -R src/ public/
 
 USER 1000
 EXPOSE 3000

@@ -1,4 +1,4 @@
-FROM node:8
+FROM node:8-alpine
 
 WORKDIR /usr/app
 
@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm install && npm cache clean --force
 
 COPY . . 
-RUN find . -not -path ".**/node_modules/*" -exec echo chmod o+r {} \;
+RUN find . -not -path "./node_modules/*" -exec chmod o+r {} \;
 
 USER 1000
 EXPOSE 8080
