@@ -1,5 +1,3 @@
-'use strict'
-
 const express = require('express')
 const http = require('http')
 const cors = require('cors')
@@ -15,6 +13,10 @@ app.use(bodyParser.json())
 app.get('/', (req, res) => [
   res.send('Hello world! \n')
 ])
+
+app.get('/api/users', (req,res) => {
+  res.send('USER PAGE')
+})
 
 const server = http.createServer(app)
 
