@@ -2,12 +2,19 @@ const Sequelize = require('sequelize')
 const env = process.env.NODE_ENV || 'development'
 const config = require(`${__dirname}/../config/config.js`)[env]
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
+const DB_NAME = process.env.DB_NAME
+const DB_PASS = process.env.DB_PASS
+
 let sequelize
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable])
 } else {
   sequelize = new Sequelize(
-    config.database, config.username, config.password, config
+    `postgres://${DB_NAME}:${DB_PASS}@localhost/ohturekry`
   )
 }
 
