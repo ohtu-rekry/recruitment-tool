@@ -12,6 +12,7 @@ addons:
 cache:
   directories:
     - node_modules/
+    - ${HOME}/google-cloud-sdk/
 
 services:
   - docker
@@ -22,8 +23,10 @@ env:
   matrix:
     - PROJECT_DIR=server
       DOCKER_IMAGE=rekrysofta/recruitmenttool_server
+      K8S_DEPLOYMENT_NAME=recruitment-tool-server
     - PROJECT_DIR=client
       DOCKER_IMAGE=rekrysofta/recruitmenttool_client
+      K8S_DEPLOYMENT_NAME=recruitment-tool-client
 
 stages:
   - name: script
@@ -33,18 +36,17 @@ stages:
     if: branch = master
     env:
       - NODE_ENV=production
+      - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 
 install: true
 
 script: cd $PROJECT_DIR && npm install && npm test
 
-before_deploy: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+before_deploy: chmod +x ../scripts/before-deploy.sh && ../scripts/before-deploy.sh
 
 deploy:
   provider: script
-  script: npm prune --production && docker build -t ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER} . && docker push ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER}
+  script: chmod +x ../scripts/deploy-k8s.sh && ../scripts/deploy-k83.sh
+  skip_cleanup: true
   on:
     branch: master
-before_install:
-- openssl aes-256-cbc -K $encrypted_127facfaf176_key -iv $encrypted_127facfaf176_iv
-  -in gke-service-account.json.enc -out gke-service-account.json -d
