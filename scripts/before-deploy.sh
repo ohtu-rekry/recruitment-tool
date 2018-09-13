@@ -15,4 +15,4 @@ source /home/travis/google-cloud-sdk/path.bash.inc
 
 gcloud --quiet version
 gcloud --quiet components update
-gcloud --quiet components update kubectl
+gcloud --quiet components install kubectl
