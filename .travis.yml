@@ -37,7 +37,7 @@ install: true
 
 script: cd $PROJECT_DIR && npm install && npm test
 
-before_deploy: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+before_deploy: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
 
 deploy:
   provider: script
