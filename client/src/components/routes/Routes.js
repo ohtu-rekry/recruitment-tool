@@ -25,7 +25,7 @@ class Routes extends Component {
             loggedIn
               ? <Redirect to="/" />
               : <Login />
-          }/>
+          } />
           <Route exact path="/" render={() => <App />} />
         </Switch>
       </Router>
