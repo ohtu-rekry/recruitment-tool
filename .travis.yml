@@ -41,6 +41,6 @@ before_deploy: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
 
 deploy:
   provider: script
-  script: cd $PROJECT_DIR && npm install && docker build -t ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER} . && docker push ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER}
+  script: npm install && docker build -t ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER} . && docker push ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER}
   on:
     branch: support/travis-ci
