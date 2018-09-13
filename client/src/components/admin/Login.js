@@ -1,0 +1,101 @@
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Lock, Person, Visibility, VisibilityOff } from '@material-ui/icons'
+
+import * as actions from '../../redux/actions/actions'
+
+export class Login extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      visible: false,
+      username: '',
+      password: ''
+    }
+  }
+
+  toggleVisibility = () => {
+    this.setState(prevState => ({
+      visible: !prevState.visible
+    }))
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value
+    })
+  }
+
+  handleLogin = () => {
+    const { username, password } = this.state
+    this.props.login(username, password)
+    this.setState({
+      username: '',
+      password: '',
+      visible: false
+    })
+  }
+
+  render() {
+    const { visible, username, password } = this.state
+
+    return (
+      <div className='admin-login-card'>
+        <div className='admin-login-card__title admin-login-card__text'>
+          Login as admin
+        </div>
+        <div className='admin-login-card__username'>
+          <Person className='admin-login-card__username_icon'/>
+          <div className='admin-login-card__username-container'>
+            <input
+              className='admin-login-card__username-container_input'
+              id='username'
+              placeholder='Username'
+              value={username}
+              onChange={this.handleChange}
+            ></input>
+          </div>
+        </div>
+        <div className='admin-login-card__password'>
+          <Lock className='admin-login-card__password_icon'/>
+          <div className='admin-login-card__password-container'>
+            <input
+              className='admin-login-card__password-container_input'
+              id='password'
+              placeholder='Password'
+              type={visible ? 'input' : 'password'}
+              value={password}
+              onChange={this.handleChange}
+            ></input>
+            <div onClick={this.toggleVisibility}>
+              {visible ?
+                <VisibilityOff className='admin-login-card__password_icon'/>
+                : <Visibility className='admin-login-card__password_icon'/>
+              }
+            </div>
+          </div>
+        </div>
+        <button
+          className='admin-login-card__button admin-login-card__text'
+          onClick={this.handleLogin}
+        >
+          Login
+        </button>
+      </div>
+    )
+  }
+}
+
+
+const mapStateToProps = (state) => ({
+  loggedIn: state.reducer.loggedIn
+})
+
+const mapDispatchToProps = {
+  ...actions
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login)

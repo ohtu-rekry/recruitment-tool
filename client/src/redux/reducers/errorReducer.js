@@ -2,17 +2,17 @@ import { handleActions } from 'redux-actions'
 import * as actions from '../actions/actions'
 
 const initialState = {
-  loggedIn: false,
+  loginError: ''
 }
 
-const reducer = handleActions(
+const errorReducer = handleActions(
   {
-    [actions.loginSuccess]: (state, action) => ({
+    [actions.loginFailure]: (state, action) => ({
       ...state,
-      loggedIn: true
+      loginError: ''
     }),
   },
   initialState
 )
 
-export default reducer
+export default errorReducer
