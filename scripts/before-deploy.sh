@@ -13,5 +13,5 @@ fi
 
 source ${HOME}/google-cloud-sdk/path.bash.inc
 
-gcloud version
-gcloud components update kubectl
+gcloud --quiet version
+gcloud --quiet components update
