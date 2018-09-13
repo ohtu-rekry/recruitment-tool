@@ -45,3 +45,6 @@ deploy:
   script: npm prune --production && docker build -t ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER} . && docker push ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER}
   on:
     branch: master
+before_install:
+- openssl aes-256-cbc -K $encrypted_127facfaf176_key -iv $encrypted_127facfaf176_iv
+  -in gke-service-account.json.enc -out gke-service-account.json -d
