@@ -33,7 +33,7 @@ stages:
     env:
       - NODE_ENV=development
   - name: deploy
-    if: branch = master
+    if: branch = support/travis-ci
     env:
       - NODE_ENV=production
       - CLOUDSDK_CORE_DISABLE_PROMPTS=1
@@ -49,4 +49,4 @@ deploy:
   script: chmod +x ../scripts/deploy-k8s.sh && ../scripts/deploy-k83.sh
   skip_cleanup: true
   on:
-    branch: master
+    branch: support/travis-ci
