@@ -20,6 +20,7 @@ services:
 env:
   global:
     - DOCKER_USERNAME=travisrekry18
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
   matrix:
     - PROJECT_DIR=server
       DOCKER_IMAGE=rekrysofta/recruitmenttool_server
@@ -36,7 +37,6 @@ stages:
     if: branch = support/travis-ci
     env:
       - NODE_ENV=production
-      - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 
 install: true
 
