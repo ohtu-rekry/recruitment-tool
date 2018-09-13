@@ -2,7 +2,7 @@
 
 set -e
 
-docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 openssl aes-256-cbc -K $encrypted_127facfaf176_key -iv $encrypted_127facfaf176_iv -in ../gke-service-account.json.enc -out gke-service-account.json -d
 
