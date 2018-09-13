@@ -30,6 +30,7 @@ stages:
     env:
       - NODE_ENV=development
   - name: deploy
+    if: branch = master
     env:
       - NODE_ENV=production
 
@@ -43,4 +44,4 @@ deploy:
   provider: script
   script: npm prune --production && docker build -t ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER} . && docker push ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER}
   on:
-    branch: support/travis-ci
+    branch: master
