@@ -2,42 +2,46 @@ sudo: required
 
 language: node_js
 node_js:
-  - "8"
+	- "8"
 
 addons:
-  apt:
-    packages:
-      - docker-ce
+	apt:
+		packages:
+			- docker-ce
 
 cache:
-  directories:
-    - node_modules/
+	directories:
+		- node_modules/
 
 services:
-  - docker
+	- docker
 
 env:
-  global:
-    - DOCKER_USERNAME=travisrekry18
-    - NODE_ENV=production
-  matrix:
-    - PROJECT_DIR=server
-      DOCKER_IMAGE=rekrysofta/recruitmenttool_server
-    - PROJECT_DIR=client
-      DOCKER_IMAGE=rekrysofta/recruitmenttool_client
+	global:
+		- DOCKER_USERNAME=travisrekry18
+	matrix:
+		- PROJECT_DIR=server
+			DOCKER_IMAGE=rekrysofta/recruitmenttool_server
+		- PROJECT_DIR=client
+			DOCKER_IMAGE=rekrysofta/recruitmenttool_client
 
 stages:
-  - name: deploy
-    if: branch = master
+	- name: script
+		env:
+			- NODE_ENV=development
+	- name: deploy
+		if: branch = master
+		env:
+			- NODE_ENV=production
 
 install: true
 
-script: cd $PROJECT_DIR && npm install && npm test && docker build -t ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER} .
+script: cd $PROJECT_DIR && npm install && npm test
 
 before_deploy: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
 deploy:
-  provider: script
-  script: cd $PROJECT_DIR && docker push ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER}
-  on:
-    branch: master
+	provider: script
+	script: cd $PROJECT_DIR && npm install && docker build -t ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER} . && docker push ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER}
+	on:
+		branch: master
