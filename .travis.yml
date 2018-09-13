@@ -46,7 +46,7 @@ before_deploy: chmod +x ../scripts/before-deploy.sh && ../scripts/before-deploy.
 
 deploy:
   provider: script
-  script: chmod +x ../scripts/deploy-k8s.sh && ../scripts/deploy-k83.sh
+  script: chmod +x ../scripts/deploy-k8s.sh && ../scripts/deploy-k8s.sh
   skip_cleanup: true
   on:
     branch: support/travis-ci
