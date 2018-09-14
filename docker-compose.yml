@@ -1,6 +1,5 @@
-version: '2'
+version: '3'
 services:
-
   server:
     build:
       context: ./server/
@@ -12,9 +11,23 @@ services:
       - /usr/app/node_modules
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+      - DATABASE_URL=postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}
+
+  database:
+    image: postgres:10
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    environment: 
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}  
+      DB_NAME: ${DB_NAME}
 
   client:
     build:
