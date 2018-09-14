@@ -14,6 +14,7 @@ fi
 source ${HOME}/google-cloud-sdk/path.bash.inc
 
 gcloud --quiet version
+gcloud --quiet components update
 
 curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.7.0/bin/linux/amd64/kubectl
 chmod +x kubectl
