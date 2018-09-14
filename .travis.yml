@@ -42,8 +42,6 @@ install: true
 
 script: cd $PROJECT_DIR && npm install && npm test
 
-before_deploy: chmod +x ../scripts/before-deploy.sh && ../scripts/before-deploy.sh
-
 deploy:
   provider: script
   script: chmod +x ../scripts/deploy-k8s.sh && ../scripts/deploy-k8s.sh
