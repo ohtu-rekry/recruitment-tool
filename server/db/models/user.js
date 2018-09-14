@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,
     intanceMethods: {
       generateHash(password) {
-        return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
+        return bcrypt.hashSync(password, bcrypt.genSaltSync(8))
       },
       validPassword(password) {
         return bcrypt.compareSync(password, this.local.password)
