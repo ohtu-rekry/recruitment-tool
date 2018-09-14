@@ -11,6 +11,8 @@ services:
       - /usr/app/node_modules
     ports:
       - "8080:8080"
+    links: 
+      - database 
     env_file:
       - .env
     environment:
@@ -21,7 +23,7 @@ services:
   database:
     image: postgres:10
     ports:
-      - 5432:5432
+      - 5432
     env_file:
       - .env
     environment: 
