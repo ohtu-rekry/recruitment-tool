@@ -12,7 +12,6 @@ addons:
 cache:
   directories:
     - node_modules/
-    - ${HOME}/google-cloud-sdk/
 
 services:
   - docker
@@ -24,10 +23,8 @@ env:
   matrix:
     - PROJECT_DIR=server
       DOCKER_IMAGE=rekrysofta/recruitmenttool_server
-      K8S_DEPLOYMENT_NAME=recruitment-tool-server
     - PROJECT_DIR=client
       DOCKER_IMAGE=rekrysofta/recruitmenttool_client
-      K8S_DEPLOYMENT_NAME=recruitment-tool-client
 
 stages:
   - name: script
