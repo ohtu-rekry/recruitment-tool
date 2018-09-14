@@ -15,7 +15,7 @@ fi
 
 source ${HOME}/google-cloud-sdk/path.bash.inc
 
-gcloud update components kubectl
+gcloud components update kubectl
 
 docker build -t ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER} .
 docker push ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER}
