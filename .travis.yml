@@ -34,7 +34,7 @@ stages:
     env:
       - NODE_ENV=development
   - name: deploy
-    if: branch = support/travis-ci
+    if: branch = master
     env:
       - NODE_ENV=production
 
@@ -47,4 +47,4 @@ deploy:
   script: chmod +x ../scripts/deploy-k8s.sh && ../scripts/deploy-k8s.sh
   skip_cleanup: true
   on:
-    branch: support/travis-ci
+    branch: master
