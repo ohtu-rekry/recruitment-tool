@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 const recruiterRouter = require('express').Router()
 const { Recruiter } = require('../db/models')
