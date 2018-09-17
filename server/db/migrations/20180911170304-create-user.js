@@ -15,7 +15,7 @@ module.exports = {
       }
     })
   },
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface) => { // function also takes Sequelizer as param (removed as was an unused var)
     return queryInterface.dropTable('Users')
   }
 }

@@ -1,5 +1,7 @@
 # Recruitment tool
 
+[![Build Status](https://travis-ci.com/ohtu-rekry/recruitment-tool.svg?branch=master)](https://travis-ci.com/ohtu-rekry/recruitment-tool)
+
 Course project for Software engineering lab
 
 ## Installation
