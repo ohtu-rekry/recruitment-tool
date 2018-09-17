@@ -8,7 +8,7 @@ module.exports = (sequelize, type) => {
     username: type.STRING,
     password: type.STRING,
   }, {})
-  Recruiter.associate = (models) => {
+  Recruiter.associate = () => {
     // associations can be defined here
   }
   return Recruiter
