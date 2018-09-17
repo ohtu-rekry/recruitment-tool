@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   }, {})
-  User.associate = (models) => {
+  User.associate = () => { // function takes models as param (removed as was an unused param)
     // associations can be defined here
   }
   return User

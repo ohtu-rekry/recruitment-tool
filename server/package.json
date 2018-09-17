@@ -1,37 +1,37 @@
 {
-		"name": "recruitment_tool",
-		"version": "1.0.0",
-		"description": "A tool for handling applications and managing recruitment process",
-		"author": "Ohtu-rekry team",
-		"main": "src/server.js",
-		"repository": {
-				"type": "git",
-				"url": "git://github.com/ohtu-rekry/recruitment-tool.git"
-		},
-		"license": "MIT",
-		"scripts": {
-				"start": "node src/server.js",
-				"lint": "node_modules/.bin/eslint .",
-				"test": "jest --verbose"
-		},
-		"dependencies": {
-				"bcryptjs": "^2.4.3",
-				"body-parser": "^1.18.3",
-				"cors": "^2.8.4",
-				"express": "^4.16.3",
-				"npm": "^6.4.1",
-				"path": "^0.12.7",
-				"pg": "^7.4.3",
-				"pg-hstore": "^2.3.2",
-				"sequelize": "^4.38.0"
-		},
-		"devDependencies": {
-				"eslint": "^5.5.0",
-				"jest": "^23.6.0",
-				"nodemon": "^1.18.4",
-				"supertest": "^3.3.0"
-		},
-		"jest": {
-				"testEnvironment": "node"
-		}
+  "name": "recruitment_tool",
+  "version": "1.0.0",
+  "description": "A tool for handling applications and managing recruitment process",
+  "author": "Ohtu-rekry team",
+  "main": "src/server.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ohtu-rekry/recruitment-tool.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/server.js",
+    "lint": "node_modules/.bin/eslint .",
+    "test": "jest --verbose"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "npm": "^6.4.1",
+    "path": "^0.12.7",
+    "pg": "^7.4.3",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.38.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.5.0",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.4",
+    "supertest": "^3.3.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
 }

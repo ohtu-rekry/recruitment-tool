@@ -37,7 +37,7 @@ stages:
 
 install: true
 
-script: cd $PROJECT_DIR && npm install && npm test
+script: cd $PROJECT_DIR && npm install && npm run lint && npm test
 
 deploy:
   provider: script
