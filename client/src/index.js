@@ -5,6 +5,8 @@ import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
 
 import App from './components/App'
+import './assets/styles/app.css'
+
 import reducer from './redux/reducers/reducer'
 
 const sagaMiddleware = createSagaMiddleware()

@@ -1,0 +1,60 @@
+body {
+  background-color: #f8f8f8; }
+
+.admin-login-card {
+  margin: 10% auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background-color: white;
+  width: 35vw;
+  min-width: 300px;
+  max-width: 700px;
+  height: 250px;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+  .admin-login-card__title {
+    color: #002234;
+    margin: 15px 0; }
+  .admin-login-card__username, .admin-login-card__password {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center; }
+    .admin-login-card__username-container, .admin-login-card__password-container {
+      width: 30vw;
+      min-width: 240px;
+      max-width: 640px;
+      display: flex;
+      align-items: center; }
+      .admin-login-card__username-container_input, .admin-login-card__password-container_input {
+        outline: none;
+        border: 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        width: 26vw;
+        min-width: 200px;
+        max-width: 600px;
+        height: 40px;
+        font-size: 15px;
+        padding-left: 5px; }
+    .admin-login-card__username_icon, .admin-login-card__password_icon {
+      color: #002234;
+      width: 20px;
+      height: 20px;
+      padding: 0 5px; }
+  .admin-login-card__button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: #002234;
+    color: white;
+    margin: 15px 0;
+    height: 40px;
+    width: 200px;
+    transition: all 200ms linear; }
+  .admin-login-card__button:hover {
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2); }
+  .admin-login-card__text {
+    font-size: 15px;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 2px; }
