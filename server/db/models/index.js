@@ -10,6 +10,7 @@ let sequelize = new Sequelize(
 
 const models = {
   Recruiter: sequelize.import('./recruiter'),
+  JobPosting: sequelize.import('./jobposting')
 }
 
 
