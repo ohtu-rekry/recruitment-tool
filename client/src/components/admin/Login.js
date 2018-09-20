@@ -26,9 +26,11 @@ export class Login extends Component {
     })
   }
 
-  handleLogin = () => {
+  handleLogin = (e) => {
+    e.preventDefault()
     const { username, password } = this.state
     this.props.login(username, password)
+
     this.setState({
       username: '',
       password: '',
@@ -38,9 +40,10 @@ export class Login extends Component {
 
   render() {
     const { visible, username, password } = this.state
+    const { loginError } = this.props
 
     return (
-      <div className='admin-login-card'>
+      <form className='admin-login-card' onSubmit={this.handleLogin}>
         <div className='admin-login-card__title admin-login-card__text'>
           Login as admin
         </div>
@@ -48,6 +51,7 @@ export class Login extends Component {
           <Person className='admin-login-card__username_icon'/>
           <div className='admin-login-card__username-container'>
             <input
+              required
               className='admin-login-card__username-container_input'
               id='username'
               placeholder='Username'
@@ -60,6 +64,7 @@ export class Login extends Component {
           <Lock className='admin-login-card__password_icon'/>
           <div className='admin-login-card__password-container'>
             <input
+              required
               className='admin-login-card__password-container_input'
               id='password'
               placeholder='Password'
@@ -77,18 +82,20 @@ export class Login extends Component {
         </div>
         <button
           className='admin-login-card__button admin-login-card__text'
-          onClick={this.handleLogin}
+          type='submit'
         >
           Login
         </button>
-      </div>
+        {loginError && <div className='admin-login-card__error'>{loginError}</div>}
+      </form>
     )
   }
 }
 
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.reducer.loggedIn
+  loggedIn: state.loginReducer.loggedIn,
+  loginError: state.loginReducer.loginError
 })
 
 const mapDispatchToProps = {

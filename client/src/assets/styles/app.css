@@ -1,13 +1,10 @@
-body {
-  background-color: #f8f8f8; }
-
 .admin-login-card {
   margin: 10% auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   background-color: white;
   width: 35vw;
   min-width: 300px;
-  max-width: 700px;
+  max-width: 650px;
   height: 250px;
   font-family: 'Roboto', sans-serif;
   display: flex;
@@ -21,9 +18,9 @@ body {
     display: flex;
     align-items: center; }
     .admin-login-card__username-container, .admin-login-card__password-container {
-      width: 30vw;
+      width: 29vw;
       min-width: 240px;
-      max-width: 640px;
+      max-width: 580px;
       display: flex;
       align-items: center; }
       .admin-login-card__username-container_input, .admin-login-card__password-container_input {
@@ -32,7 +29,7 @@ body {
         border-bottom: 1px solid rgba(0, 0, 0, 0.2);
         width: 26vw;
         min-width: 200px;
-        max-width: 600px;
+        max-width: 540px;
         height: 40px;
         font-size: 15px;
         padding-left: 5px; }
@@ -47,7 +44,7 @@ body {
     outline: none;
     background-color: #002234;
     color: white;
-    margin: 15px 0;
+    margin: 15px 0 5px;
     height: 40px;
     width: 200px;
     transition: all 200ms linear; }
@@ -58,3 +55,9 @@ body {
     font-weight: 300;
     text-transform: uppercase;
     letter-spacing: 2px; }
+  .admin-login-card__error {
+    font-size: 12px;
+    color: red; }
+
+body {
+  background-color: #f8f8f8; }

@@ -1,2 +1,6 @@
 @import './helpers/helpers.scss';
 @import './components/login.scss';
+
+body {
+  background-color: $gray-lightest;
+}
