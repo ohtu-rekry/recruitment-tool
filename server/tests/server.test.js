@@ -1,7 +1,7 @@
 const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
-const { Recruiter } = require('../db/models')
+const { Recruiter, sequelize } = require('../db/models')
 
 test('example test to run', async () => {
   await api
@@ -36,4 +36,5 @@ test('Travis configuration for postgresql works', async () => {
 
 afterAll(() => {
   server.close()
+  sequelize.close()
 })
