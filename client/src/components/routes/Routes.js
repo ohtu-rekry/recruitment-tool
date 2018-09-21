@@ -2,19 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 
-import * as actions from '../../redux/actions/actions'
-
-import Login from '../admin/Login'
+// import Login from '../admin/Login'
 import App from '../App'
+import JobOpening from '../opening-page/JobOpening'
 
 class Routes extends Component {
-  componentDidMount() {
-    const loggedUser = window.localStorage.getItem('loggedUser')
-    if (loggedUser) {
-      this.props.loginSuccess()
-    }
-  }
-
   render() {
     const { loggedIn } = this.props
 
@@ -24,8 +16,9 @@ class Routes extends Component {
           <Route path="/admin/login" render={() =>
             loggedIn
               ? <Redirect to="/" />
-              : <Login />
-          }/>
+              : <App />
+           }/>
+          <Route exact path="/opening" render={() => <JobOpening />} />
           <Route exact path="/" render={() => <App />} />
         </Switch>
       </Router>
@@ -35,14 +28,10 @@ class Routes extends Component {
 
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.loginReducer.loggedIn
+  loggedIn: state.reducer.loggedIn
 })
-
-const mapDispatchToProps = {
-  ...actions
-}
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(Routes)
