@@ -45,7 +45,7 @@ install: true
 
 before_script: chmod +x scripts/setup_database.sh && scripts/setup_database.sh
 
-script: npm install && npm run lint && npm test
+script: cd $PROJECT_DIR && npm install && npm run lint && npm test
 
 deploy:
   provider: script
