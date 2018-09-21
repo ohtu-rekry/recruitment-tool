@@ -4,7 +4,7 @@ import { applyMiddleware, createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
 
-import App from './components/App'
+import Routes from './components/routes/Routes'
 import './assets/styles/app.css'
 
 import reducer from './redux/reducers/reducer'
@@ -20,7 +20,7 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Routes />
   </Provider>,
   document.getElementById('root')
 )
