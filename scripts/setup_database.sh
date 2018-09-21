@@ -9,4 +9,5 @@ sleep 1
 psql -c "CREATE DATABASE ${DB_NAME};" -U postgres
 psql -c "CREATE USER ${DB_USERNAME} WITH PASSWORD '${DB_PASSWORD}';" -U postgres
 
+cd $PROJECT_DIR
 npm run pretest
