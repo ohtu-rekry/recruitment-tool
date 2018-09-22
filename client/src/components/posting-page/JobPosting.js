@@ -1,4 +1,6 @@
 import React ,{ Component } from 'react'
+import { connect } from 'react-redux'
+import * as actions from '../../redux/actions/actions'
 
 export class JobPosting extends Component {
   constructor(props) {
@@ -20,11 +22,18 @@ export class JobPosting extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { applicantName, applicantEmail } = this.state
-    console.log(applicantEmail + applicantName)
+    this.props.sendApplication(applicantName, applicantEmail)
+    
+    this.setState({
+      applicantName: '',
+      applicantEmail: ''
+    })
   }
 
   render() {
-    const { title, description, applicantName, emailAddress } = this.state
+    const { title, description, applicantName, applicantEmail } = this.state
+    /* TODO: Add error message to page
+    const errorMessage = this.props */
     return (
       <div className='posting'>
         <h2 className='posting__title'>{title}</h2>
@@ -44,7 +53,7 @@ export class JobPosting extends Component {
               className='posting__form-input'
               id='applicantEmail'
               placeholder='Email'
-              value={emailAddress}
+              value={applicantEmail}
               onChange={this.handleChange}
             ></input>
             <button
@@ -59,4 +68,15 @@ export class JobPosting extends Component {
   }
 }
 
-export default JobPosting
+const mapStateToProps = (state) => ({
+  errorMessage: state.postingReducer.errorMessage,
+})
+
+const mapDispatchToProps = {
+  ...actions
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(JobPosting)

@@ -7,16 +7,17 @@ import createSagaMiddleware from 'redux-saga'
 import Routes from './components/routes/Routes'
 import './assets/styles/app.css'
 
-import reducer from './redux/reducers/reducer'
+import postingReducer from './redux/reducers/postingReducer'
+import rootSaga from './redux/sagas/sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(
-  combineReducers({ reducer }),
+  combineReducers({ postingReducer }),
   applyMiddleware(sagaMiddleware)
 )
 
-//sagaMiddleware.run(sagas)
+sagaMiddleware.run(rootSaga)
 
 ReactDOM.render(
   <Provider store={store}>

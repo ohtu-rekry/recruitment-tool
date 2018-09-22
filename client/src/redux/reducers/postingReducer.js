@@ -2,19 +2,19 @@ import { handleActions } from 'redux-actions'
 import * as actions from '../actions/actions'
 
 const initialState = {
-  status: '',
+  errorMessage: null
 }
 
 const reducer = handleActions(
   {
-    [actions.sample]: (state, action) => ({
+    [actions.applySuccess]: (state, action) => ({
       ...state,
-      status: action.payload
+      errorMessage: action.payload
     }),
-    [actions.secondSample]: (state, action) => ({
+    [actions.applyFailure]: (state, action) => ({
       ...state,
-      status: action.payload.type1
-    }),
+      errorMessage: action.payload
+    })
   },
   initialState
 )

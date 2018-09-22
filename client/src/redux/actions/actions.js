@@ -1,4 +1,9 @@
 import { createAction } from 'redux-actions'
+import { create } from 'domain';
 
-export const sample = createAction('SAMPLE')
-export const secondSample = createAction('SECOND_SAMPLE', (type1, type2) => ({ type1, type2 }))
+export const sendApplication = createAction(
+  'SEND_APPLICATION', (applicantName, applicantEmail) => ({
+    applicantName, applicantEmail
+}))
+export const applySuccess = create('APPLY_SUCCESS')
+export const applyFailure = createAction('APPLY_FAIL')
