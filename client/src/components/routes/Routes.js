@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 
-// import Login from '../admin/Login'
 import App from '../App'
 import JobPosting from '../posting-page/JobPosting'
 
@@ -28,7 +27,6 @@ class Routes extends Component {
 
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.reducer.loggedIn
 })
 
 export default connect(
