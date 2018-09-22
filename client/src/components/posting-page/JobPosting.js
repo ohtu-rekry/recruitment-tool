@@ -1,6 +1,6 @@
-import React ,{Component} from 'react'
+import React ,{ Component } from 'react'
 
-export class JobOpening extends Component {
+export class JobPosting extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -17,40 +17,46 @@ export class JobOpening extends Component {
     })
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const { applicantName, applicantEmail } = this.state
+    console.log(applicantEmail + applicantName)
+  }
+
   render() {
-    const {title, description, applicantName, emailAddress} = this.state
+    const { title, description, applicantName, emailAddress } = this.state
     return (
-    <div className='job-opening'>
-      <h2 className='job-opening__title'>{title}</h2>
-        <p className='job-opening__description'>{description}</p>
-        <form className='job-opening__form'>
-        <div className='job-opening__form-container'>
-          <input
-            required
-            className='job-opening__form-input'
-            id='applicantName'
-            placeholder='Full name'
-            value={applicantName}
-            onChange={this.handleChange}
+      <div className='posting'>
+        <h2 className='posting__title'>{title}</h2>
+        <p className='posting__description'>{description}</p>
+        <form className='posting__form' onSubmit={this.handleSubmit}>
+          <div className='posting__form-container'>
+            <input
+              required
+              className='posting__form-input'
+              id='applicantName'
+              placeholder='Full name'
+              value={applicantName}
+              onChange={this.handleChange}
             ></input>
-          <input
-            required
-            className='job-opening__form-input'
-            id='applicantEmail'
-            placeholder='Email'
-            value={emailAddress}
-            onChange={this.handleChange}
-          ></input>
-          <button
-            className='job-opening__submit-button'
-            type='submit'>
+            <input
+              required
+              className='posting__form-input'
+              id='applicantEmail'
+              placeholder='Email'
+              value={emailAddress}
+              onChange={this.handleChange}
+            ></input>
+            <button
+              className='posting__submit-button'
+              type='submit'>
             Send
-          </button>
-        </div>
-      </form>
-    </div>
+            </button>
+          </div>
+        </form>
+      </div>
     )
   }
 }
 
-export default JobOpening
+export default JobPosting

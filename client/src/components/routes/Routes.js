@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 
 // import Login from '../admin/Login'
 import App from '../App'
-import JobOpening from '../opening-page/JobOpening'
+import JobPosting from '../posting-page/JobPosting'
 
 class Routes extends Component {
   render() {
@@ -17,8 +17,8 @@ class Routes extends Component {
             loggedIn
               ? <Redirect to="/" />
               : <App />
-           }/>
-          <Route exact path="/opening" render={() => <JobOpening />} />
+          }/>
+          <Route exact path="/posting" render={() => <JobPosting />} />
           <Route exact path="/" render={() => <App />} />
         </Switch>
       </Router>
