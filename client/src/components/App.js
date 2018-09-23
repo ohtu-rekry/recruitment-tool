@@ -4,9 +4,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h3>
-          Hello world! ":D"
-        </h3>
+        hello { this.props.name }
       </div>
     )
   }

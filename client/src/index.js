@@ -4,21 +4,23 @@ import { applyMiddleware, createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
 
-import App from './components/App'
-import reducer from './redux/reducers/reducer'
+import Routes from './components/routes/Routes'
+import jobPostingReducer from './redux/reducers/jobPostingReducer'
+import loginReducer from './redux/reducers/loginReducer'
+import rootSaga from './redux/sagas/sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(
-  combineReducers({ reducer }),
+  combineReducers({ jobPostingReducer, loginReducer }),
   applyMiddleware(sagaMiddleware)
 )
 
-//sagaMiddleware.run(sagas)
+sagaMiddleware.run(rootSaga)
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Routes />
   </Provider>,
   document.getElementById('root')
 )
