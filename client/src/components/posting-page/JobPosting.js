@@ -23,7 +23,7 @@ export class JobPosting extends Component {
     e.preventDefault()
     const { applicantName, applicantEmail } = this.state
     this.props.sendApplication(applicantName, applicantEmail)
-    
+
     this.setState({
       applicantName: '',
       applicantEmail: ''
@@ -32,11 +32,12 @@ export class JobPosting extends Component {
 
   render() {
     const { title, description, applicantName, applicantEmail } = this.state
-    /* TODO: Add error message to page
-    const errorMessage = this.props */
+    const { errorMessage } = this.props
+
     return (
       <div className='posting'>
         <h2 className='posting__title'>{title}</h2>
+        {errorMessage ? <ErrorMessage errorMessage={ errorMessage }/> : null}
         <p className='posting__description'>{description}</p>
         <form className='posting__form' onSubmit={this.handleSubmit}>
           <div className='posting__form-container'>
@@ -68,8 +69,16 @@ export class JobPosting extends Component {
   }
 }
 
+const ErrorMessage = ({ errorMessage }) => {
+  return (
+    <div className='posting__error-message'>
+      {errorMessage}
+    </div>
+  )
+}
+
 const mapStateToProps = (state) => ({
-  errorMessage: state.postingReducer.errorMessage,
+  errorMessage: state.postingReducer.errorMessage
 })
 
 const mapDispatchToProps = {

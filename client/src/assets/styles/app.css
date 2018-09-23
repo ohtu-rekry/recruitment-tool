@@ -122,3 +122,10 @@ body {
         width: 100px; } }
   .posting__submit-button:hover {
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2); }
+  .posting__error-message {
+    color: red;
+    font-size: 14px;
+    padding-bottom: 10px; }
+    @media screen and (min-width: 410px) {
+      .posting__error-message {
+        font-size: 18px; } }
