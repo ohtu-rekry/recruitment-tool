@@ -2,7 +2,14 @@ const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
 const bcrypt = require('bcryptjs')
-const { Recruiter } = require('../db/models')
+const { Recruiter, sequelize } = require('../db/models')
+
+beforeAll(async () => {
+  await sequelize.sync({ logging: false })
+    .catch(() => {
+      console.log('Another model synchronizing process has already started')
+    })
+})
 
 describe('LOGIN AS RECRUITER', async () => {
   const newRecruiter = {
@@ -50,12 +57,13 @@ describe('LOGIN AS RECRUITER', async () => {
     expect(result.body).toEqual({ error: 'Wrong username or password.' })
   })
 
-  afterAll(() => {
-    Recruiter.destroy({
+  afterAll(async () => {
+    await Recruiter.destroy({
       where: {
         username: newRecruiter.username
       }
     })
-    server.close()
+    await server.close()
+    await sequelize.close()
   })
 })

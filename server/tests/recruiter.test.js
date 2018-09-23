@@ -1,7 +1,14 @@
 const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
-const { Recruiter } = require('../db/models')
+const { Recruiter, sequelize } = require('../db/models')
+
+beforeAll(async () => {
+  await sequelize.sync({ logging: false })
+    .catch(() => {
+      console.log('Another model synchronizing process has already started')
+    })
+})
 
 describe('CREATE RECRUITER USER', async () => {
   const newRecruiter = {
@@ -53,12 +60,14 @@ describe('CREATE RECRUITER USER', async () => {
     expect(result.body).toEqual({ error: 'Password must include minimum 3 characters.' })
   })
 
-  afterAll(() => {
-    Recruiter.destroy({
+  afterAll(async () => {
+    await Recruiter.destroy({
       where: {
         username: newRecruiter.username
       }
     })
-    server.close()
+    await server.close()
+    await sequelize.close()
   })
 })
+
