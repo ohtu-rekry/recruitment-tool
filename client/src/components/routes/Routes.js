@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import * as actions from '../../redux/actions/actions'
 
 import Login from '../admin/Login'
+import ConnectedJobPostingForm from '../jobPosting/JobPostingForm'
 import App from '../App'
 
 class Routes extends Component {
@@ -25,6 +26,11 @@ class Routes extends Component {
             loggedIn
               ? <Redirect to="/" />
               : <Login />
+          }/>
+          <Route path="/jobpostings/new" render={() =>
+            loggedIn
+              ? <ConnectedJobPostingForm />
+              : <Redirect to="/admin/login" />
           }/>
           <Route exact path="/" render={() => <App />} />
         </Switch>
