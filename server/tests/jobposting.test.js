@@ -2,7 +2,14 @@ const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
 const bcrypt = require('bcryptjs')
-const { Recruiter } = require('../db/models')
+const { Recruiter, sequelize } = require('../db/models')
+
+beforeAll(async () => {
+  await sequelize.sync({ logging: false })
+    .catch(() => {
+      console.log('Another model synchronizing process has already started')
+    })
+})
 
 describe('POST method', async () => {
 
@@ -80,8 +87,8 @@ describe('POST method', async () => {
     expect(response.body).toEqual({ error: 'Content must be defined' })
   })
 
-  afterAll(() => {
-    Recruiter.destroy({
+  afterAll(async () => {
+    await Recruiter.destroy({
       where: {
         username: testRecruiter.username
       }
@@ -89,6 +96,7 @@ describe('POST method', async () => {
   })
 })
 
-afterAll(() => {
-  server.close()
+afterAll(async () => {
+  await server.close()
+  await sequelize.close()
 })
