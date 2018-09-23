@@ -4,7 +4,7 @@ const api = supertest(app)
 const { Recruiter, sequelize } = require('../db/models')
 
 beforeAll(async () => {
-  await sequelize.sync({ force: true, logging: false })
+  await sequelize.sync({ logging: false })
     .catch(err => {
       console.log(err)
     })
