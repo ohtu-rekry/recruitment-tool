@@ -21,8 +21,10 @@ app.use('/api/recruiters', recruiterRouter)
 
 const server = http.createServer(app)
 
-server.listen(PORT, () => {
-  console.log(`Running on http://${HOST}:${PORT}`)
-})
+if (!module.parent) {
+  server.listen(PORT, () => {
+    console.log(`Running on http://${HOST}:${PORT}`)
+  })
+}
 
 module.exports = { app, server }
