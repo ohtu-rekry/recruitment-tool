@@ -3,7 +3,9 @@ const http = require('http')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 
-const recruiterRouter = require('../controllers/recruiterRouter')
+const loginRouter = require('./controllers/loginRouter')
+const recruiterRouter = require('./controllers/recruiterRouter')
+
 
 const PORT = process.env.port || 8080
 const HOST = '0.0.0.0'
@@ -16,8 +18,8 @@ app.get('/', (req, res) => {
   res.send('Hello world! \n')
 })
 
-app.use('/api/recruiters', recruiterRouter)
-
+app.use('/api/login', loginRouter)
+app.use('/api/recruiter', recruiterRouter)
 
 const server = http.createServer(app)
 
