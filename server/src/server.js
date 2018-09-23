@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 
 const loginRouter = require('./controllers/loginRouter')
 const recruiterRouter = require('./controllers/recruiterRouter')
-const jobpostingRouter = require('../controllers/jobpostingRouter')
+const jobpostingRouter = require('./controllers/jobpostingRouter')
 const { tokenExtractor } = require('../utils/middleware')
 
 const PORT = process.env.port || 8080

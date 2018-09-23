@@ -21,7 +21,6 @@ describe('POST method', async () => {
 
     const response = await api.post('/api/login').send(testRecruiter)
     token = `Bearer ${response.body.token}`
-    console.log(token)
   })
 
   test('a valid job posting can be created if user is logged in', async () => {
@@ -31,7 +30,7 @@ describe('POST method', async () => {
     }
 
     await api
-      .post('/api/jobpostings')
+      .post('/api/jobposting')
       .send(newPosting)
       .set('authorization', token)
       .expect(201)
@@ -45,7 +44,7 @@ describe('POST method', async () => {
     }
 
     await api
-      .post('/api/jobpostings')
+      .post('/api/jobposting')
       .send(newPosting)
       .expect(401)
       .expect('Content-Type', /application\/json/)
@@ -57,7 +56,7 @@ describe('POST method', async () => {
     }
 
     const response = await api
-      .post('/api/jobpostings')
+      .post('/api/jobposting')
       .send(newPosting)
       .set('authorization', token)
       .expect(400)
@@ -72,7 +71,7 @@ describe('POST method', async () => {
     }
 
     const response = await api
-      .post('/api/jobpostings')
+      .post('/api/jobposting')
       .send(newPosting)
       .set('Authorization', token)
       .expect(400)

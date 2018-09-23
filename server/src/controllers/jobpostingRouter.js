@@ -1,14 +1,16 @@
 const jobpostingRouter = require('express').Router()
-const { JobPosting, Recruiter } = require('../db/models')
+const { JobPosting, Recruiter } = require('../../db/models')
 const jwt = require('jsonwebtoken')
 
 jobpostingRouter.post('/', async (request, response) => {
   try {
     const body = request.body
     const token = request.token
-    const decodedToken = jwt.verify(token, process.env.SECRET)
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
 
-    if (!token || !decodedToken.id) {
+    if (!token || !decodedToken.username) {
+      console.log(token)
+      console.log(decodedToken)
       return response.status(401).json({ error: 'Operation unauthorized' })
     }
 
@@ -20,7 +22,11 @@ jobpostingRouter.post('/', async (request, response) => {
       return response.status(400).json({ error: 'Content must be defined' })
     }
 
-    const recruiter = await Recruiter.findById(decodedToken.id)
+    const recruiter = await Recruiter.findOne({
+      where: {
+        username: decodedToken.username
+      }
+    })
 
     if (!recruiter) {
       return response.status(500).json({ error: 'Logged in user not found in database' })
