@@ -5,6 +5,9 @@ const { Recruiter, sequelize } = require('../db/models')
 
 beforeAll(async () => {
   await sequelize.sync({ force: true, logging: false })
+    .catch(err => {
+      console.log(err)
+    })
 })
 
 test('example test to run', async () => {
@@ -18,6 +21,8 @@ test('Travis configuration for postgresql works', async () => {
   const newUser = await Recruiter.create({
     username: 'testuser',
     password: 'verybadpassword'
+  }).catch(err => {
+    console.log(err)
   })
 
   expect(newUser.username).toEqual('testuser')
