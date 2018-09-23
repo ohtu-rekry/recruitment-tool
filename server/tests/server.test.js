@@ -5,8 +5,8 @@ const { Recruiter, sequelize } = require('../db/models')
 
 beforeAll(async () => {
   await sequelize.sync({ logging: false })
-    .catch(err => {
-      console.log(err)
+    .catch(() => {
+      console.log('Another model synchronizing process has already started')
     })
 })
 
@@ -43,7 +43,7 @@ test('Travis configuration for postgresql works', async () => {
   expect(foundUser).toBe(null)
 })
 
-afterAll(async() => {
+afterAll(async () => {
   await server.close()
   await sequelize.close()
 })
