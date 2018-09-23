@@ -31,6 +31,4 @@ function* creationRequest({ payload }) {
   }
 }
 
-export function* watchCreationRequest() {
-  yield takeEvery('ADD_JOB_POSTING', creationRequest)
-}
+export const watchCreationRequest = takeEvery(actions.addJobPosting().type, creationRequest)
