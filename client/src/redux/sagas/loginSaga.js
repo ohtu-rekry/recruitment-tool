@@ -23,7 +23,7 @@ function* requestLogin({ payload }) {
 
 function* requestLogout() {
   try {
-    window.localStorage.clear()
+    window.localStorage.clearß()
     yield put(actions.logoutSuccess())
   } catch (e) {
     yield put(actions.logoutFailure('Could not logout'))
