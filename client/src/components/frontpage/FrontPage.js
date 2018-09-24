@@ -18,10 +18,12 @@ class FrontPage extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchJobPostings()
+    const { fetchJobPostings } = this.props
+    fetchJobPostings()
   }
 
   handleJobPostingClick(id) {
+    console.log('testi')
     this.setState({
       fireRedirect: true,
       jobPostingId: id
@@ -32,9 +34,6 @@ class FrontPage extends Component {
     if (this.state.fireRedirect) {
       return <Redirect to={`/opening/${this.state.jobPostingId}`} />
     }
-
-    console.log(this.props)
-
     return (
       <div className='frontpage'>
         <Header />
