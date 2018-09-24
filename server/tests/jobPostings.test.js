@@ -1,7 +1,7 @@
 const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
-const { JobPosting, sequelize } = require('../db/models')
+const { sequelize } = require('../db/models')
 
 
 beforeAll(async () => {
