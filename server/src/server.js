@@ -5,7 +5,8 @@ const bodyParser = require('body-parser')
 
 const loginRouter = require('./controllers/loginRouter')
 const recruiterRouter = require('./controllers/recruiterRouter')
-
+const jobpostingRouter = require('./controllers/jobpostingRouter')
+const { tokenExtractor } = require('../utils/middleware')
 
 const PORT = process.env.port || 8080
 const HOST = '0.0.0.0'
@@ -13,6 +14,7 @@ const HOST = '0.0.0.0'
 const app = express()
 app.use(cors())
 app.use(bodyParser.json())
+app.use(tokenExtractor)
 
 app.get('/', (req, res) => {
   res.send('Hello world! \n')
@@ -20,6 +22,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/login', loginRouter)
 app.use('/api/recruiter', recruiterRouter)
+app.use('/api/jobposting', jobpostingRouter)
 
 const server = http.createServer(app)
 
