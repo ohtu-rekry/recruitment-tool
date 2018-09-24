@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 
 const recruiterRouter = require('express').Router()
 const { Recruiter } = require('../db/models')
-recruiterRouter.get('/', (req,res) => {
+recruiterRouter.get('/', (req, res) => {
   Recruiter.findAll().then(recruiters => res.json(recruiters))
 })
 
