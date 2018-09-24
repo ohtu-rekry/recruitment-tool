@@ -3,7 +3,6 @@ const { app, server } = require('../src/server')
 const api = supertest(app)
 const { sequelize } = require('../db/models')
 
-
 beforeAll(async () => {
   await sequelize.sync({ logging: false })
     .catch(err => {
@@ -18,7 +17,7 @@ test('jobPostings are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-afterAll(() => {
-  server.close()
-  sequelize.close()
+afterAll(async () => {
+  await server.close()
+  await sequelize.close()
 })
