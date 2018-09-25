@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions'
 
-const initialState = { loggedIn: 'yup' }
+const initialState = { loggedIn: { username: 'test-name', token: 'test-token' } }
 
 const reducer = handleActions(
   {},

@@ -9,7 +9,7 @@ import ConnectedJobPostingForm from '../jobPosting/JobPostingForm'
 import App from '../App'
 
 class Routes extends Component {
-/*   componentDidMount() {
+/*    componentDidMount() {
     const loggedUser = window.localStorage.getItem('loggedUser')
     if (loggedUser) {
       this.props.loginSuccess()
