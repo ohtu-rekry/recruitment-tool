@@ -13,7 +13,7 @@ source ${HOME}/google-cloud-sdk/path.bash.inc
 
 gcloud components update kubectl
 
-docker build -t ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER} .
+docker build --target production -t ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER} .
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 docker push ${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER}
