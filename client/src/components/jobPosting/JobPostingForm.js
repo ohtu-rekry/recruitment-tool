@@ -26,6 +26,7 @@ export class JobPostingForm extends Component {
   handleSubmit = ( event ) => {
     event.preventDefault()
     const { title, content } = this.state
+    const recruiter = this.props.loggedIn
 
     const notOnlyWhitespaceRegex = /\S/
     if(!(notOnlyWhitespaceRegex.test(title) && notOnlyWhitespaceRegex.test(content))) {
@@ -33,7 +34,7 @@ export class JobPostingForm extends Component {
       return
     }
 
-    this.props.addJobPosting(title, content)
+    this.props.addJobPosting(title, content, recruiter)
   }
 
   //textfields variant="outlined" in 3.1.0(?)
