@@ -23,8 +23,7 @@ function* creationRequest({ payload }) {
     }
   }
   catch(error) {
-    const responseMessage = error.response.data.error
-    const errorMessage = error.message + (responseMessage ? '. ' + responseMessage : '')
+    const errorMessage = error.message + (error.response ? '. ' + error.response.data.error : '')
 
     yield put(actions.addJobPostingFailure({ message : errorMessage }))
     yield delay(5000)
