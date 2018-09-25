@@ -4,6 +4,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 
 const recruiterRouter = require('../controllers/recruiterRouter')
+const jobpostingRouter = require('./controllers/jobpostingRouter')
 
 const PORT = process.env.port || 8080
 const HOST = '0.0.0.0'
@@ -17,12 +18,14 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/recruiters', recruiterRouter)
-
+app.use('/api/jobposting', jobpostingRouter)
 
 const server = http.createServer(app)
 
-server.listen(PORT, () => {
-  console.log(`Running on http://${HOST}:${PORT}`)
-})
+if(!module.parent) {
+  server.listen(PORT, () => {
+    console.log(`Running on http://${HOST}:${PORT}`)
+  })
+}
 
 module.exports = { app, server }

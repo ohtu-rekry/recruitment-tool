@@ -19,7 +19,7 @@ function* fetchJobPosting({ payload }) {
   try {
     const response = yield call(JobPostingApi.get)
 
-    if (response.status !== 200) {
+    if (response.status === 200) {
       const jobPosting = response.data.filter(posting => posting.id === payload.id)
       yield put(actions.setJobPosting(jobPosting))
     }
