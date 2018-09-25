@@ -17,7 +17,6 @@ export class JobPostingForm extends Component {
   }
 
   handleChange = ( event ) => {
-    console.log(this.props.creationRequestStatus)
     this.setState({
       [event.target.id] : event.target.value
     })
@@ -41,6 +40,7 @@ export class JobPostingForm extends Component {
   //helperText="* required" (preferably remove *)
   render() {
     const { title, content } = this.state
+    const loggedIn = this.props.loggedIn
     const creationRequestStatus = this.props.creationRequestStatus
     let snackbarId
     if(creationRequestStatus) {
@@ -48,49 +48,51 @@ export class JobPostingForm extends Component {
     }
 
     return (
-      <div>
+      !loggedIn
+        ? <div>
+          <a href="/admin/login">You need to log in first</a>
+        </div>
+        : <div>
+          {creationRequestStatus
+            && <Snackbar
+              id={snackbarId}
+              open={creationRequestStatus !== null}
+              message={<span>{creationRequestStatus.message}</span>} />
+          }
 
-        {creationRequestStatus
-        && <Snackbar
-          id={snackbarId}
-          open={creationRequestStatus !== null}
-          message={<span>{creationRequestStatus.message}</span>} />
-        }
-
-        <Paper>
-          <form id='job-posting-form' onSubmit={this.handleSubmit}>
-
-            <TextField
-              required
-              fullWidth
-              id="title"
-              type="text"
-              value={title}
-              label="Title"
-              onChange={this.handleChange}
-              variant="outlined"
-            />
-            <br />
-            <TextField
-              multiline
-              rows="10"
-              required
-              fullWidth
-              id="content"
-              type="text"
-              value={content}
-              label="Content"
-              onChange={this.handleChange}
-              variant="outlined"
-            />
-            <br />
-            <Button id='button-submit'
-              type="submit"
-              variant="contained"
-            >Create job posting</Button>
-          </form>
-        </Paper>
-      </div>
+          <Paper>
+            <form id='job-posting-form' onSubmit={this.handleSubmit} >
+              <TextField
+                required
+                fullWidth
+                id="title"
+                type="text"
+                value={title}
+                label="Title"
+                onChange={this.handleChange}
+                variant="outlined"
+              />
+              <br />
+              <TextField
+                multiline
+                rows="10"
+                required
+                fullWidth
+                id="content"
+                type="text"
+                value={content}
+                label="Content"
+                onChange={this.handleChange}
+                variant="outlined"
+              />
+              <br />
+              <Button id='button-submit'
+                type="submit"
+                variant="contained"
+              >Create job posting</Button>
+            </form>
+          </Paper>
+        </div>
     )
   }
 }
@@ -104,9 +106,7 @@ const mapDispatchToProps = {
   addJobPosting
 }
 
-const ConnectedJobPostingForm = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(JobPostingForm)
-
-export default ConnectedJobPostingForm

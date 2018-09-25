@@ -5,14 +5,17 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import * as actions from '../../redux/actions/actions'
 
 import Login from '../admin/Login'
-import ConnectedJobPostingForm from '../jobPosting/JobPostingForm'
+import JobPostingForm from '../jobPosting/JobPostingForm'
 import App from '../App'
 
 class Routes extends Component {
   componentDidMount() {
-    const loggedUser = window.localStorage.getItem('loggedUser')
+    const loggedUser = JSON.parse(window.localStorage.getItem('loggedUser'))
     if (loggedUser) {
-      this.props.loginSuccess()
+      this.props.loginSuccess({
+        username: loggedUser.username,
+        token: loggedUser.token
+      })
     }
   }
 
@@ -28,9 +31,7 @@ class Routes extends Component {
               : <Login />
           }/>
           <Route path="/jobpostings/new" render={() =>
-            loggedIn
-              ? <ConnectedJobPostingForm />
-              : <Redirect to="/admin/login" />
+            <JobPostingForm />
           }/>
           <Route exact path="/" render={() => <App />} />
         </Switch>

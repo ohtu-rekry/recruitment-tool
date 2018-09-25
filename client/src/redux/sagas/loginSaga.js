@@ -8,14 +8,18 @@ function* requestLogin({ payload }) {
       username: payload.username,
       password: payload.password
     }
+
     const response = yield call(LoginAPI.add, user)
 
     if (response.status === 200) {
-      const token = response.data
-      const username = response.data.username
-      window.localStorage.setItem('loggedUser', JSON.stringify(token))
-      yield put(actions.loginSuccess(username))
+      const recruiter = response.data
+      const username = recruiter.username
+      const token = recruiter.token
+      window.localStorage.setItem('loggedUser', JSON.stringify(recruiter))
+      console.log(recruiter)
+      yield put(actions.loginSuccess({ username: username, token: token }))
     }
+
   } catch (e) {
     yield put(actions.loginFailure('Could not login. Wrong password or username.'))
   }

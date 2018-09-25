@@ -11,7 +11,7 @@ function* creationRequest({ payload }) {
       content : payload.content
     }
     const recruiter = payload.recruiter
-    
+
     const response = yield call(jobPostingApi.add, { jobPosting, recruiter })
 
     if(response.status === 201) {
