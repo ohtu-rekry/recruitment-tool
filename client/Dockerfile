@@ -1,16 +1,18 @@
-FROM node:8-alpine
+# Build
+FROM node:8-alpine AS build
 
 WORKDIR /usr/app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install --production
 
-COPY . .
-RUN find -not -path "./node_modules/*" -exec chmod o+r {} \;
-RUN chmod a+rx -R src/ public/
+COPY src/ src/
+COPY public/ public/
 
-USER 1000
-EXPOSE 3000
+RUN npm run build
 
-CMD ["npm", "start"]
+# Production environment
+FROM nginxinc/nginx-unprivileged:stable-alpine
+
+COPY --from=build /usr/app/build /usr/share/nginx/html
