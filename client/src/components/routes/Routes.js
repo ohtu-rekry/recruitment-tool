@@ -17,7 +17,7 @@ class Routes extends Component {
               ? <Redirect to="/" />
               : <App />
           }/>
-          <Route exact path="/posting" render={() => <JobPosting />} />
+          <Route exact path="/posting/:id" render={() => <JobPosting />} />
           <Route exact path="/" render={() => <App />} />
         </Switch>
       </Router>

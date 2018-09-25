@@ -8,12 +8,13 @@ import Routes from './components/routes/Routes'
 import './assets/styles/app.css'
 
 import postingReducer from './redux/reducers/postingReducer'
+import jobPostingReducer from './redux/reducers/jobPostingReducer'
 import rootSaga from './redux/sagas/sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(
-  combineReducers({ postingReducer }),
+  combineReducers({ postingReducer, jobPostingReducer }),
   applyMiddleware(sagaMiddleware)
 )
 
