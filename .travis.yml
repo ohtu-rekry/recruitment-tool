@@ -37,7 +37,7 @@ stages:
     env:
       - NODE_ENV=development
   - name: deploy
-    if: branch = fix/kubernetes-deployment
+    if: branch = master
     env:
       - NODE_ENV=production
 
@@ -52,4 +52,4 @@ deploy:
   script: chmod +x ../scripts/deploy-k8s.sh && ../scripts/deploy-k8s.sh
   skip_cleanup: true
   on:
-    branch: fix/kubernetes-deployment
+    branch: master
