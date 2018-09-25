@@ -6,7 +6,8 @@ COPY package*.json ./
 RUN npm install && npm cache clean --force
 
 COPY src/ src/
-COPY public/ public/
+COPY db/ db/
+COPY utils/ utils/
 
 RUN find . -not -path "./node_modules/*" -exec chmod o+r {} \;
 RUN chmod a+x -R ./controllers ./db

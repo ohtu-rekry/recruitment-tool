@@ -16,3 +16,5 @@ RUN npm run build
 FROM nginxinc/nginx-unprivileged:stable-alpine
 
 COPY --from=build /usr/app/build /usr/share/nginx/html
+
+USER 100
