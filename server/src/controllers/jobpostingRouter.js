@@ -2,6 +2,10 @@ const jobpostingRouter = require('express').Router()
 const { JobPosting, Recruiter } = require('../../db/models')
 const jwt = require('jsonwebtoken')
 
+jobpostingRouter.get('/', async (req, res) => {
+  JobPosting.findAll().then(jobpostings => res.json(jobpostings))
+})
+
 jobpostingRouter.post('/', async (request, response) => {
   try {
     const body = request.body
@@ -35,7 +39,7 @@ jobpostingRouter.post('/', async (request, response) => {
     const posting = await JobPosting.create({
       title: body.title,
       content: body.content,
-      RecruiterId: recruiter.id
+      recruiterId: recruiter.id
     })
 
     response.status(201).json(posting)

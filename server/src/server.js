@@ -5,7 +5,8 @@ const bodyParser = require('body-parser')
 
 const loginRouter = require('./controllers/loginRouter')
 const recruiterRouter = require('./controllers/recruiterRouter')
-const jobpostingRouter = require('./controllers/jobpostingRouter')
+const jobPostingRouter = require('./controllers/jobPostingRouter')
+const jobApplicationRouter = require('./controllers/jobApplicationRouter')
 const { tokenExtractor } = require('../utils/middleware')
 
 const PORT = process.env.port || 8080
@@ -22,7 +23,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/login', loginRouter)
 app.use('/api/recruiter', recruiterRouter)
-app.use('/api/jobposting', jobpostingRouter)
+app.use('/api/jobposting', jobPostingRouter)
+app.use('/api/jobapplication', jobApplicationRouter)
 
 const server = http.createServer(app)
 

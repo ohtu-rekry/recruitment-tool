@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "nodemon src/server.js",
     "lint": "node_modules/.bin/eslint .",
     "pretest": "node_modules/.bin/sequelize db:migrate",
     "test": "jest --verbose"
