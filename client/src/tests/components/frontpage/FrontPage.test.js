@@ -1,22 +1,27 @@
-import React from 'react'
-import { shallow } from 'enzyme'
+/*import React from 'react'
+import { shallow, mount } from 'enzyme'
 import { expect } from 'chai'
+import { Provider } from 'react-redux'
+import configureStore from 'redux-mock-store'
+jest.mock('../../jobPostings')
+
 import FrontPage from '../../../components/frontpage/FrontPage'
+
+
 
 describe('<FrontPage />', () => {
 
-  const jobPosting = [
-    {
-      'id': 1,
-      'title': 'Front-end developer',
-      'createdBy': 'Emblica Man',
-      'Content': 'Apply here!'
-    }
-  ]
+  let frontpage
+  beforeAll(() => {
+    frontpage = mount(<FrontPage />)
+  })
 
   it('renders frontpage with content', () => {
-    const component = shallow(<FrontPage jobPostings={jobPosting} />)
-    console.log(component.debug())
-    expect(component.find('.frontpage').isEmpty())
+    frontpage.update()
+    const jobpostings = frontpage.find()
+    const jobPostingList = wrapper.find('.job-postings__list')
+    console.log(wrapper.dive().debug())
+    expect(jobPostingList).contain(initialState.jobPostings)
   })
 })
+*/

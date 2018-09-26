@@ -23,7 +23,6 @@ class FrontPage extends Component {
   }
 
   handleJobPostingClick(id) {
-    console.log('testi')
     this.setState({
       fireRedirect: true,
       jobPostingId: id
@@ -32,7 +31,7 @@ class FrontPage extends Component {
 
   render() {
     if (this.state.fireRedirect) {
-      return <Redirect to={`/opening/${this.state.jobPostingId}`} />
+      return <Redirect to={`/jobposting/${this.state.jobPostingId}`} />
     }
     return (
       <div className='frontpage'>
