@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const JobPosting = (props) => {
   const { onClick } = props
@@ -11,6 +12,11 @@ const JobPosting = (props) => {
       </div>
     </div>
   )
+}
+
+JobPosting.propTypes = {
+  data: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired
 }
 
 export default JobPosting
