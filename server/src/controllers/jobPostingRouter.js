@@ -1,4 +1,4 @@
-const jobpostingRouter = require('express').Router()
+const jobPostingRouter = require('express').Router()
 const { JobPosting, Recruiter } = require('../../db/models')
 const jwt = require('jsonwebtoken')
 
@@ -58,4 +58,4 @@ jobpostingRouter.post('/', async (request, response) => {
   }
 })
 
-module.exports = jobpostingRouter
+module.exports = jobPostingRouter
