@@ -1,6 +1,7 @@
 import React ,{ Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../redux/actions/actions'
+import PropTypes from 'prop-types'
 
 export class JobPosting extends Component {
   constructor(props) {
@@ -79,6 +80,11 @@ const ErrorMessage = ({ errorMessage }) => {
       {errorMessage}
     </div>
   )
+}
+
+JobPosting.propTypes = {
+  errorMessage: PropTypes.string,
+  jobPosting: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
