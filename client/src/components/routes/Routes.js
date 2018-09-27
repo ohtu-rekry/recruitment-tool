@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 
 import App from '../App'
+import Login from '../admin/Login'
 import JobPosting from '../posting-page/JobPosting'
 
 class Routes extends Component {
@@ -15,7 +16,7 @@ class Routes extends Component {
           <Route path="/admin/login" render={() =>
             loggedIn
               ? <Redirect to="/" />
-              : <App />
+              : <Login />
           }/>
           <Route exact path="/posting/:id" render={() => <JobPosting />} />
           <Route exact path="/" render={() => <App />} />
