@@ -5,15 +5,12 @@ const { app, server } = require('../src/server')
 const api = supertest(app)
 const { Recruiter, JobPosting, JobApplication, sequelize } = require('../db/models')
 
-
-
 beforeAll(async () => {
   await sequelize.sync({ logging: false })
     .catch(() => {
       console.log('Another model synchronizing process has already started')
     })
 })
-
 
 describe('POST jobApplication', async () => {
   let token = null
@@ -32,7 +29,7 @@ describe('POST jobApplication', async () => {
     token = `Bearer ${response.body.token}`
   })
 
-  test('a valid job posting can be created if user is logged in', async () => {
+  test('jobApplicant can post new jobApplication', async () => {
     const newPosting = {
       title: 'Data scientist',
       content: 'Looking for data expert'
@@ -44,24 +41,22 @@ describe('POST jobApplication', async () => {
       .set('authorization', token)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-  })
 
-  test('jobApplicant can post new jobApplication', async () => {
+    const id = await JobPosting.findOne(newPosting).then(res => res.id)
+    console.log(id)
 
     const newJobApplication = {
       applicantName: 'Olli',
       applicantEmail: 'olli@olli.fi',
-      jobPostingId: 1
+      jobPostingId: id
     }
-
+    console.log(newJobApplication)
     await api
       .post('/api/jobapplication')
       .send(newJobApplication)
       .expect(201)
       .expect('Content-Type', /application\/json/)
   })
-
-
 })
 
 afterAll(async () => {

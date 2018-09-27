@@ -2,7 +2,7 @@ const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
 const bcrypt = require('bcryptjs')
-const { Recruiter, sequelize } = require('../db/models')
+const { Recruiter, JobPosting, sequelize } = require('../db/models')
 
 beforeAll(async () => {
   await sequelize.sync({ logging: false })
@@ -91,6 +91,16 @@ describe('POST method', async () => {
     await Recruiter.destroy({
       where: {
         username: testRecruiter.username
+      }
+    })
+    await JobPosting.destroy({
+      where: {
+        title: 'Senior Java Developer'
+      }
+    })
+    await JobPosting.destroy({
+      where: {
+        title: 'Junior Front End Developer'
       }
     })
   })
