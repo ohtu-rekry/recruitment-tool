@@ -9,9 +9,10 @@ import App from '../App'
 
 class Routes extends Component {
   componentDidMount() {
-    const loggedUser = window.localStorage.getItem('loggedUser')
+    const loggedUser = JSON.parse(window.localStorage.getItem('loggedUser'))
+
     if (loggedUser) {
-      this.props.loginSuccess()
+      this.props.loginSuccess(loggedUser)
     }
   }
 
