@@ -1,8 +1,7 @@
 const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
-const bcrypt = require('bcryptjs')
-const { Recruiter, JobPosting, sequelize } = require('../db/models')
+const { JobPosting, sequelize } = require('../db/models')
 
 beforeAll(async () => {
   await sequelize.sync({ logging: false })
