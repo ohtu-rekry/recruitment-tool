@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
@@ -17,6 +18,10 @@ export class JobPostingForm extends Component {
   }
 
   handleChange = ( event ) => {
+    //<<<<<
+    console.log(this.props.loggedIn)
+    console.log(this.props.creationRequestStatus)
+    //><<<<<
     this.setState({
       [event.target.id] : event.target.value
     })
@@ -95,6 +100,13 @@ export class JobPostingForm extends Component {
         </div>
     )
   }
+}
+
+
+JobPostingForm.propTypes = {
+  creationRequestStatus: PropTypes.object,
+  loggedIn: PropTypes.object,
+  addJobPosting: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
