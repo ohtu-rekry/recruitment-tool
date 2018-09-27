@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 import { fetchJobPostings } from '../../redux/actions/actions'
 import Header from './Header'
@@ -23,7 +24,6 @@ class FrontPage extends Component {
   }
 
   handleJobPostingClick(id) {
-    console.log('testi')
     this.setState({
       fireRedirect: true,
       jobPostingId: id
@@ -32,7 +32,7 @@ class FrontPage extends Component {
 
   render() {
     if (this.state.fireRedirect) {
-      return <Redirect to={`/opening/${this.state.jobPostingId}`} />
+      return <Redirect to={`/jobposting/${this.state.jobPostingId}`} />
     }
     return (
       <div className='frontpage'>
@@ -49,6 +49,9 @@ class FrontPage extends Component {
   }
 }
 
+FrontPage.protoTypes = {
+  jobPostings: PropTypes.array.isRequired
+}
 
 const mapStateToProps = (state) => ({
   jobPostings: state.jobPostingReducer.jobPostings
