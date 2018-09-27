@@ -36,5 +36,6 @@ RUN npm run build
 FROM nginxinc/nginx-unprivileged:stable-alpine AS production
 
 COPY --from=build /usr/app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 USER 100
