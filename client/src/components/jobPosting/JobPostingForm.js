@@ -13,17 +13,15 @@ export class JobPostingForm extends Component {
     super(props)
     this.state = {
       title : '',
-      content : ''
+      content : '',
+      error : false
     }
   }
 
   handleChange = ( event ) => {
-    //<<<<<
-    console.log(this.props.loggedIn)
-    console.log(this.props.creationRequestStatus)
-    //><<<<<
     this.setState({
-      [event.target.id] : event.target.value
+      [event.target.id] : event.target.value,
+      error : false
     })
   }
 
@@ -34,17 +32,18 @@ export class JobPostingForm extends Component {
 
     const notOnlyWhitespaceRegex = /\S/
     if(!(notOnlyWhitespaceRegex.test(title) && notOnlyWhitespaceRegex.test(content))) {
-      //inform user
+      this.setState({
+        error : true
+      })
       return
     }
 
     this.props.addJobPosting(title, content, recruiter)
   }
 
-  //textfields variant="outlined" in 3.1.0(?)
-  //helperText="* required" (preferably remove *)
   render() {
-    const { title, content } = this.state
+    const { title, content, error } = this.state
+    const helperText = error ? 'Required field cannot be empty' : '* is a required field'
     const loggedIn = this.props.loggedIn
     const creationRequestStatus = this.props.creationRequestStatus
     let snackbarId
@@ -76,11 +75,13 @@ export class JobPostingForm extends Component {
                 label="Title"
                 onChange={this.handleChange}
                 variant="outlined"
+                error={error}
               />
               <br />
               <TextField
                 multiline
                 rows="10"
+                helperText={helperText}
                 required
                 fullWidth
                 id="content"
@@ -89,6 +90,7 @@ export class JobPostingForm extends Component {
                 label="Content"
                 onChange={this.handleChange}
                 variant="outlined"
+                error={error}
               />
               <br />
               <Button id='button-submit'
