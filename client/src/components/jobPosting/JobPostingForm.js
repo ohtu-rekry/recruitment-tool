@@ -120,9 +120,7 @@ const mapDispatchToProps = {
   addJobPosting
 }
 
-const ConnectedJobPostingForm = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(JobPostingForm)
-
-export default ConnectedJobPostingForm
