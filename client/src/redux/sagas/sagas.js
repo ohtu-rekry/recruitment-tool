@@ -9,6 +9,7 @@ export default function* rootSaga() {
     loginSaga.watchRequestLogout,
     applicationSaga.watchSendApplication,
     jobPostingSaga.watchFetchJobPosting,
-    jobPostingSaga.watchFetchJobPostings
+    jobPostingSaga.watchFetchJobPostings,
+    jobPostingSaga.watchCreationRequest
   ])
 }

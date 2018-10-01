@@ -7,6 +7,7 @@ import createSagaMiddleware from 'redux-saga'
 import Routes from './components/routes/Routes'
 import './assets/styles/app.css'
 
+import jobPostingReducer from './redux/reducers/jobPostingReducer'
 import loginReducer from './redux/reducers/loginReducer'
 import postingReducer from './redux/reducers/postingReducer'
 import jobPostingReducer from './redux/reducers/jobPostingReducer'
