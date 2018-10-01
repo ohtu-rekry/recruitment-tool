@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
-    RecruiterId: {
+    recruiterId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {

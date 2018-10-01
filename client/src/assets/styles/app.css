@@ -61,3 +61,71 @@
 
 body {
   background-color: #f8f8f8; }
+
+.posting {
+  margin: 10% auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background-color: white;
+  max-width: 95%;
+  min-height: 20%;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+  @media screen and (min-width: 750px) {
+    .posting {
+      max-width: 80%; } }
+  .posting__title {
+    padding: 0px 20px;
+    color: #002234;
+    font-size: 26px; }
+  .posting__content {
+    padding: 10px 30px;
+    margin-top: 0px; }
+  .posting__form {
+    padding: 10px 10px; }
+  .posting__form-input {
+    border: 2;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    width: 26vw;
+    min-width: 100px;
+    max-width: 540px;
+    height: 40px;
+    font-size: 15px;
+    margin: 0px 10px;
+    padding-left: 10px; }
+    @media screen and (min-width: 321px) {
+      .posting__form-input {
+        padding: 0px 18px 0px 10px; } }
+    @media screen and (min-width: 376px) {
+      .posting__form-input {
+        padding: 0px 0px 0px 10px; } }
+  .posting__submit-button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: #002234;
+    color: white;
+    margin: 10px 0 0px;
+    height: 30px;
+    transition: all 200ms linear;
+    font-size: 16px;
+    margin-left: 30%;
+    width: 100px; }
+    @media screen and (min-width: 380px) {
+      .posting__submit-button {
+        margin: 10px 0 0px;
+        width: 60px;
+        height: 42px; } }
+    @media screen and (min-width: 495px) {
+      .posting__submit-button {
+        width: 100px; } }
+  .posting__submit-button:hover {
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2); }
+  .posting__error-message {
+    color: red;
+    font-size: 14px;
+    padding-bottom: 10px; }
+    @media screen and (min-width: 410px) {
+      .posting__error-message {
+        font-size: 18px; } }

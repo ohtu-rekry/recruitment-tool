@@ -7,8 +7,10 @@ import * as actions from '../../redux/actions/actions'
 import Login from '../admin/Login'
 import JobPostingForm from '../jobPosting/JobPostingForm'
 import App from '../App'
+import JobPosting from '../posting-page/JobPosting'
 
 class Routes extends Component {
+
   componentDidMount() {
     const loggedUser = JSON.parse(window.localStorage.getItem('loggedUser'))
 
@@ -28,6 +30,7 @@ class Routes extends Component {
               ? <Redirect to="/" />
               : <Login />
           }/>
+          <Route exact path="/posting/:id" render={() => <JobPosting />} />
           <Route path="/jobpostings/new" render={() =>
             <JobPostingForm />
           }/>
@@ -40,14 +43,9 @@ class Routes extends Component {
 
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.loginReducer.loggedIn
 })
-
-const mapDispatchToProps = {
-  ...actions
-}
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(Routes)

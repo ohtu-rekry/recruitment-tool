@@ -10,6 +10,10 @@ const creationSuccessMessage = 'Job posting successfully added'
 
 const reducer = handleActions(
   {
+    [actions.setJobPostings]: (state, action) => ({
+      ...state,
+      jobPostings: action.payload
+    }),
     [actions.addJobPostingSuccess]: (state, action) => (
       { jobPostings : [...state.jobPostings, action.payload], creationRequestStatus : { message : creationSuccessMessage, type : 'success' } }
     ),
