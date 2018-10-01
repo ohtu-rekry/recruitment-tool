@@ -10,7 +10,8 @@ let sequelize = new Sequelize(
 
 const models = {
   Recruiter: sequelize.import('./recruiter'),
-  JobPosting: sequelize.import('./jobposting')
+  JobPosting: sequelize.import('./jobposting'),
+  JobApplication: sequelize.import('./jobapplication')
 }
 
 
@@ -20,10 +21,11 @@ Object.keys(models).forEach(key => {
   }
 })
 
-sequelize.sync()
-  .then(() => {
-    console.log('Tables created')
-  })
+sequelize.sync({
+  alter: true
+}).then(() => {
+  console.log('Tables created')
+})
 
 models.sequelize = sequelize
 models.Sequelize = Sequelize
