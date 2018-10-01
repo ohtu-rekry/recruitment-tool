@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 import * as actions from '../actions/actions'
-import jobPostingApi from '../apis/jobPostingApi'
+import jobApplicationApi from '../apis/jobApplicationApi'
 
 function* sendApplication({ payload }) {
   try {
@@ -8,7 +8,7 @@ function* sendApplication({ payload }) {
       applicantName: payload.applicantName,
       applicantEmail: payload.applicantEmail
     }
-    const response = yield call(jobPostingApi.add, application)
+    const response = yield call(jobApplicationApi.add, application)
 
     if (response.status === 200) {
       yield put(actions.applySuccess('Application sent succesfully'))

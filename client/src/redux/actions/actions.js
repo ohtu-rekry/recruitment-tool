@@ -7,7 +7,6 @@ export const logout = createAction('LOGOUT')
 export const logoutSuccess = createAction('LOGOUT_SUCCESS')
 export const logoutFailure = createAction('LOGOUT_FAILURE')
 
-
 export const sendApplication = createAction(
   'SEND_APPLICATION', (applicantName, applicantEmail) => ({
     applicantName, applicantEmail
