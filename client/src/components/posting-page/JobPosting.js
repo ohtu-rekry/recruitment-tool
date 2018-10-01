@@ -43,7 +43,7 @@ export class JobPosting extends Component {
       <div className='posting'>
         <h2 className='posting__title'>{jobPosting.title}</h2>
         {errorMessage ? <ErrorMessage errorMessage={ errorMessage }/> : null}
-        <p className='posting__description'>{jobPosting.content}</p>
+        <p className='posting__content'>{jobPosting.content}</p>
         <form className='posting__form' onSubmit={this.handleSubmit}>
           <div className='posting__form-container'>
             <input
