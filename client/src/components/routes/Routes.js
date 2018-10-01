@@ -43,9 +43,14 @@ class Routes extends Component {
 
 
 const mapStateToProps = (state) => ({
+  loggedIn: state.loginReducer.loggedIn
 })
+
+const mapDispatchToProps = {
+  ...actions
+}
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Routes)
