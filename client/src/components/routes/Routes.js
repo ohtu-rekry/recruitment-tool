@@ -7,7 +7,6 @@ import * as actions from '../../redux/actions/actions'
 import Login from '../admin/Login'
 import JobPostingForm from '../jobPosting/JobPostingForm'
 import App from '../App'
-import Login from '../admin/Login'
 import JobPosting from '../posting-page/JobPosting'
 
 class Routes extends Component {
