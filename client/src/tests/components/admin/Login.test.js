@@ -5,7 +5,7 @@ import { Login } from '../../../components/admin/Login'
 
 describe('Login', () => {
   it('renders one Login form element', () => {
-    const component = shallow(<Login />)
+    const component = shallow(<Login login={() => {}} />)
     expect(component.find('.admin-login-card')).to.have.lengthOf(1)
   })
 

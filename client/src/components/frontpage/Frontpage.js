@@ -13,7 +13,7 @@ class FrontPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  loggedIn : state.loginReducer.loggedIn
+  loggedIn: state.loginReducer.loggedIn
 })
 
 const mapDispatchToProps = {

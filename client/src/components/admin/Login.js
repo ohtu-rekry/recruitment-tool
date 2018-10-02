@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Lock, Person, Visibility, VisibilityOff } from '@material-ui/icons'
+import PropTypes from 'prop-types'
 
 import * as actions from '../../redux/actions/actions'
 
@@ -92,6 +93,11 @@ export class Login extends Component {
   }
 }
 
+Login.propTypes = {
+  loggedIn: PropTypes.object,
+  loginError: PropTypes.string,
+  login: PropTypes.func.isRequired
+}
 
 const mapStateToProps = (state) => ({
   loggedIn: state.loginReducer.loggedIn,

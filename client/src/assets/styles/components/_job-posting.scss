@@ -2,7 +2,7 @@ body {
   background-color: $gray-lightest;
 }
 
-.posting {
+.job-posting {
 margin: 10% auto;
 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 background-color: white;
@@ -78,16 +78,6 @@ align-items: center;
 
   &__error-message {
     color: red;
-    font-size: 14px;
-    padding-bottom: 10px;
-    @media screen and (min-width: 410px) {
-      font-size: 18px;
-    }
-  }
-
-  &__character-limit {
-    display: inline-flex;
-    float: right;
     font-size: 14px;
     padding-bottom: 10px;
     @media screen and (min-width: 410px) {

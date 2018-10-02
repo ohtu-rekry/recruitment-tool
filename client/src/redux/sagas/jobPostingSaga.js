@@ -3,12 +3,12 @@ import { takeLatest, takeEvery, put, call } from 'redux-saga/effects'
 import * as actions from '../actions/actions'
 import jobPostingApi from '../apis/jobPostingApi'
 
-function* creationRequest({ payload }) {
+function* addJobPosting({ payload }) {
 
   try {
     const jobPosting = {
-      title : payload.title,
-      content : payload.content
+      title: payload.title,
+      content: payload.content
     }
     const recruiter = payload.recruiter
 
@@ -25,7 +25,7 @@ function* creationRequest({ payload }) {
   catch(error) {
     const errorMessage = error.message + (error.response ? '. ' + error.response.data.error : '')
 
-    yield put(actions.addJobPostingFailure({ message : errorMessage }))
+    yield put(actions.addJobPostingFailure({ message: errorMessage }))
     yield delay(5000)
     yield put(actions.removeJobPostingCreationStatus())
   }
@@ -63,4 +63,4 @@ function* fetchJobPosting({ payload }) {
 
 export const watchFetchJobPostings = takeLatest(actions.fetchJobPostings().type, fetchJobPostings)
 export const watchFetchJobPosting = takeLatest(actions.fetchJobPosting().type, fetchJobPosting)
-export const watchCreationRequest = takeEvery(actions.addJobPosting().type, creationRequest)
+export const watchAddJobPosting = takeEvery(actions.addJobPosting().type, addJobPosting)
