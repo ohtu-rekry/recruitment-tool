@@ -1,3 +1,8 @@
 @import './helpers/helpers.scss';
 @import './components/login.scss';
 @import './components/job-posting.scss';
+@import './components/navbar.scss';
+
+body {
+  background-color: $gray-lightest;
+}
