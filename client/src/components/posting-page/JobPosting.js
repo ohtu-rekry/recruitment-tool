@@ -1,7 +1,8 @@
-import React ,{ Component } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../redux/actions/actions'
 import PropTypes from 'prop-types'
+import { LinkButton } from '../Buttons'
 
 export class JobPosting extends Component {
   constructor(props) {
@@ -37,12 +38,18 @@ export class JobPosting extends Component {
 
   render() {
     const { applicantName, applicantEmail } = this.state
-    const { errorMessage, jobPosting } = this.props
+    const { errorMessage, jobPosting, loggedIn } = this.props
 
     return (
       <div className='posting'>
         <h2 className='posting__title'>{jobPosting.title}</h2>
-        {errorMessage ? <ErrorMessage errorMessage={ errorMessage }/> : null}
+        {loggedIn &&
+          <LinkButton
+            link={`/posting/${jobPosting.id}/applicants`}
+            text='Show applicants'
+          />}
+
+        {errorMessage ? <ErrorMessage errorMessage={errorMessage} /> : null}
         <p className='posting__content'>{jobPosting.content}</p>
         <form className='posting__form' onSubmit={this.handleSubmit}>
           <div className='posting__form-container'>
@@ -65,7 +72,7 @@ export class JobPosting extends Component {
             <button
               className='posting__submit-button'
               type='submit'>
-            Send
+              Send
             </button>
           </div>
         </form>
@@ -84,12 +91,14 @@ const ErrorMessage = ({ errorMessage }) => {
 
 JobPosting.propTypes = {
   errorMessage: PropTypes.string,
-  jobPosting: PropTypes.object.isRequired
+  jobPosting: PropTypes.object.isRequired,
+  loggedIn: PropTypes.object
 }
 
 const mapStateToProps = (state) => ({
   errorMessage: state.postingReducer.errorMessage,
-  jobPosting: state.postingReducer.jobPosting
+  jobPosting: state.postingReducer.jobPosting,
+  loggedIn: state.loginReducer.loggedIn
 })
 
 const mapDispatchToProps = {
