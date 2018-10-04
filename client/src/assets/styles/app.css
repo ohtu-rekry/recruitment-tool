@@ -129,6 +129,14 @@ body {
     @media screen and (min-width: 410px) {
       .posting__error-message {
         font-size: 18px; } }
+  .posting__character-limit {
+    display: inline-flex;
+    float: right;
+    font-size: 14px;
+    padding-bottom: 10px; }
+    @media screen and (min-width: 410px) {
+      .posting__character-limit {
+        font-size: 18px; } }
 
 .navigation-bar {
   background-color: #002234;

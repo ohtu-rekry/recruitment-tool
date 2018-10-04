@@ -46,6 +46,8 @@ export class JobPostingForm extends Component {
     const helperText = error ? 'Required field cannot be empty' : '* is a required field'
     const loggedIn = this.props.loggedIn
     const creationRequestStatus = this.props.creationRequestStatus
+    const characterLimit = `${content.length}/4000`
+
     let snackbarId
     if(creationRequestStatus) {
       snackbarId = 'snackbar-' + creationRequestStatus.type
@@ -76,6 +78,7 @@ export class JobPostingForm extends Component {
                 onChange={this.handleChange}
                 variant="outlined"
                 error={error}
+                inputProps={{ maxLength: 255 }}
               />
               <br />
               <TextField
@@ -91,12 +94,16 @@ export class JobPostingForm extends Component {
                 onChange={this.handleChange}
                 variant="outlined"
                 error={error}
+                inputProps={{ maxLength: 4000 }}
               />
               <br />
               <Button id='button-submit'
                 type="submit"
                 variant="contained"
               >Create job posting</Button>
+              <div className='posting__character-limit'>
+                {characterLimit}
+              </div>
             </form>
           </Paper>
         </div>
