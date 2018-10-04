@@ -5,9 +5,12 @@ WORKDIR /usr/app
 COPY package*.json ./
 RUN npm install && npm cache clean --force
 
-COPY . . 
+COPY db/ db/
+COPY src/ src/
+COPY utils/ utils/
+
 RUN find . -not -path "./node_modules/*" -exec chmod o+r {} \;
-RUN chmod a+x -R ./controllers ./db
+RUN chmod a+x -R ./utils ./db ./src
 
 USER 1000
 EXPOSE 8080
