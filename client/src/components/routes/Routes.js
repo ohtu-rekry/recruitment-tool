@@ -27,10 +27,10 @@ class Routes extends Component {
             loggedIn
               ? <Redirect to="/" />
               : <Login />
-          }/>
+          } />
           <Route path="/jobpostings/new" render={() =>
             <JobPostingForm />
-          }/>
+          } />
           <Route exact path="/" render={() => <App />} />
         </Switch>
       </Router>

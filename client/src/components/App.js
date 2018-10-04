@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 
+import FrontPage from '../components/frontpage/FrontPage'
 
 class App extends Component {
   render() {
     return (
-      <div className='container'>
-        HELLO WORLD
+      <div className="container">
+        <FrontPage />
       </div>
     )
   }

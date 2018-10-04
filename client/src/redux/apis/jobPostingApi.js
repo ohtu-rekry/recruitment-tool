@@ -12,4 +12,7 @@ export default class jobPostingApi {
     return axios.post(root, payload.jobPosting, config)
   }
 
+  static get() {
+    return axios.get(root)
+  }
 }

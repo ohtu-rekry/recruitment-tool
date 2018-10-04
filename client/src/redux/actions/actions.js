@@ -12,3 +12,5 @@ export const addJobPosting = createAction('ADD_JOB_POSTING', (title, content, re
 export const addJobPostingSuccess = createAction('ADDED_JOB_POSTING')
 export const addJobPostingFailure = createAction('ADD_JOB_POSTING_FAILED')
 export const removeJobPostingCreationStatus = createAction('REMOVE_JOB_POSTING_CREATION_STATUS')
+export const fetchJobPostings = createAction('FETCH_JOBPOSTINGS')
+export const setJobPostings = createAction('SET_JOBPOSTINGS')

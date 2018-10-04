@@ -1,8 +1,12 @@
-const jobpostingRouter = require('express').Router()
+const jobPostingRouter = require('express').Router()
 const { JobPosting, Recruiter } = require('../../db/models')
 const jwt = require('jsonwebtoken')
 
-jobpostingRouter.post('/', async (request, response) => {
+jobPostingRouter.get('/', async (req, res) => {
+  JobPosting.findAll().then(jobpostings => res.json(jobpostings))
+})
+
+jobPostingRouter.post('/', async (request, response) => {
   try {
     const body = request.body
     const token = request.token
@@ -35,7 +39,7 @@ jobpostingRouter.post('/', async (request, response) => {
     const posting = await JobPosting.create({
       title: body.title,
       content: body.content,
-      RecruiterId: recruiter.id
+      recruiterId: recruiter.id
     })
 
     response.status(201).json(posting)
@@ -54,4 +58,4 @@ jobpostingRouter.post('/', async (request, response) => {
   }
 })
 
-module.exports = jobpostingRouter
+module.exports = jobPostingRouter
