@@ -1,5 +1,5 @@
 import { delay } from 'redux-saga'
-import { takeEvery, put, call } from 'redux-saga/effects'
+import { takeLatest, takeEvery, put, call } from 'redux-saga/effects'
 import * as actions from '../actions/actions'
 import jobPostingApi from '../apis/jobPostingApi'
 
@@ -31,4 +31,17 @@ function* creationRequest({ payload }) {
   }
 }
 
+function* fetchJobPostings() {
+  try {
+    const response = yield call(jobPostingApi.get)
+
+    if (response.status === 200) {
+      yield put(actions.setJobPostings(response.data))
+    }
+  } catch (e) {
+    console.log('Could not fetch job postings')
+  }
+}
+
+export const watchFetchJobPostings = takeLatest(actions.fetchJobPostings().type, fetchJobPostings)
 export const watchCreationRequest = takeEvery(actions.addJobPosting().type, creationRequest)
