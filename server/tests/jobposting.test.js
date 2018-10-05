@@ -3,6 +3,7 @@ const { app, server } = require('../src/server')
 const api = supertest(app)
 const bcrypt = require('bcryptjs')
 const { Recruiter, JobPosting, sequelize } = require('../db/models')
+const { tooLongContent, tooLongTitle } = require('../utils/jobpostingTestUtils')
 
 beforeAll(async () => {
   await sequelize.sync({ logging: false })
@@ -87,6 +88,42 @@ describe('POST method', async () => {
     expect(response.body).toEqual({ error: 'Content must be defined' })
   })
 
+  test('a posting cannot be created with a title longer than 255 chars', async () => {
+    const newPosting = {
+      title: tooLongTitle,
+      content: 'We need you'
+    }
+
+    const response = await api
+      .post('/api/jobposting')
+      .send(newPosting)
+      .set('Authorization', token)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body).toEqual({
+      error: `Title is too long, ${tooLongTitle.length} chars, when max is 255`
+    })
+  })
+
+  test('a posting cannot be created with a content longer than 4000 chars', async () => {
+    const newPosting = {
+      title: 'Senior React developer',
+      content: tooLongContent
+    }
+
+    const response = await api
+      .post('/api/jobposting')
+      .send(newPosting)
+      .set('Authorization', token)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body).toEqual({
+      error: `Content is too long, ${tooLongContent.length} chars, when max is 4000`
+    })
+  })
+
   afterAll(async () => {
     await Recruiter.destroy({
       where: {
@@ -101,6 +138,41 @@ describe('POST method', async () => {
     await JobPosting.destroy({
       where: {
         title: 'Junior Front End Developer'
+      }
+    })
+  })
+})
+
+describe('GET method', async () => {
+  beforeAll(async () => {
+    await JobPosting.create({
+      title: 'frontend developer',
+      content: '1 years of experience',
+      recruiterId: 1
+    })
+    await JobPosting.create({
+      title: 'backend developer',
+      content: '102 years of experience',
+      recruiterId: 1
+    })
+    await JobPosting.create({
+      title: 'php developer',
+      content: 'reconsider your life',
+      recruiterId: 1
+    })
+  })
+  test('can get jobpostings without being authentication', async () => {
+    const response = await api
+      .get('/api/jobposting')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body.length === 3)
+  })
+  afterAll(async () => {
+    await JobPosting.destroy({
+      where: {
+        recruiterId: 1
       }
     })
   })

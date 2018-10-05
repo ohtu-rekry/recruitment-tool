@@ -13,16 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    jobPostingId: {
-      type: DataTypes.INTEGER
-    }
   }, {})
   JobApplication.associate = (models) => {
-    JobApplication.belongsTo(models.JobPosting, {
-      foreignKey: 'jobPostingId',
-      targeKey: 'id',
-      onDelete: 'CASCADE'
-    })
   }
 
   return JobApplication

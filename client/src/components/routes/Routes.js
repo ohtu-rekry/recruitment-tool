@@ -4,14 +4,19 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 
 import * as actions from '../../redux/actions/actions'
 
+import Header from '../Header'
 import Login from '../admin/Login'
+import JobPostingForm from '../jobPosting/JobPostingForm'
 import App from '../App'
+import JobPosting from '../posting-page/JobPosting'
 
 class Routes extends Component {
+
   componentDidMount() {
-    const loggedUser = window.localStorage.getItem('loggedUser')
+    const loggedUser = JSON.parse(window.localStorage.getItem('loggedUser'))
+
     if (loggedUser) {
-      this.props.loginSuccess()
+      this.props.loginSuccess(loggedUser)
     }
   }
 
@@ -20,14 +25,21 @@ class Routes extends Component {
 
     return (
       <Router>
-        <Switch>
-          <Route path="/admin/login" render={() =>
-            loggedIn
-              ? <Redirect to="/" />
-              : <Login />
-          }/>
-          <Route exact path="/" render={() => <App />} />
-        </Switch>
+        <div>
+          <Header />
+          <Switch>
+            <Route path="/admin/login" render={() =>
+              loggedIn
+                ? <Redirect to="/" />
+                : <Login />
+            } />
+            <Route exact path="/posting/:id" render={() => <JobPosting />} />
+            <Route path="/jobpostings/new" render={() =>
+              <JobPostingForm />
+            } />
+            <Route exact path="/" render={() => <App />} />
+          </Switch>
+        </div>
       </Router>
     )
   }

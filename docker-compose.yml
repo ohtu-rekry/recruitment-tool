@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 services:
   server:
     build:
@@ -42,6 +42,7 @@ services:
   client:
     build:
       context: ./client/
+      target: development
     user: root
     command: npm start
     volumes:

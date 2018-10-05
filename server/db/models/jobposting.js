@@ -13,27 +13,16 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     content: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(4000),
       allowNull: false,
       validate: {
         notEmpty: true
       }
     },
-    recruiterId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    }
   }, {})
 
   JobPosting.associate = (models) => {
-    JobPosting.belongsTo(models.Recruiter)
-    JobPosting.hasMany(models.JobApplication, {
-      foreignKey: 'jobPostingId',
-      sourceKey: 'id'
-    })
+
   }
 
   return JobPosting

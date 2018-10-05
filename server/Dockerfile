@@ -2,12 +2,17 @@ FROM node:8
 
 WORKDIR /usr/app
 
+ENV NODE_ENV production
+
 COPY package*.json ./
 RUN npm install && npm cache clean --force
 
-COPY . . 
+COPY src/ src/
+COPY db/ db/
+COPY utils/ utils/
+
 RUN find . -not -path "./node_modules/*" -exec chmod o+r {} \;
-RUN chmod a+x -R ./controllers ./db
+RUN chmod a+x -R ./utils ./db ./src
 
 USER 1000
 EXPOSE 8080
