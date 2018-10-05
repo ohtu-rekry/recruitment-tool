@@ -1,5 +1,5 @@
 const jobApplicationRouter = require('express').Router()
-const { JobApplication, JobPosting, Recruiter } = require('../../db/models')
+const { JobApplication, Recruiter } = require('../../db/models')
 const jwt = require('jsonwebtoken')
 
 jobApplicationRouter.get('/', async (req, res) => {
