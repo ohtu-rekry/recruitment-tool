@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 
-export const LinkButton = ({link, text}) => {
+export const LinkButton = ({ link, text }) => {
   return (
     <div>
       <Button variant='contained' href={link} size='small'>{text}</Button>
