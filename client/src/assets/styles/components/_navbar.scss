@@ -1,0 +1,25 @@
+.navigation-bar {
+  background-color: $emblica-blue;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+
+  &__logo-and-title {
+    display: inline-block;
+    margin-right: auto;
+    text-decoration: none;
+  
+    &__logo {
+      margin: 10;
+    }
+  }
+
+  &__middle {
+    flex-grow: 1;
+  }
+
+  &__button {
+    display: inline;
+    margin-left: auto;
+    margin-right: -12;
+  }
+}

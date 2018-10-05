@@ -1,12 +1,17 @@
 const Sequelize = require('sequelize')
+const productionEnv = process.env.NODE_ENV === 'production'
 
-if (process.env.NODE_ENV !== 'production') {
+if (!productionEnv) {
   require('dotenv').config()
+} else {
+  require('../config/config')
 }
 
-let sequelize = new Sequelize(
-  `postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`
-)
+const databaseURL = productionEnv
+  ? process.env.DATABASE_URL
+  : `postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`
+
+let sequelize = new Sequelize(databaseURL)
 
 const models = {
   Recruiter: sequelize.import('./recruiter'),

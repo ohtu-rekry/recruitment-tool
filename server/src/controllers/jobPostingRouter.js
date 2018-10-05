@@ -1,8 +1,12 @@
-const jobpostingRouter = require('express').Router()
+const jobPostingRouter = require('express').Router()
 const { JobPosting, Recruiter } = require('../../db/models')
 const jwt = require('jsonwebtoken')
 
-jobpostingRouter.post('/', async (request, response) => {
+jobPostingRouter.get('/', async (req, res) => {
+  JobPosting.findAll().then(jobpostings => res.json(jobpostings))
+})
+
+jobPostingRouter.post('/', async (request, response) => {
   try {
     const body = request.body
     const token = request.token
@@ -22,6 +26,18 @@ jobpostingRouter.post('/', async (request, response) => {
       return response.status(400).json({ error: 'Content must be defined' })
     }
 
+    if (body.title.length > 255) {
+      return response.status(400).json({
+        error: `Title is too long, ${body.title.length} chars, when max is 255`
+      })
+    }
+
+    if (body.content.length > 4000) {
+      return response.status(400).json({
+        error: `Content is too long, ${body.content.length} chars, when max is 4000`
+      })
+    }
+
     const recruiter = await Recruiter.findOne({
       where: {
         username: decodedToken.username
@@ -35,7 +51,7 @@ jobpostingRouter.post('/', async (request, response) => {
     const posting = await JobPosting.create({
       title: body.title,
       content: body.content,
-      RecruiterId: recruiter.id
+      recruiterId: recruiter.id
     })
 
     response.status(201).json(posting)
@@ -54,4 +70,4 @@ jobpostingRouter.post('/', async (request, response) => {
   }
 })
 
-module.exports = jobpostingRouter
+module.exports = jobPostingRouter
