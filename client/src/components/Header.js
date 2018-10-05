@@ -15,14 +15,18 @@ const emblicaLogo = require('../assets/img/emblica-logo.svg')
 export class Header extends Component {
 
   render() {
+    const titleStyle = {
+      color: 'lightgrey'
+    }
+
     return (
       <AppBar position='static'>
         <Toolbar className='navigation-bar'>
 
-          <Link to='/' className='navigation-bar__logo-and-title'>
-            <img src={emblicaLogo} alt='Emblica logo' className='navigation-bar__logo-and-title__logo' />
+          <Link to='/' className='navigation-bar__title'>
+            <img src={emblicaLogo} alt='Emblica logo' className='navigation-bar__logo' />
 
-            <Typography variant='title'>
+            <Typography variant='title' style={titleStyle}>
               RECRUITMENT TOOL
             </Typography>
           </Link>
@@ -30,9 +34,8 @@ export class Header extends Component {
           <div className='navigation-bar__middle'></div>
 
           {this.props.loggedIn && (
-            <LinkButton link='/jobpostings/new' text='Add new job posting' className='navigation-bar__button' />
+            <LinkButton link='/jobpostings/new' text='Add new posting' className='navigation-bar__button' />
           )}
-
           {this.props.loggedIn && (
             <ActionButton actionHandler={this.props.logout} text='Log out' className='navigation-bar__button' />
           )}

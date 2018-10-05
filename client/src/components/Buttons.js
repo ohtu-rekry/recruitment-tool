@@ -2,10 +2,10 @@ import React from 'react'
 import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 
-export const LinkButton = (props) => {
+export const LinkButton = ({link, text}) => {
   return (
     <div>
-      <Button variant='contained' href={props.link} className={props.className}>{props.text}</Button>
+      <Button variant='contained' href={link} size='small'>{text}</Button>
     </div>
   )
 }
