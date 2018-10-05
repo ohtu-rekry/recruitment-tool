@@ -26,6 +26,18 @@ jobPostingRouter.post('/', async (request, response) => {
       return response.status(400).json({ error: 'Content must be defined' })
     }
 
+    if (body.title.length > 255) {
+      return response.status(400).json({
+        error: `Title is too long, ${body.title.length} chars, when max is 255`
+      })
+    }
+
+    if (body.content.length > 4000) {
+      return response.status(400).json({
+        error: `Content is too long, ${body.content.length} chars, when max is 4000`
+      })
+    }
+
     const recruiter = await Recruiter.findOne({
       where: {
         username: decodedToken.username

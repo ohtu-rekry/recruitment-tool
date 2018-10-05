@@ -9,12 +9,13 @@ import './assets/styles/app.css'
 
 import jobPostingReducer from './redux/reducers/jobPostingReducer'
 import loginReducer from './redux/reducers/loginReducer'
+import postingReducer from './redux/reducers/postingReducer'
 import rootSaga from './redux/sagas/sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(
-  combineReducers({ loginReducer, jobPostingReducer }),
+  combineReducers({ loginReducer, postingReducer, jobPostingReducer }),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(sagaMiddleware)
 )
