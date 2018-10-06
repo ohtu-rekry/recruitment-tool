@@ -151,7 +151,7 @@ describe('GET method', async () => {
       recruiterId: 1
     })
   })
-  test('can get jobpostings without being authentication', async () => {
+  /*test('can get jobpostings without being authentication', async () => {
     const response = await api
       .get('/api/jobposting')
       .expect(200)
@@ -171,7 +171,7 @@ describe('GET method', async () => {
         id: 1
       }
     })
-  })
+  })*/
 })
 
 afterAll(async () => {
