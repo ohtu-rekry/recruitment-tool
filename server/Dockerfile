@@ -2,7 +2,6 @@ FROM node:8
 
 WORKDIR /usr/app
 
-ENV NODE_ENV production
 
 COPY package*.json ./
 RUN npm install && npm cache clean --force

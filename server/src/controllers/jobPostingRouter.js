@@ -1,5 +1,5 @@
 const jobPostingRouter = require('express').Router()
-const { JobPosting, Recruiter } = require('../../db/models')
+const { JobPosting, Recruiter, JobApplication } = require('../../db/models')
 const jwt = require('jsonwebtoken')
 
 jobPostingRouter.get('/', async (req, res) => {
@@ -67,6 +67,33 @@ jobPostingRouter.post('/', async (request, response) => {
       console.log(exception)
       response.status(500).json({ error: 'Something went wrong..' })
     }
+  }
+})
+
+jobPostingRouter.get('/:id/applicants', async (request, response) => {
+  try {
+    const token = request.token
+    const id = request.params.id
+
+    if (!token) {
+      return response.status(401).json({ error: 'Operation unauthorized' })
+    }
+
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+
+    if (!decodedToken.username) {
+      return response.status(401).json({ error: 'Operation unauthorized' })
+    }
+
+    const applicants = await JobApplication.findAll({
+      where: {
+        jobPostingId: id
+      }
+    })
+
+    response.status(200).json(applicants)
+  } catch (error) {
+    console.log(error)
   }
 })
 
