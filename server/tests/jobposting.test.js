@@ -2,7 +2,7 @@ const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
 const bcrypt = require('bcryptjs')
-const { JobPosting, sequelize, Recruiter, PostingStage } = require('../db/models')
+const { JobPosting, sequelize, Recruiter, PostingStage, JobApplication } = require('../db/models')
 const { tooLongTitle } = require('../utils/jobpostingTestUtils')
 
 beforeAll(async () => {
@@ -173,46 +173,103 @@ describe('POST method', async () => {
   })
 })
 
-/*describe('GET method', async () => {
+describe('FETCH applicants for jobPosting', async () => {
+
+  let token = null
+  const newRecruiter = {
+    username: 'admin',
+    password: 'hunter2'
+  }
+
+  const newPosting = {
+    title: 'President',
+    content: 'POTUS NEEDED'
+  }
+
   beforeAll(async () => {
-    await JobPosting.create({
-      title: 'frontend developer',
-      content: '1 years of experience',
-      recruiterId: 1
+    const hashedPassword = await bcrypt.hash(newRecruiter.password, 10)
+    await Recruiter.create({
+      username: newRecruiter.username,
+      password: hashedPassword
     })
-    await JobPosting.create({
-      title: 'backend developer',
-      content: '102 years of experience',
-      recruiterId: 1
+
+    const loginResponse = await api.post('/api/login').send(newRecruiter)
+    token = `Bearer ${loginResponse.body.token}`
+
+    await api
+      .post('/api/jobposting')
+      .send(newPosting)
+      .set('Authorization', token)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const jobPosting = await JobPosting.findOne({ where: { title: 'President' } })
+    const jobPostingId = jobPosting.id
+
+    await JobApplication.create({
+      applicantName: 'Donald Trump',
+      applicantEmail: 'president@whitehouse.gov',
+      jobPostingId: jobPostingId
     })
-    await JobPosting.create({
-      title: 'php developer',
-      content: 'reconsider your life',
-      recruiterId: 1
+
+    await JobApplication.create({
+      applicantName: 'Hillary Clinton',
+      applicantEmail: 'Hillary@Clinton.com',
+      jobPostingId: jobPostingId
     })
   })
-  test('can get jobpostings without being authentication', async () => {
+
+  test('applicants can be fetched when logged in', async () => {
+    const jobPosting = await JobPosting.findOne({ where: { title: 'President' } })
+    const jobPostingId = jobPosting.id
+
     const response = await api
-      .get('/api/jobposting')
+      .get(`/api/jobposting/${jobPostingId}/applicants`)
+      .set('authorization', token)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body.length === 3)
+    expect(response.body.length === 2)
   })
+
+  test('applicants cannot be fetched when not logged in', async () => {
+    const jobPosting = await JobPosting.findOne({ where: { title: 'President' } })
+    const jobPostingId = jobPosting.id
+
+    const response = await api
+      .get(`/api/jobposting/${jobPostingId}/applicants`)
+      .expect(401)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body).toEqual({ error: 'Operation unauthorized' })
+  })
+
   afterAll(async () => {
     await JobPosting.destroy({
       where: {
-        recruiterId: 1
+        title: 'President'
       }
     })
 
-    await JobPosting.destroy({
+    await JobApplication.destroy({
       where: {
-        id: 1
+        applicantName: 'Hillary Clinton'
+      }
+    })
+
+    await JobApplication.destroy({
+      where: {
+        applicantName: 'Donald Trump'
+      }
+    })
+
+    await Recruiter.destroy({
+      where: {
+        username: newRecruiter.username
       }
     })
   })
-})*/
+})
 
 afterAll(async () => {
   await server.close()
