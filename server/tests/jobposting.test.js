@@ -165,6 +165,12 @@ describe('GET method', async () => {
         recruiterId: 1
       }
     })
+
+    await JobPosting.destroy({
+      where: {
+        id: 1
+      }
+    })
   })
 })
 

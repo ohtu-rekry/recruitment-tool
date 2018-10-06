@@ -3,8 +3,12 @@ module.exports = (sequelize, DataTypes) => {
     username: DataTypes.STRING,
     password: DataTypes.STRING
   }, {})
-  Recruiter.associate = function (models) {
-
+  Recruiter.associate = models => {
+    //Recruiter has many jobpostings
+    Recruiter.hasMany(models.JobPosting, {
+      foreignKey: 'recruiterId',
+      as: 'jobPostings'
+    })
   }
   return Recruiter
 }

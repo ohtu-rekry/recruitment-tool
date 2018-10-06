@@ -1,29 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
   const JobApplication = sequelize.define('JobApplication', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    applicantName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    applicantEmail: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+    applicantName: DataTypes.STRING,
+    applicantEmail: DataTypes.STRING,
     jobPostingId: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   }, {})
-  JobApplication.associate = (models) => {
+  JobApplication.associate = function (models) {
+    // associations can be defined here
     JobApplication.belongsTo(models.JobPosting, {
       foreignKey: 'jobPostingId',
-      targeKey: 'id',
       onDelete: 'CASCADE'
     })
   }
-
   return JobApplication
 }

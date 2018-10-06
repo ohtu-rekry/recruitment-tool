@@ -27,9 +27,10 @@ Object.keys(models).forEach(key => {
 })
 
 sequelize.sync({
-  alter: true
 }).then(() => {
   console.log('Tables created')
+}).catch(error => {
+  console.log(`${error} when creating tables for database`)
 })
 
 models.sequelize = sequelize
