@@ -49,7 +49,7 @@ export class Login extends Component {
           Login as admin
         </div>
         <div className='admin-login-card__username'>
-          <Person className='admin-login-card__username_icon'/>
+          <Person className='admin-login-card__username_icon' />
           <div className='admin-login-card__username-container'>
             <input
               required
@@ -62,7 +62,7 @@ export class Login extends Component {
           </div>
         </div>
         <div className='admin-login-card__password'>
-          <Lock className='admin-login-card__password_icon'/>
+          <Lock className='admin-login-card__password_icon' />
           <div className='admin-login-card__password-container'>
             <input
               required
@@ -75,8 +75,8 @@ export class Login extends Component {
             ></input>
             <div onClick={this.toggleVisibility}>
               {visible ?
-                <VisibilityOff className='admin-login-card__password_icon'/>
-                : <Visibility className='admin-login-card__password_icon'/>
+                <VisibilityOff className='admin-login-card__password_icon' />
+                : <Visibility className='admin-login-card__password_icon' />
               }
             </div>
           </div>
