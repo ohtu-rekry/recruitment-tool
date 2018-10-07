@@ -151,6 +151,11 @@ describe('FETCH applicants for jobPosting', async () => {
     password: 'hunter2'
   }
 
+  const newPosting = {
+    title: 'President',
+    content: 'POTUS NEEDED'
+  }
+
   beforeAll(async () => {
     const hashedPassword = await bcrypt.hash(newRecruiter.password, 10)
     await Recruiter.create({
@@ -158,11 +163,15 @@ describe('FETCH applicants for jobPosting', async () => {
       password: hashedPassword
     })
 
-    await JobPosting.create({
-      title: 'President',
-      content: 'POTUS NEEDED',
-      recruiterId: 1
-    })
+    const loginResponse = await api.post('/api/login').send(newRecruiter)
+    token = `Bearer ${loginResponse.body.token}`
+
+    await api
+      .post('/api/jobposting')
+      .send(newPosting)
+      .set('Authorization', token)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
 
     const jobPosting = await JobPosting.findOne({ where: { title: 'President' } })
     const jobPostingId = jobPosting.id
@@ -181,9 +190,6 @@ describe('FETCH applicants for jobPosting', async () => {
   })
 
   test('applicants can be fetched when logged in', async () => {
-    const loginResponse = await api.post('/api/login').send(newRecruiter)
-    token = `Bearer ${loginResponse.body.token}`
-
     const jobPosting = await JobPosting.findOne({ where: { title: 'President' } })
     const jobPostingId = jobPosting.id
 
