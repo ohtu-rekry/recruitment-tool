@@ -2,7 +2,7 @@ const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
 const bcrypt = require('bcryptjs')
-const { sequelize, Recruiter } = require('../db/models')
+const { JobPosting, sequelize, Recruiter } = require('../db/models')
 const { tooLongContent, tooLongTitle } = require('../utils/jobpostingTestUtils')
 
 beforeAll(async () => {

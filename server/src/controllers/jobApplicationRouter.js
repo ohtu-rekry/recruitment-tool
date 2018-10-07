@@ -51,7 +51,8 @@ jobApplicationRouter.post('/', async (req, res) => {
     //To be fixed when database tables and connections are fixed
     const jobApplication = await JobApplication.create({
       applicantName: body.applicantName,
-      applicantEmail: body.applicantEmail
+      applicantEmail: body.applicantEmail,
+      jobPostingId: body.jobPostingId
     })
 
     res.status(201).json(jobApplication)
