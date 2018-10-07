@@ -130,6 +130,16 @@ describe('POST method', async () => {
         username: testRecruiter.username
       }
     })
+    await JobPosting.destroy({
+      where: {
+        title: 'Senior Java Developer'
+      }
+    })
+    await JobPosting.destroy({
+      where: {
+        title: 'Junior Front End Developer'
+      }
+    })
   })
 })
 

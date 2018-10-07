@@ -3,7 +3,7 @@ import { takeLatest, takeEvery, put, call } from 'redux-saga/effects'
 import * as actions from '../actions/actions'
 import jobPostingApi from '../apis/jobPostingApi'
 
-function* creationRequest({ payload }) {
+function* addJobPosting({ payload }) {
 
   try {
     const jobPosting = {
@@ -43,6 +43,7 @@ function* fetchJobPostings() {
   }
 }
 
+export const watchFetchJobPostings = takeLatest(actions.fetchJobPostings().type, fetchJobPostings)
 function* fetchJobPosting({ payload }) {
   try {
     const response = yield call(jobPostingApi.get)
@@ -61,6 +62,5 @@ function* fetchJobPosting({ payload }) {
   }
 }
 
-export const watchFetchJobPostings = takeLatest(actions.fetchJobPostings().type, fetchJobPostings)
 export const watchFetchJobPosting = takeLatest(actions.fetchJobPosting().type, fetchJobPosting)
-export const watchCreationRequest = takeEvery(actions.addJobPosting().type, creationRequest)
+export const watchAddJobPosting = takeEvery(actions.addJobPosting().type, addJobPosting)
