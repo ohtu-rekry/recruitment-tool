@@ -2,7 +2,7 @@ const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
 const bcrypt = require('bcryptjs')
-const { Recruiter, JobPosting, sequelize } = require('../db/models')
+const { JobPosting, sequelize, Recruiter } = require('../db/models')
 const { tooLongContent, tooLongTitle } = require('../utils/jobpostingTestUtils')
 
 beforeAll(async () => {
@@ -143,7 +143,7 @@ describe('POST method', async () => {
   })
 })
 
-describe('GET method', async () => {
+/*describe('GET method', async () => {
   beforeAll(async () => {
     await JobPosting.create({
       title: 'frontend developer',
@@ -175,8 +175,14 @@ describe('GET method', async () => {
         recruiterId: 1
       }
     })
+
+    await JobPosting.destroy({
+      where: {
+        id: 1
+      }
+    })
   })
-})
+})*/
 
 afterAll(async () => {
   await server.close()

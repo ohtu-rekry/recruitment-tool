@@ -16,7 +16,7 @@ let sequelize = new Sequelize(databaseURL)
 const models = {
   Recruiter: sequelize.import('./recruiter'),
   JobPosting: sequelize.import('./jobposting'),
-  JobApplication: sequelize.import('./jobApplication')
+  JobApplication: sequelize.import('./jobapplication')
 }
 
 
@@ -26,10 +26,12 @@ Object.keys(models).forEach(key => {
   }
 })
 
-sequelize.sync()
-  .then(() => {
-    console.log('Tables created')
-  })
+sequelize.sync({
+}).then(() => {
+  console.log('Tables created')
+}).catch(error => {
+  console.log(`${error} when creating tables for database`)
+})
 
 models.sequelize = sequelize
 models.Sequelize = Sequelize

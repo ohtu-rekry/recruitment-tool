@@ -1,15 +1,14 @@
-module.exports = (sequelize, type) => {
+module.exports = (sequelize, DataTypes) => {
   const Recruiter = sequelize.define('Recruiter', {
-    id: {
-      type: type.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    username: type.STRING,
-    password: type.STRING,
+    username: DataTypes.STRING,
+    password: DataTypes.STRING
   }, {})
-  Recruiter.associate = () => {
-    // associations can be defined here
+  Recruiter.associate = models => {
+    //Recruiter has many jobpostings
+    Recruiter.hasMany(models.JobPosting, {
+      foreignKey: 'recruiterId',
+      as: 'jobPostings'
+    })
   }
   return Recruiter
 }

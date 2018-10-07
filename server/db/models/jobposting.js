@@ -1,29 +1,23 @@
 module.exports = (sequelize, DataTypes) => {
   const JobPosting = sequelize.define('JobPosting', {
-    id: {
+    title: DataTypes.STRING,
+    content: DataTypes.STRING,
+    recruiterId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    content: {
-      type: DataTypes.STRING(4000),
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
+      allowNull: false
+    }
   }, {})
+  JobPosting.associate = function (models) {
+    //JobPosting has one recruiter who has created it
+    JobPosting.hasMany(models.JobApplication, {
+      foreignKey: 'jobPostingId',
+      as: 'jobApplications'
+    })
 
-  JobPosting.associate = (models) => {
-
+    JobPosting.belongsTo(models.Recruiter, {
+      foreignKey: 'recruiterId',
+      onDelete: 'CASCADE'
+    })
   }
-
   return JobPosting
 }

@@ -42,15 +42,14 @@ describe('POST jobApplication', async () => {
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
-    //To-do when db is fixed
-    //const id = await JobPosting.findOne(newPosting).then(res => res.id)
-
+    const id = await JobPosting.findOne(newPosting).then(res => res.id)
 
     const newJobApplication = {
-      applicantName: 'Olli',
-      applicantEmail: 'olli@olli.fi',
+      applicantName: 'Mikko',
+      applicantEmail: 'mikko@mallikas.fi',
+      jobPostingId: id
     }
-    console.log(newJobApplication)
+
     await api
       .post('/api/jobapplication')
       .send(newJobApplication)
@@ -68,7 +67,7 @@ afterAll(async () => {
 
   await JobApplication.destroy({
     where: {
-      applicantName: 'Olli'
+      applicantName: 'Mikko'
     }
   })
 
