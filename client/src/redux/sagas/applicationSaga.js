@@ -6,7 +6,8 @@ function* sendApplication({ payload }) {
   try {
     const application = {
       applicantName: payload.applicantName,
-      applicantEmail: payload.applicantEmail
+      applicantEmail: payload.applicantEmail,
+      jobPostingId: payload.jobPostingId
     }
     const response = yield call(jobApplicationApi.add, application)
 

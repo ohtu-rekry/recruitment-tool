@@ -15,8 +15,8 @@ export class JobPosting extends Component {
   }
 
   componentDidMount() {
-    const postingId = window.location.href.split('/')[4]
-    this.props.fetchJobPosting(postingId)
+    const jobPostingId = window.location.href.split('/')[4]
+    this.props.fetchJobPosting(jobPostingId)
   }
 
   handleChange = (e) => {
@@ -28,7 +28,8 @@ export class JobPosting extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { applicantName, applicantEmail } = this.state
-    this.props.sendApplication(applicantName, applicantEmail)
+    const jobPostingId = window.location.href.split('/')[4]
+    this.props.sendApplication(applicantName, applicantEmail, jobPostingId)
 
     this.setState({
       applicantName: '',
