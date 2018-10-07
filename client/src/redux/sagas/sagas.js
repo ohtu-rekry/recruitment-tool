@@ -13,6 +13,6 @@ export default function* rootSaga() {
     applicationSaga.watchSendApplication,
     jobPostingSaga.watchFetchJobPosting,
     jobPostingSaga.watchFetchJobPostings,
-    jobPostingSaga.watchCreationRequest
+    jobPostingSaga.watchAddJobPosting
   ])
 }

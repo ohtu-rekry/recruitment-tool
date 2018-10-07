@@ -1,0 +1,32 @@
+.job-posting-form {
+  margin: 10% auto;
+  background-color: white;
+  max-width: 95%;
+  min-height: 20%;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  @media screen and (min-width: 750px){
+    max-width: 80%
+  }
+  
+    &__headline {
+      color: $emblica-blue;
+    }
+
+    &__form {
+      min-width: 90%;
+    }
+  
+    &__character-limit {
+      display: inline-flex;
+      float: right;
+      font-size: 14px;
+      padding-bottom: 10px;
+      @media screen and (min-width: 410px) {
+        font-size: 18px;
+      }
+    }
+  }

@@ -41,21 +41,21 @@ export class JobPosting extends Component {
     const { errorMessage, jobPosting, loggedIn } = this.props
 
     return (
-      <div className='posting'>
-        <h2 className='posting__title'>{jobPosting.title}</h2>
+      <div className='job-posting'>
+        <h2 className='job-posting__title'>{jobPosting.title}</h2>
         {loggedIn &&
           <LinkButton
             link={`/posting/${jobPosting.id}/applicants`}
             text='Show applicants'
           />}
 
-        {errorMessage ? <ErrorMessage errorMessage={errorMessage} /> : null}
-        <p className='posting__content'>{jobPosting.content}</p>
-        <form className='posting__form' onSubmit={this.handleSubmit}>
-          <div className='posting__form-container'>
+        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+        <p className='job-posting__content'>{jobPosting.content}</p>
+        <form className='job-posting__form' onSubmit={this.handleSubmit}>
+          <div className='job-posting__form-container'>
             <input
               required
-              className='posting__form-input'
+              className='job-posting__form-input'
               id='applicantName'
               placeholder='Full name'
               value={applicantName}
@@ -63,14 +63,14 @@ export class JobPosting extends Component {
             ></input>
             <input
               required
-              className='posting__form-input'
+              className='job-posting__form-input'
               id='applicantEmail'
               placeholder='Email'
               value={applicantEmail}
               onChange={this.handleChange}
             ></input>
             <button
-              className='posting__submit-button'
+              className='job-posting__submit-button'
               type='submit'>
               Send
             </button>
@@ -83,7 +83,7 @@ export class JobPosting extends Component {
 
 const ErrorMessage = ({ errorMessage }) => {
   return (
-    <div className='posting__error-message'>
+    <div className='job-posting__error-message'>
       {errorMessage}
     </div>
   )
