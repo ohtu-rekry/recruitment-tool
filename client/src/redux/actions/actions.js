@@ -14,8 +14,8 @@ export const addJobPostingFailure = createAction('ADD_JOB_POSTING_FAILED')
 export const removeJobPostingCreationStatus = createAction('REMOVE_JOB_POSTING_CREATION_STATUS')
 
 export const sendApplication = createAction(
-  'SEND_APPLICATION', (applicantName, applicantEmail) => ({
-    applicantName, applicantEmail
+  'SEND_APPLICATION', (applicantName, applicantEmail, jobPostingId) => ({
+    applicantName, applicantEmail, jobPostingId
   }))
 
 export const fetchJobPosting = createAction(
