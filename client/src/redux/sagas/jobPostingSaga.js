@@ -7,14 +7,14 @@ function* creationRequest({ payload }) {
 
   try {
     const jobPosting = {
-      title : payload.title,
-      content : payload.content
+      title: payload.title,
+      content: payload.content
     }
     const recruiter = payload.recruiter
 
     const response = yield call(jobPostingApi.add, { jobPosting, recruiter })
 
-    if(response.status === 201) {
+    if (response.status === 201) {
       const jobPostingWithRecruiter = response.data
 
       yield put(actions.addJobPostingSuccess(jobPostingWithRecruiter))
@@ -22,10 +22,10 @@ function* creationRequest({ payload }) {
       yield put(actions.removeJobPostingCreationStatus())
     }
   }
-  catch(error) {
+  catch (error) {
     const errorMessage = error.message + (error.response ? '. ' + error.response.data.error : '')
 
-    yield put(actions.addJobPostingFailure({ message : errorMessage }))
+    yield put(actions.addJobPostingFailure({ message: errorMessage }))
     yield delay(5000)
     yield put(actions.removeJobPostingCreationStatus())
   }
@@ -43,6 +43,7 @@ function* fetchJobPostings() {
   }
 }
 
+export const watchFetchJobPostings = takeLatest(actions.fetchJobPostings().type, fetchJobPostings)
 function* fetchJobPosting({ payload }) {
   try {
     const response = yield call(jobPostingApi.get)
@@ -61,6 +62,5 @@ function* fetchJobPosting({ payload }) {
   }
 }
 
-export const watchFetchJobPostings = takeLatest(actions.fetchJobPostings().type, fetchJobPostings)
 export const watchFetchJobPosting = takeLatest(actions.fetchJobPosting().type, fetchJobPosting)
 export const watchCreationRequest = takeEvery(actions.addJobPosting().type, creationRequest)

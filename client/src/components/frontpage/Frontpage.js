@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 class FrontPage extends Component {
 
   render() {
-    return(
-      <div>
+    return (
+      <div className='container'>
         Welcome to the frontpage!
       </div>
     )
@@ -13,7 +13,7 @@ class FrontPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  loggedIn : state.loginReducer.loggedIn
+  loggedIn: state.loginReducer.loggedIn
 })
 
 const mapDispatchToProps = {

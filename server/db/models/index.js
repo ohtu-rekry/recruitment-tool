@@ -15,7 +15,8 @@ let sequelize = new Sequelize(databaseURL)
 
 const models = {
   Recruiter: sequelize.import('./recruiter'),
-  JobPosting: sequelize.import('./jobposting')
+  JobPosting: sequelize.import('./jobposting'),
+  JobApplication: sequelize.import('./jobApplication')
 }
 
 
