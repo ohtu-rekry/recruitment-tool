@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const root = 'http://0.0.0.0:8080/api/login'
+const root = '/api/login'
 
 export default class loginApi {
   static get() {

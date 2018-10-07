@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const root = 'http://0.0.0.0:8080/api/jobposting'
+const root = '/api/jobposting'
 
 export default class jobPostingApi {
   static get() {
