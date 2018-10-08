@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:300,400,700");
 .admin-login-card {
   margin: 10% auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -202,6 +203,39 @@ body {
     @media screen and (min-width: 410px) {
       .job-posting-form__character-limit {
         font-size: 18px; } }
+
+.applicant {
+  margin: 10px 0;
+  padding: 10px 0;
+  background-color: #f8f8f8;
+  border-radius: 15px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s; }
+  .applicant__name {
+    font-weight: 700;
+    margin-bottom: 5px; }
+
+.applicant:hover {
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2); }
+
+.application-state {
+  height: fit-content;
+  width: 25%;
+  margin: 10px;
+  padding: 5px;
+  border-radius: 15px;
+  align-content: center;
+  text-align: center;
+  background-color: #eeeded;
+  font-family: 'Lato', sans-serif; }
+  .application-state__title {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    background-color: #002234;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 15px; }
 
 body {
   background-color: #f8f8f8; }

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../redux/actions/actions'
 import PropTypes from 'prop-types'
+import Button from '@material-ui/core/Button'
+import { Redirect } from 'react-router-dom'
 import { LinkButton } from '../Buttons'
 
 export class JobPosting extends Component {
@@ -11,6 +13,7 @@ export class JobPosting extends Component {
       jobPosting: this.props.jobPosting,
       applicantName: '',
       applicantEmail: '',
+      fireRedirect: false
     }
   }
 
@@ -36,19 +39,30 @@ export class JobPosting extends Component {
     })
   }
 
+  handleJobPostingClick = () => {
+    this.setState({
+      fireRedirect: true
+    })
+  }
+
   render() {
     const { applicantName, applicantEmail } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
+
+    if (this.state.fireRedirect) {
+      return <Redirect to={`/jobposting/${this.props.jobPosting.id}/applicants`} />
+    }
 
     return (
       <div className='job-posting'>
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
         {loggedIn &&
-          <LinkButton
-            link={`/posting/${jobPosting.id}/applicants`}
-            text='Show applicants'
-          />}
-
+            <Button
+              onClick={this.handleJobPostingClick}
+            >
+            Show applicants
+            </Button>
+        }
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
         <p className='job-posting__content'>{jobPosting.content}</p>
         <form className='job-posting__form' onSubmit={this.handleSubmit}>

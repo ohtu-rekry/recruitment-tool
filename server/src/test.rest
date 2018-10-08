@@ -1,0 +1,8 @@
+POST http://0.0.0.0:8080/api/jobapplication
+Content-Type: application/json
+
+{
+    "applicantName": "Jane Doe",
+    "applicantEmail": "jane@doe.com",
+    "jobPostingId": 2
+}

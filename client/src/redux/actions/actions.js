@@ -25,5 +25,8 @@ export const fetchJobPosting = createAction(
 export const fetchJobPostings = createAction('FETCH_JOBPOSTINGS')
 export const setJobPosting = createAction('SET_JOBPOSTING')
 export const setJobPostings = createAction('SET_JOBPOSTINGS')
+export const fetchApplicants = createAction('FETCH_APPLICANTS')
+export const fetchApplicantsSuccess = createAction('FETCH_APPLICANTS_SUCCESS')
+
 export const applySuccess = createAction('APPLY_SUCCESS')
 export const applyFailure = createAction('APPLY_FAIL')

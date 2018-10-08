@@ -5,6 +5,10 @@
 @import './components/job-posting.scss';
 @import './components/navbar.scss';
 @import './components/job-posting-form.scss';
+@import './components/applicant.scss';
+@import './components/application-state.scss';
+
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
 
 body {
   background-color: $gray-lightest;

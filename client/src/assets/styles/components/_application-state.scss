@@ -1,0 +1,21 @@
+.application-state {
+  height: fit-content;
+  width: 25%;
+  margin: 10px;
+  padding: 5px;
+  border-radius: 15px;
+  align-content: center;
+  text-align: center;
+  background-color: $gray-darker;
+  font-family: 'Lato', sans-serif;
+
+  &__title {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    background-color: $emblica-blue;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 15px;
+  }
+}
