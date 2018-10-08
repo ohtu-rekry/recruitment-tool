@@ -1,0 +1,16 @@
+.header-text {
+  margin-top:50px;
+  text-align: center;
+}
+.job-postings {
+  align-items: center;
+  background-color: $emblica-blue;
+  display:flex;
+  flex-direction: column;
+  padding-bottom:50px;
+
+  &__list {
+      margin-top: 70px;
+      width: 85%;
+  }
+}
