@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export const Applicant = (props) => {
   return (
@@ -7,6 +8,10 @@ export const Applicant = (props) => {
       <div className='applicant__email'>{props.applicant.applicantEmail}</div>
     </div>
   )
+}
+
+Applicant.propTypes = {
+  applicant: PropTypes.object.isRequired
 }
 
 export default Applicant

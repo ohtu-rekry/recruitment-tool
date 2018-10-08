@@ -7,7 +7,7 @@ export class ApplicationState extends Component {
 
   render() {
     const { applicants } = this.props
-    
+
     return (
       <div className='application-state'>
         <div className='application-state__title'>Applied</div>
