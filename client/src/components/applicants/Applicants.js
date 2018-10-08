@@ -13,8 +13,17 @@ export class Applicants extends Component {
   }
 
   componentDidMount() {
-    const { fetchApplicants, jobPosting } = this.props
-    fetchApplicants(jobPosting.id)
+    const { fetchApplicants } = this.props
+    const postingId = window.location.href.split('/')[4]
+    fetchApplicants(postingId)
+  }
+
+  componentWillReceiveProps(nProps) {
+    const { fetchApplicants } = this.props
+    if (nProps.loggedIn.token) {
+      const postingId = window.location.href.split('/')[4]
+      fetchApplicants(postingId)
+    }
   }
 
   render() {
