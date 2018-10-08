@@ -3,6 +3,7 @@ services:
   server:
     build:
       context: ./server/
+      target: development
     ## TODO: change this so that it matches kubernetes environment
     user: root
     command: /usr/app/node_modules/.bin/nodemon src/server.js

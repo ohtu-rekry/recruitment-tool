@@ -1,8 +1,6 @@
-FROM node:8
+FROM node:8 as development
 
 WORKDIR /usr/app
-
-ENV NODE_ENV production
 
 COPY package*.json ./
 RUN npm install && npm cache clean --force
@@ -18,3 +16,9 @@ USER 1000
 EXPOSE 8080
 
 CMD ["npm", "start"]
+
+FROM development as production
+
+ENV NODE_ENV production
+
+CMD [ "npm", "start" ]
