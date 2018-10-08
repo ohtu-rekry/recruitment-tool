@@ -26,13 +26,13 @@
     "path": "^0.12.7",
     "pg": "^7.4.3",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.38.0"
+    "sequelize": "^4.38.0",
+    "sequelize-cli": "^4.1.1"
   },
   "devDependencies": {
     "eslint": "^5.5.0",
     "jest": "^23.6.0",
     "nodemon": "^1.18.4",
-    "sequelize-cli": "^4.1.1",
     "supertest": "^3.3.0"
   },
   "jest": {

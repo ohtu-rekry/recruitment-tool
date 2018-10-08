@@ -5,23 +5,24 @@ import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
-import { addJobPosting }  from '../../redux/actions/actions'
+import Typography from '@material-ui/core/Typography'
+import { addJobPosting } from '../../redux/actions/actions'
 
 export class JobPostingForm extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      title : '',
-      content : '',
-      error : false
+      title: '',
+      content: '',
+      error: false
     }
   }
 
   handleChange = ( event ) => {
     this.setState({
-      [event.target.id] : event.target.value,
-      error : false
+      [event.target.id]: event.target.value,
+      error: false
     })
   }
 
@@ -33,7 +34,7 @@ export class JobPostingForm extends Component {
     const notOnlyWhitespaceRegex = /\S/
     if(!(notOnlyWhitespaceRegex.test(title) && notOnlyWhitespaceRegex.test(content))) {
       this.setState({
-        error : true
+        error: true
       })
       return
     }
@@ -44,8 +45,7 @@ export class JobPostingForm extends Component {
   render() {
     const { title, content, error } = this.state
     const helperText = error ? 'Required field cannot be empty' : '* is a required field'
-    const loggedIn = this.props.loggedIn
-    const creationRequestStatus = this.props.creationRequestStatus
+    const { creationRequestStatus, loggedIn } = this.props
     const characterLimit = `${content.length}/4000`
 
     let snackbarId
@@ -54,59 +54,60 @@ export class JobPostingForm extends Component {
     }
 
     return (
-      !loggedIn
-        ? <div>
-          <a href="/admin/login">You need to log in first</a>
-        </div>
-        : <div>
-          {creationRequestStatus
-            && <Snackbar
-              id={snackbarId}
-              open={creationRequestStatus !== null}
-              message={<span>{creationRequestStatus.message}</span>} />
-          }
+      <div>
+        {creationRequestStatus
+          && <Snackbar
+            id={snackbarId}
+            open={creationRequestStatus !== null}
+            message={<span>{creationRequestStatus.message}</span>} />
+        }
 
-          <Paper>
-            <form id='job-posting-form' onSubmit={this.handleSubmit} >
-              <TextField
-                required
-                fullWidth
-                id="title"
-                type="text"
-                value={title}
-                label="Title"
-                onChange={this.handleChange}
-                variant="outlined"
-                error={error}
-                inputProps={{ maxLength: 255 }}
-              />
-              <br />
-              <TextField
-                multiline
-                rows="10"
-                helperText={helperText}
-                required
-                fullWidth
-                id="content"
-                type="text"
-                value={content}
-                label="Content"
-                onChange={this.handleChange}
-                variant="outlined"
-                error={error}
-                inputProps={{ maxLength: 4000 }}
-              />
-              <br />
-              <Button id='button-submit'
-                type="submit"
-                variant="contained"
-              >Create job posting</Button>
-              <div className='posting__character-limit'>
-                {characterLimit}
-              </div>
-            </form>
-          </Paper>
-        </div>
+        <Paper className='job-posting-form'>
+          <Typography className='job-posting-form__headline' variant='display1' color='inherit' gutterBottom>Add new job posting</Typography>
+          <form className='job-posting-form__form' id='job-posting-form' onSubmit={this.handleSubmit}>
+            <TextField
+              required
+              fullWidth
+              id="title"
+              type="text"
+              value={title}
+              label="Title"
+              onChange={this.handleChange}
+              variant="outlined"
+              error={error}
+              inputProps={{ maxLength: 255 }}
+              disabled={!loggedIn}
+            />
+            <br />
+            <TextField
+              multiline
+              rows="10"
+              helperText={helperText}
+              required
+              fullWidth
+              id="content"
+              type="text"
+              value={content}
+              label="Content"
+              onChange={this.handleChange}
+              variant="outlined"
+              error={error}
+              inputProps={{ maxLength: 4000 }}
+              disabled={!loggedIn}
+            />
+            <br />
+            <Button id='button-submit'
+              color='inherit'
+              type="submit"
+              variant="contained"
+              disabled={!loggedIn}
+            >Create job posting</Button>
+            <div className='job-posting-form__character-limit'>
+              {characterLimit}
+            </div>
+          </form>
+        </Paper>
+      </div>
     )
   }
 }
@@ -119,8 +120,8 @@ JobPostingForm.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  creationRequestStatus : state.jobPostingReducer.creationRequestStatus,
-  loggedIn : state.loginReducer.loggedIn
+  creationRequestStatus: state.jobPostingReducer.creationRequestStatus,
+  loggedIn: state.loginReducer.loggedIn
 })
 
 const mapDispatchToProps = {

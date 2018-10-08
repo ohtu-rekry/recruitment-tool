@@ -34,7 +34,7 @@ export class Header extends Component {
           <div className='navigation-bar__middle'></div>
 
           {this.props.loggedIn && (
-            <LinkButton link='/jobpostings/new' text='Add new posting' className='navigation-bar__button' />
+            <LinkButton link='/jobposting/new' text='Add new posting' className='navigation-bar__button' />
           )}
           {this.props.loggedIn && (
             <ActionButton actionHandler={this.props.logout} text='Log out' className='navigation-bar__button' />

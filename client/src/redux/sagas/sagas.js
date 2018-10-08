@@ -7,9 +7,10 @@ export default function* rootSaga() {
   yield all([
     loginSaga.watchRequestLogin,
     loginSaga.watchRequestLogout,
+    jobPostingSaga.watchFetchJobPostings,
     applicationSaga.watchSendApplication,
     jobPostingSaga.watchFetchJobPosting,
     jobPostingSaga.watchFetchJobPostings,
-    jobPostingSaga.watchCreationRequest
+    jobPostingSaga.watchAddJobPosting
   ])
 }

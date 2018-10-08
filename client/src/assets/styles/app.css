@@ -59,10 +59,24 @@
     font-size: 12px;
     color: red; }
 
+.header-text {
+  margin-top: 50px;
+  text-align: center; }
+
+.job-postings {
+  align-items: center;
+  background-color: #002234;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 50px; }
+  .job-postings__list {
+    margin-top: 70px;
+    width: 85%; }
+
 body {
   background-color: #f8f8f8; }
 
-.posting {
+.job-posting {
   margin: 10% auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   background-color: white;
@@ -73,18 +87,18 @@ body {
   flex-direction: column;
   align-items: center; }
   @media screen and (min-width: 750px) {
-    .posting {
+    .job-posting {
       max-width: 80%; } }
-  .posting__title {
+  .job-posting__title {
     padding: 0px 20px;
     color: #002234;
     font-size: 26px; }
-  .posting__content {
+  .job-posting__content {
     padding: 10px 30px;
     margin-top: 0px; }
-  .posting__form {
+  .job-posting__form {
     padding: 10px 10px; }
-  .posting__form-input {
+  .job-posting__form-input {
     border: 2;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     width: 26vw;
@@ -95,12 +109,12 @@ body {
     margin: 0px 10px;
     padding-left: 10px; }
     @media screen and (min-width: 321px) {
-      .posting__form-input {
+      .job-posting__form-input {
         padding: 0px 18px 0px 10px; } }
     @media screen and (min-width: 376px) {
-      .posting__form-input {
+      .job-posting__form-input {
         padding: 0px 0px 0px 10px; } }
-  .posting__submit-button {
+  .job-posting__submit-button {
     cursor: pointer;
     border: none;
     outline: none;
@@ -113,29 +127,29 @@ body {
     margin-left: 30%;
     width: 100px; }
     @media screen and (min-width: 380px) {
-      .posting__submit-button {
+      .job-posting__submit-button {
         margin: 10px 0 0px;
         width: 60px;
         height: 42px; } }
     @media screen and (min-width: 495px) {
-      .posting__submit-button {
+      .job-posting__submit-button {
         width: 100px; } }
-  .posting__submit-button:hover {
+  .job-posting__submit-button:hover {
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2); }
-  .posting__error-message {
+  .job-posting__error-message {
     color: red;
     font-size: 14px;
     padding-bottom: 10px; }
     @media screen and (min-width: 410px) {
-      .posting__error-message {
+      .job-posting__error-message {
         font-size: 18px; } }
-  .posting__character-limit {
+  .job-posting__character-limit {
     display: inline-flex;
     float: right;
     font-size: 14px;
     padding-bottom: 10px; }
     @media screen and (min-width: 410px) {
-      .posting__character-limit {
+      .job-posting__character-limit {
         font-size: 18px; } }
 
 .job-posting-listing {
@@ -176,6 +190,31 @@ body {
     display: inline;
     margin-left: auto;
     margin-right: -12; }
+
+.job-posting-form {
+  margin: 10% auto;
+  background-color: white;
+  max-width: 95%;
+  min-height: 20%;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+  @media screen and (min-width: 750px) {
+    .job-posting-form {
+      max-width: 80%; } }
+  .job-posting-form__headline {
+    color: #002234; }
+  .job-posting-form__form {
+    min-width: 90%; }
+  .job-posting-form__character-limit {
+    display: inline-flex;
+    float: right;
+    font-size: 14px;
+    padding-bottom: 10px; }
+    @media screen and (min-width: 410px) {
+      .job-posting-form__character-limit {
+        font-size: 18px; } }
 
 body {
   background-color: #f8f8f8; }

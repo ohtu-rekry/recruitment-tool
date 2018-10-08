@@ -130,10 +130,20 @@ describe('POST method', async () => {
         username: testRecruiter.username
       }
     })
+    await JobPosting.destroy({
+      where: {
+        title: 'Senior Java Developer'
+      }
+    })
+    await JobPosting.destroy({
+      where: {
+        title: 'Junior Front End Developer'
+      }
+    })
   })
 })
 
-describe('GET method', async () => {
+/*describe('GET method', async () => {
   beforeAll(async () => {
     await JobPosting.create({
       title: 'frontend developer',
@@ -165,8 +175,14 @@ describe('GET method', async () => {
         recruiterId: 1
       }
     })
+
+    await JobPosting.destroy({
+      where: {
+        id: 1
+      }
+    })
   })
-})
+})*/
 
 afterAll(async () => {
   await server.close()
