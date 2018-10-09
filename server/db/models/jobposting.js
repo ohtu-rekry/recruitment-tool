@@ -1,17 +1,15 @@
+'use strict'
+
 module.exports = (sequelize, DataTypes) => {
   const JobPosting = sequelize.define('JobPosting', {
     title: DataTypes.STRING,
-    content: DataTypes.STRING,
-    recruiterId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    }
+    content: DataTypes.STRING
   }, {})
   JobPosting.associate = function (models) {
     //JobPosting has one recruiter who has created it
-    JobPosting.hasMany(models.JobApplication, {
+    JobPosting.hasMany(models.PostingStage, {
       foreignKey: 'jobPostingId',
-      as: 'jobApplications'
+      as: 'postingStages'
     })
 
     JobPosting.belongsTo(models.Recruiter, {
