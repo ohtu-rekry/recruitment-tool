@@ -1,5 +1,5 @@
 import { delay } from 'redux-saga'
-import { takeLatest, takeEvery, put, call } from 'redux-saga/effects'
+import { takeLatest, takeEvery, put, call, select } from 'redux-saga/effects'
 import * as actions from '../actions/actions'
 import jobPostingApi from '../apis/jobPostingApi'
 
@@ -62,5 +62,29 @@ function* fetchJobPosting({ payload }) {
   }
 }
 
+function* fetchJobPostingApplicants({ payload }) {
+  try {
+    const recruiter = yield select(getCurrentUser)
+    const token = recruiter.token
+    const id = payload
+    const response = yield call(jobPostingApi.getApplicants, { token, id })
+
+    if (response.status === 200) {
+      const jobApplicants = response.data
+      yield put(actions.fetchApplicantsSuccess(jobApplicants))
+    }
+  }
+  catch (e) {
+    console.log(e)
+  }
+}
+
+export const getCurrentUser = state => state.loginReducer.loggedIn
+
+
 export const watchFetchJobPosting = takeLatest(actions.fetchJobPosting().type, fetchJobPosting)
 export const watchAddJobPosting = takeEvery(actions.addJobPosting().type, addJobPosting)
+export const watchFetchApplicants = takeLatest(
+  actions.fetchApplicants().type,
+  fetchJobPostingApplicants
+)

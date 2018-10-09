@@ -8,6 +8,7 @@ import Header from '../Header'
 import Login from '../admin/Login'
 import JobPostingForm from '../jobPosting/JobPostingForm'
 import JobPosting from '../posting-page/JobPosting'
+import Applicants from '../applicants/Applicants'
 import App from '../App'
 
 class Routes extends Component {
@@ -47,6 +48,7 @@ class Routes extends Component {
                 : <Redirect to='/admin/login' />
             } />
             <Route exact path="/jobposting/:id" render={() => <JobPosting />} />
+            <Route exact path="/jobposting/:id/applicants" render={() => <Applicants />} />
             <Route exact path="/" render={() => <App />} />
           </Switch>
         </div>
