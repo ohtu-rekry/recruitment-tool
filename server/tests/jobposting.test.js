@@ -3,7 +3,7 @@ const { app, server } = require('../src/server')
 const api = supertest(app)
 const bcrypt = require('bcryptjs')
 const { JobPosting, sequelize, Recruiter } = require('../db/models')
-const { tooLongContent, tooLongTitle } = require('../utils/jobpostingTestUtils')
+const { tooLongTitle } = require('../utils/jobpostingTestUtils')
 
 beforeAll(async () => {
   await sequelize.sync({ logging: false })
@@ -103,24 +103,6 @@ describe('POST method', async () => {
 
     expect(response.body).toEqual({
       error: `Title is too long, ${tooLongTitle.length} chars, when max is 255`
-    })
-  })
-
-  test('a posting cannot be created with a content longer than 4000 chars', async () => {
-    const newPosting = {
-      title: 'Senior React developer',
-      content: tooLongContent
-    }
-
-    const response = await api
-      .post('/api/jobposting')
-      .send(newPosting)
-      .set('Authorization', token)
-      .expect(400)
-      .expect('Content-Type', /application\/json/)
-
-    expect(response.body).toEqual({
-      error: `Content is too long, ${tooLongContent.length} chars, when max is 4000`
     })
   })
 

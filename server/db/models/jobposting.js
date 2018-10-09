@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const JobPosting = sequelize.define('JobPosting', {
     title: DataTypes.STRING,
-    content: DataTypes.STRING,
+    content: DataTypes.TEXT,
     recruiterId: {
       type: DataTypes.INTEGER,
       allowNull: false
