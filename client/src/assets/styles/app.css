@@ -89,6 +89,8 @@ body {
   @media screen and (min-width: 750px) {
     .job-posting {
       max-width: 80%; } }
+  .job-posting__link {
+    text-decoration: none; }
   .job-posting__title {
     padding: 0px 20px;
     color: #002234;

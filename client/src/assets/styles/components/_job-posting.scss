@@ -17,6 +17,10 @@ align-items: center;
   max-width: 80%
 }
 
+  &__link {
+    text-decoration: none;
+  }
+
   &__title {
     padding: 0px 20px;
     color: $emblica-blue;
