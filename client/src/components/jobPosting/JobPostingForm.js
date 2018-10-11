@@ -88,7 +88,7 @@ export class JobPostingForm extends Component {
               id="content"
               type="text"
               value={content}
-              label="Content"
+              label="Content (Markdown syntax supported)"
               onChange={this.handleChange}
               variant="outlined"
               error={error}
