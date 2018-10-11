@@ -41,20 +41,21 @@ describe('POST jobApplication', async () => {
       .set('authorization', token)
       .expect(201)
       .expect('Content-Type', /application\/json/)
+      .catch(e => console.log(e))
 
-    const id = await JobPosting.findOne(newPosting).then(res => res.id)
+    const posting = await JobPosting.findOne(newPosting)
 
     await PostingStage
       .create({
         stageName: 'TestStage',
-        jobPostingId: id
+        jobPostingId: posting.id
       })
       .catch(e => console.log(e))
 
     const newJobApplication = {
       applicantName: 'Mikko',
       applicantEmail: 'mikko@mallikas.fi',
-      jobPostingId: id
+      jobPostingId: posting.id
     }
 
     await api
@@ -62,6 +63,7 @@ describe('POST jobApplication', async () => {
       .send(newJobApplication)
       .expect(201)
       .expect('Content-Type', /application\/json/)
+      .catch(e => console.log(e))
   })
 })
 
