@@ -1,5 +1,5 @@
 const jobApplicationRouter = require('express').Router()
-const { JobApplication, Recruiter } = require('../../db/models')
+const { JobApplication, PostingStage, Recruiter } = require('../../db/models')
 const jwt = require('jsonwebtoken')
 
 jobApplicationRouter.get('/', async (req, res) => {
@@ -48,11 +48,25 @@ jobApplicationRouter.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Applicant email must be defined' })
     }
 
+    if (!body.jobPostingId) {
+      return res.status(400).json({ error: 'Application must be connected to a job posting' })
+    }
+
+    const postingStages = await PostingStage.findAll({ where: { jobPostingId: body.jobPostingId } })
+
+    if (postingStages.length === 0) {
+      return res.status(400).json({ error: 'Job posting has no defined application stages' })
+    }
+
+    if (postingStages.length > 1) {
+      postingStages.sort((s1, s2) => s1.id < s2.id)
+    }
+
     //To be fixed when database tables and connections are fixed
     const jobApplication = await JobApplication.create({
       applicantName: body.applicantName,
       applicantEmail: body.applicantEmail,
-      jobPostingId: body.jobPostingId
+      postingStageId: postingStages[0].id
     })
 
     res.status(201).json(jobApplication)
