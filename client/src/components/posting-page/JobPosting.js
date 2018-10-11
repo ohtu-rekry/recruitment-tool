@@ -4,6 +4,7 @@ import * as actions from '../../redux/actions/actions'
 import PropTypes from 'prop-types'
 import { LinkButton } from '../Buttons'
 import EmailValidator from 'email-validator'
+import ReactMarkdown from 'react-markdown'
 
 export class JobPosting extends Component {
   constructor(props) {
@@ -60,7 +61,9 @@ export class JobPosting extends Component {
           />}
 
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
-        <p className='job-posting__content'>{jobPosting.content}</p>
+        <p className='job-posting__content'>
+          <ReactMarkdown source={jobPosting.content} />
+        </p>
         <form className='job-posting__form' onSubmit={this.handleSubmit}>
           <div className='job-posting__form-container'>
             <input
