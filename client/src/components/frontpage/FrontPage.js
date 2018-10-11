@@ -4,7 +4,6 @@ import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { fetchJobPostings } from '../../redux/actions/actions'
-import Header from './Header'
 import JobPostingListing from './JobPostingListing'
 
 class FrontPage extends Component {
@@ -36,7 +35,6 @@ class FrontPage extends Component {
     }
     return (
       <div className='frontpage'>
-        <Header />
         <div className='job-postings'>
           <div className='job-postings__list' >
             {this.props.jobPostings.map(posting =>
