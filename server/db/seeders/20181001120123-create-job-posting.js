@@ -1,5 +1,5 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: (queryInterface) => {
     return queryInterface.bulkInsert('JobPostings', [{
       title: 'Full-Stack Developer',
       content: 'We are looking for Node and React talent!',
@@ -16,7 +16,7 @@ module.exports = {
     }], {})
   },
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('JobPostings', null, {});
+  down: (queryInterface) => {
+    return queryInterface.bulkDelete('JobPostings', null, {})
   }
 }
