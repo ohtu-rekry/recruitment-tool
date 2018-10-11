@@ -48,7 +48,7 @@ describe('POST jobApplication', async () => {
     await PostingStage
       .create({
         stageName: 'TestStage',
-        jobPostingId: id
+        jobPostingId: posting.id
       })
       .catch(e => console.log(e))
 
