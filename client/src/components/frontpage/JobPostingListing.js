@@ -1,23 +1,30 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
+import JobPosting from './'
 
-const JobPosting = (props) => {
-  const { onClick } = props
+const JobPostingListing = (props) => {
   return (
-    <div className='job-posting-listing' onClick={onClick}>
-      <div className='job-posting-listing__title'>
-        <h2>{props.data.title}</h2>
+    <Link
+      to={`/jobposting/${props.data.id}`}
+      key={props.data.id}
+      className='job-posting__link' >
+
+      <div className='job-posting-listing'>
+        <div className='job-posting-listing__title'>
+          <h2>{props.data.title}</h2>
+        </div>
+        <div className='job-posting-listing__content'>
+        </div>
       </div>
-      <div className='job-posting-listing__content'>
-      </div>
-    </div>
+
+    </Link>
   )
 }
 
-JobPosting.propTypes = {
-  data: PropTypes.object.isRequired,
-  onClick: PropTypes.func.isRequired
+JobPostingListing.propTypes = {
+  data: PropTypes.object.isRequired
 }
 
 
-export default JobPosting
+export default JobPostingListing
