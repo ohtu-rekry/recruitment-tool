@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import * as actions from '../../redux/actions/actions'
 import PropTypes from 'prop-types'
 import { LinkButton } from '../Buttons'
+import EmailValidator from 'email-validator'
 import ReactMarkdown from 'react-markdown'
 
 export class JobPosting extends Component {
@@ -12,6 +13,7 @@ export class JobPosting extends Component {
       jobPosting: this.props.jobPosting,
       applicantName: '',
       applicantEmail: '',
+      inputError: null
     }
   }
 
@@ -22,13 +24,20 @@ export class JobPosting extends Component {
 
   handleChange = (e) => {
     this.setState({
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
+      inputError: null
     })
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
     const { applicantName, applicantEmail } = this.state
+
+    if (!EmailValidator.validate(applicantEmail)) {
+      this.setState({ inputError: 'Please enter a valid email' })
+      return
+    }
+
     const jobPostingId = window.location.href.split('/')[4]
     this.props.sendApplication(applicantName, applicantEmail, jobPostingId)
 
@@ -39,7 +48,7 @@ export class JobPosting extends Component {
   }
 
   render() {
-    const { applicantName, applicantEmail } = this.state
+    const { applicantName, applicantEmail, inputError } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
 
     return (
@@ -79,6 +88,7 @@ export class JobPosting extends Component {
               Send
             </button>
           </div>
+          {inputError && <InputErrorMessage errorMessage={inputError}/>}
         </form>
       </div>
     )
@@ -93,10 +103,22 @@ const ErrorMessage = ({ errorMessage }) => {
   )
 }
 
+const InputErrorMessage = ({ errorMessage }) => {
+  return (
+    <div className='job-posting__form-input-error'>
+      {errorMessage}
+    </div>
+  )
+}
+
 JobPosting.propTypes = {
   errorMessage: PropTypes.string,
   jobPosting: PropTypes.object.isRequired,
   loggedIn: PropTypes.object
+}
+
+InputErrorMessage.propTypes = {
+  errorMessage: PropTypes.string
 }
 
 const mapStateToProps = (state) => ({
