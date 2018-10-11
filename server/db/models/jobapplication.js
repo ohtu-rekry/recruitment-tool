@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
   JobApplication.associate = function(models) {
     JobApplication.belongsTo(models.PostingStage, {
       foreignKey: 'postingStageId',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
+      hooks: true
     })
   }
 

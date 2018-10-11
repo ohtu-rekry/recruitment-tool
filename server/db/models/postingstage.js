@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
 
     PostingStage.belongsTo(models.JobPosting, {
       foreignKey: 'jobPostingId',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
+      hooks: true
     })
   }
 
