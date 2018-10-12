@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import Typography from '@material-ui/core/Typography'
 
 import { fetchJobPostings } from '../../redux/actions/actions'
 import JobPostingListing from './JobPostingListing'
@@ -13,8 +14,14 @@ class FrontPage extends Component {
   }
 
   render() {
+    const titleStyle = {
+      color: '#002234'
+    }
     return (
       <div className='frontpage'>
+        <Typography variant='display1' align='center' className='job-postings__title' style={titleStyle}>
+          Open positions
+        </Typography>
         <div className='job-postings'>
           <div className='job-postings__list' >
             {this.props.jobPostings.map(posting =>
@@ -27,7 +34,7 @@ class FrontPage extends Component {
   }
 }
 
-FrontPage.protoTypes = {
+FrontPage.propTypes = {
   jobPostings: PropTypes.array.isRequired
 }
 

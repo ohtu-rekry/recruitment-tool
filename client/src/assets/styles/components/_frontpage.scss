@@ -3,14 +3,23 @@
   text-align: center;
 }
 .job-postings {
-  align-items: center;
   background-color: $gray-lighter;
   display:flex;
   flex-direction: column;
-  padding-bottom:50px;
+  padding: 10px 15px;
+
+  @media screen and(min-width: 520px) {
+    padding: 10px 50px;
+  }
 
   &__list {
-      margin-top: 70px;
       width: 85%;
+      border-bottom-style: solid;
+      border-bottom-width: 1px;
+      border-color: #c5c5c5;
+    }
+
+  &__title {
+    padding: 20px 0px;
   }
 }
