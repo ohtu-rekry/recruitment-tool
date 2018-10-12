@@ -3,7 +3,7 @@
 module.exports = (sequelize, DataTypes) => {
   const JobPosting = sequelize.define('JobPosting', {
     title: DataTypes.STRING,
-    content: DataTypes.STRING
+    content: DataTypes.TEXT
   }, {})
   JobPosting.associate = function (models) {
     //JobPosting has one recruiter who has created it

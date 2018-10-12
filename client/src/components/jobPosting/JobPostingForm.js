@@ -46,7 +46,6 @@ export class JobPostingForm extends Component {
     const { title, content, error } = this.state
     const helperText = error ? 'Required field cannot be empty' : '* is a required field'
     const { creationRequestStatus, loggedIn } = this.props
-    const characterLimit = `${content.length}/4000`
 
     let snackbarId
     if(creationRequestStatus) {
@@ -88,11 +87,10 @@ export class JobPostingForm extends Component {
               id="content"
               type="text"
               value={content}
-              label="Content"
+              label="Content (Markdown syntax supported)"
               onChange={this.handleChange}
               variant="outlined"
               error={error}
-              inputProps={{ maxLength: 4000 }}
               disabled={!loggedIn}
             />
             <br />
@@ -102,9 +100,6 @@ export class JobPostingForm extends Component {
               variant="contained"
               disabled={!loggedIn}
             >Create job posting</Button>
-            <div className='job-posting-form__character-limit'>
-              {characterLimit}
-            </div>
           </form>
         </Paper>
       </div>
