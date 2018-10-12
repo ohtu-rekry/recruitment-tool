@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
 
     JobPosting.belongsTo(models.Recruiter, {
       foreignKey: 'recruiterId',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
+      hooks: true
     })
   }
   return JobPosting
