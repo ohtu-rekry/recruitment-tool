@@ -56,12 +56,12 @@ jobPostingRouter.post('/', async (request, response) => {
       recruiterId: recruiter.id
     })
 
-    body.stages.forEach(async (stage) => {
-      await PostingStage.create({
+    await Promise.all(body.stages.map(stage => {
+      PostingStage.create({
         stageName: stage,
         jobPostingId: posting.id
       })
-    })
+    }))
 
     response.status(201).json(posting)
 
