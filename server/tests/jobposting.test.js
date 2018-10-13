@@ -44,7 +44,6 @@ describe('POST method', async () => {
       .set('authorization', token)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-      .catch(e => console.log(e))
   })
 
   test('a valid posting cannot be created if user is not logged in', async () => {

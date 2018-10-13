@@ -56,15 +56,14 @@ jobPostingRouter.post('/', async (request, response) => {
       recruiterId: recruiter.id
     })
 
-    await Promise.all(body.stages.map(stage => {
+    await Promise.all(body.stages.map(stage =>
       PostingStage.create({
         stageName: stage,
         jobPostingId: posting.id
       })
-    }))
+    ))
 
     response.status(201).json(posting)
-
   } catch (exception) {
 
     if (exception.name === 'JsonWebTokenError') {

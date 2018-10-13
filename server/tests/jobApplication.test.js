@@ -39,10 +39,12 @@ describe('POST jobApplication', async () => {
     })
     jobPostingId = createdJobPosting.dataValues.id
 
-    await Promise.all(testJobPosting.stages.map(stage => {PostingStage.create({
-      stageName: stage,
-      jobPostingId
-    })}))
+    await Promise.all(testJobPosting.stages.map(stage =>
+      PostingStage.create({
+        stageName: stage,
+        jobPostingId
+      })
+    ))
   })
 
   test('jobApplicant can post new jobApplication', async () => {
@@ -58,7 +60,6 @@ describe('POST jobApplication', async () => {
       .send(newJobApplication)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-      .catch(e => console.log(e))
   })
 })
 
