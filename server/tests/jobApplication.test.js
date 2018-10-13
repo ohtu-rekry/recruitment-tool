@@ -15,7 +15,7 @@ beforeAll(async () => {
 describe('POST jobApplication', async () => {
   let jobPostingId = null
   const testRecruiter = {
-    username: 'recruiteradmin',
+    username: 'recruiteradminjobapplicationtest',
     password: 'fsdGSDjugs22'
   }
   const testJobPosting = {
@@ -26,25 +26,16 @@ describe('POST jobApplication', async () => {
 
   beforeAll(async () => {
     const passwordHash = await bcrypt.hash(testRecruiter.password, 10)
-    const createdRecruiter = await Recruiter.create({
+    await Recruiter.create({
       username: testRecruiter.username,
       password: passwordHash
     })
-    const recruiterId = createdRecruiter.dataValues.id
 
-    const createdJobPosting = await JobPosting.create({
-      title: testJobPosting.title,
-      content: testJobPosting.content,
-      recruiterId: recruiterId
-    })
-    jobPostingId = createdJobPosting.dataValues.id
+    const loginResponse = await api.post('/api/login').send(testRecruiter)
+    const token = `Bearer ${loginResponse.body.token}`
 
-    await Promise.all(testJobPosting.stages.map(stage =>
-      PostingStage.create({
-        stageName: stage,
-        jobPostingId
-      })
-    ))
+    const jobpostingResponse = await api.post('/api/jobposting').send(testJobPosting).set('authorization', token)
+    jobPostingId = jobpostingResponse.body.id
   })
 
   test('jobApplicant can post new jobApplication', async () => {
@@ -66,7 +57,7 @@ describe('POST jobApplication', async () => {
 afterAll(async () => {
   await Recruiter.destroy({
     where: {
-      username: 'recruiteradmin'
+      username: 'recruiteradminjobapplicationtest'
     }
   })
 

@@ -16,7 +16,7 @@ describe('POST method', async () => {
 
   let token = null
   const testRecruiter = {
-    username: 'recruiteradmin',
+    username: 'recruiteradminjobpostingtest',
     password: 'fsdGSDjugs22'
   }
 
@@ -155,11 +155,6 @@ describe('POST method', async () => {
         stageName: 'jobposting-test-example-stage2'
       }
     })
-    await Recruiter.destroy({
-      where: {
-        username: testRecruiter.username
-      }
-    })
     await JobPosting.destroy({
       where: {
         title: 'Senior Java Developer'
@@ -168,6 +163,11 @@ describe('POST method', async () => {
     await JobPosting.destroy({
       where: {
         title: 'Junior Front End Developer'
+      }
+    })
+    await Recruiter.destroy({
+      where: {
+        username: testRecruiter.username
       }
     })
   })

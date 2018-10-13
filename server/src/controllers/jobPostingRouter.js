@@ -56,22 +56,30 @@ jobPostingRouter.post('/', async (request, response) => {
       recruiterId: recruiter.id
     })
 
-    await Promise.all(body.stages.map(stage =>
+    await Promise.all(body.stages.map((stage, index) =>
       PostingStage.create({
         stageName: stage,
+        orderNumber: index,
         jobPostingId: posting.id
       })
-    ))
+    )).catch(error => {
+      console.log(error)
+      JobPosting.destroy({
+        where: { id: posting.id }
+      })
+      throw new Error('PostingStageError')
+    })
 
     response.status(201).json(posting)
+
   } catch (exception) {
-
     if (exception.name === 'JsonWebTokenError') {
-
       response.status(401).json({ error: exception.message })
 
-    } else {
+    } else if (exception.name === 'Error' && exception.message === 'PostingStageError') {
+      response.status(400).json({ error: 'Could not create posting stages' })
 
+    } else {
       console.log(exception)
       response.status(500).json({ error: 'Something went wrong..' })
     }

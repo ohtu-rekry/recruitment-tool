@@ -52,21 +52,21 @@ jobApplicationRouter.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Application must be connected to a job posting' })
     }
 
-    const postingStages = await PostingStage.findAll({ where: { jobPostingId: body.jobPostingId } })
+    const firstPostingStage = await PostingStage.findOne({
+      where : {
+        jobPostingId: body.jobPostingId,
+        orderNumber: 0
+      }
+    })
 
-    if (postingStages.length === 0) {
-      return res.status(400).json({ error: 'Job posting has no defined application stages' })
+    if(!firstPostingStage) {
+      return res.status(500).json({ error: 'Could not find posting stage' })
     }
 
-    if (postingStages.length > 1) {
-      postingStages.sort((s1, s2) => s1.id < s2.id)
-    }
-
-    //To be fixed when database tables and connections are fixed
     const jobApplication = await JobApplication.create({
       applicantName: body.applicantName,
       applicantEmail: body.applicantEmail,
-      postingStageId: postingStages[0].id
+      postingStageId: firstPostingStage.id
     })
 
     res.status(201).json(jobApplication)
