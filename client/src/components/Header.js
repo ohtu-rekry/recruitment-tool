@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
 import { ActionButton, LinkButton } from './Buttons'
 
 import * as actions from '../redux/actions/actions'
@@ -15,20 +14,12 @@ const emblicaLogo = require('../assets/img/emblica-logo.svg')
 export class Header extends Component {
 
   render() {
-    const titleStyle = {
-      color: 'lightgrey'
-    }
-
     return (
       <AppBar position='static'>
         <Toolbar className='navigation-bar'>
 
           <Link to='/' className='navigation-bar__title'>
             <img src={emblicaLogo} alt='Emblica logo' className='navigation-bar__logo' />
-
-            <Typography variant='title' style={titleStyle}>
-              RECRUITMENT TOOL
-            </Typography>
           </Link>
 
           <div className='navigation-bar__middle'></div>
