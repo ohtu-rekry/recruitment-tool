@@ -30,3 +30,36 @@
       }
     }
   }
+
+  .job-posting-form-stages {
+    &__new-stage-name {
+      display:inline-block;
+      margin-right: 35px;
+      width: 90%;
+
+      @media screen and (max-width: 1050px) {
+        width: 85%;
+      }
+
+      @media screen and (max-width: 600px) {
+        width: 80%;
+      }
+
+      @media screen and (max-width: 460px) {
+        width: 75%;
+      }
+
+    }
+
+    &__new-stage-add-button {
+      display:inline-block;
+    }
+
+    &__stage-list {
+      padding: 5px 0 5px 0;
+    }
+
+    &__single-stage {
+      padding: 5px;
+    }
+  }

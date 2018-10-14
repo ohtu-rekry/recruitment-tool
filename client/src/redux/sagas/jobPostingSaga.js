@@ -8,7 +8,8 @@ function* addJobPosting({ payload }) {
   try {
     const jobPosting = {
       title: payload.title,
-      content: payload.content
+      content: payload.content,
+      stages: payload.stages
     }
     const recruiter = payload.recruiter
 
@@ -43,6 +44,14 @@ function* fetchJobPostings() {
   }
 }
 
+function* addNewStageForJobPosting({ payload }) {
+  yield put(actions.addNewStageForJobPosting(payload.newStage))
+}
+
+function* removeStageInJobPosting({ payload }) {
+  yield put(actions.removeStageInJobPosting(payload.stage))
+}
+
 export const watchFetchJobPostings = takeLatest(actions.fetchJobPostings().type, fetchJobPostings)
 function* fetchJobPosting({ payload }) {
   try {
@@ -64,3 +73,5 @@ function* fetchJobPosting({ payload }) {
 
 export const watchFetchJobPosting = takeLatest(actions.fetchJobPosting().type, fetchJobPosting)
 export const watchAddJobPosting = takeEvery(actions.addJobPosting().type, addJobPosting)
+export const watchNewStageToJobPosting = takeEvery(actions.addNewStageForJobPosting().type, addNewStageForJobPosting)
+export const watchRemoveStageInJobPosting = takeEvery(actions.removeStageInJobPosting().type, removeStageInJobPosting)
