@@ -2,7 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
 
   const PostingStage = sequelize.define('PostingStage', {
-    stageName: DataTypes.STRING
+    stageName: DataTypes.STRING,
+    orderNumber: {type: DataTypes.INTEGER, allowNull: false}
   }, {})
 
   PostingStage.associate = function (models) {

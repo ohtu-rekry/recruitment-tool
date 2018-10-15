@@ -16,7 +16,7 @@ describe('POST method', async () => {
 
   let token = null
   const testRecruiter = {
-    username: 'recruiteradmin',
+    username: 'recruiteradminjobpostingtest',
     password: 'fsdGSDjugs22'
   }
 
@@ -35,7 +35,7 @@ describe('POST method', async () => {
     const newPosting = {
       title: 'Senior Java Developer',
       content: 'We are looking for someone with a minimum of 5 years of experience coding with Java',
-      stages: ['jobposting-test-example-stage1','jobposting-test-example-stage2']
+      stages: [{ stageName: 'jobposting-test-example-stage1' },{ stageName: 'jobposting-test-example-stage2' }]
     }
 
     await api
@@ -44,14 +44,13 @@ describe('POST method', async () => {
       .set('authorization', token)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-      .catch(e => console.log(e))
   })
 
   test('a valid posting cannot be created if user is not logged in', async () => {
     const newPosting = {
       title: 'Junior Front End Developer',
       content: 'If you are interested in learning new technologies for front-end development, then this is the job for you',
-      stages: ['Applied', 'Interview 1', 'Exercise', 'Interview 2']
+      stages: [{ stageName: 'Applied' },{ stageName:  'Interview 1' },{ stageName:  'Exercise' },{ stageName:  'Interview 2' }]
     }
 
     await api
@@ -64,7 +63,7 @@ describe('POST method', async () => {
   test('a posting cannot be created without a title', async () => {
     const newPosting = {
       content: 'Our development team is missing an experienced UI designer',
-      stages: ['Applied', 'Interview 1', 'Exercise', 'Interview 2']
+      stages: [{ stageName: 'Applied' },{ stageName:  'Interview 1' },{ stageName:  'Exercise' },{ stageName:  'Interview 2' }]
     }
 
     const response = await api
@@ -80,7 +79,7 @@ describe('POST method', async () => {
   test('a posting cannot be created without content', async () => {
     const newPosting = {
       title: 'UI designer',
-      stages: ['Applied', 'Interview 1', 'Exercise', 'Interview 2']
+      stages: [{ stageName: 'Applied' },{ stageName:  'Interview 1' },{ stageName:  'Exercise' },{ stageName:  'Interview 2' }]
     }
 
     const response = await api
@@ -113,7 +112,7 @@ describe('POST method', async () => {
     const newPosting = {
       title: tooLongTitle,
       content: 'We need you',
-      stages: ['Applied', 'Interview 1', 'Exercise', 'Interview 2']
+      stages: [{ stageName: 'Applied' },{ stageName:  'Interview 1' },{ stageName:  'Exercise' },{ stageName:  'Interview 2' }]
     }
 
     const response = await api
@@ -156,11 +155,6 @@ describe('POST method', async () => {
         stageName: 'jobposting-test-example-stage2'
       }
     })
-    await Recruiter.destroy({
-      where: {
-        username: testRecruiter.username
-      }
-    })
     await JobPosting.destroy({
       where: {
         title: 'Senior Java Developer'
@@ -169,6 +163,11 @@ describe('POST method', async () => {
     await JobPosting.destroy({
       where: {
         title: 'Junior Front End Developer'
+      }
+    })
+    await Recruiter.destroy({
+      where: {
+        username: testRecruiter.username
       }
     })
   })
