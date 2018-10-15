@@ -1,5 +1,5 @@
 const jobPostingRouter = require('express').Router()
-const { JobPosting, Recruiter } = require('../../db/models')
+const { JobPosting, Recruiter, PostingStage } = require('../../db/models')
 const jwt = require('jsonwebtoken')
 
 jobPostingRouter.get('/', async (req, res) => {
@@ -26,16 +26,18 @@ jobPostingRouter.post('/', async (request, response) => {
       return response.status(400).json({ error: 'Content must be defined' })
     }
 
+    if (!body.stages) {
+      return response.status(400).json({ error: 'Stages must be defined' })
+    }
+
     if (body.title.length > 255) {
       return response.status(400).json({
         error: `Title is too long, ${body.title.length} chars, when max is 255`
       })
     }
 
-    if (body.content.length > 4000) {
-      return response.status(400).json({
-        error: `Content is too long, ${body.content.length} chars, when max is 4000`
-      })
+    if (body.stages.length < 1) {
+      return response.status(400).json({ error: 'The job posting has to have at least one posting stage' })
     }
 
     const recruiter = await Recruiter.findOne({
@@ -53,6 +55,13 @@ jobPostingRouter.post('/', async (request, response) => {
       content: body.content,
       recruiterId: recruiter.id
     })
+
+    await Promise.all(body.stages.map(stage => {
+      PostingStage.create({
+        stageName: stage,
+        jobPostingId: posting.id
+      })
+    }))
 
     response.status(201).json(posting)
 

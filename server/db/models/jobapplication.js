@@ -1,18 +1,19 @@
+'use strict'
+
 module.exports = (sequelize, DataTypes) => {
+
   const JobApplication = sequelize.define('JobApplication', {
     applicantName: DataTypes.STRING,
-    applicantEmail: DataTypes.STRING,
-    jobPostingId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    }
+    applicantEmail: DataTypes.STRING
   }, {})
-  JobApplication.associate = function (models) {
-    // associations can be defined here
-    JobApplication.belongsTo(models.JobPosting, {
-      foreignKey: 'jobPostingId',
-      onDelete: 'CASCADE'
+
+  JobApplication.associate = function(models) {
+    JobApplication.belongsTo(models.PostingStage, {
+      foreignKey: 'postingStageId',
+      onDelete: 'CASCADE',
+      hooks: true
     })
   }
+
   return JobApplication
 }

@@ -1,40 +1,27 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import Typography from '@material-ui/core/Typography'
 
 import { fetchJobPostings } from '../../redux/actions/actions'
 import JobPostingListing from './JobPostingListing'
 
 class FrontPage extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      fireRedirect: false,
-      jobPostingId: null
-    }
-    this.handleJobPostingClick = this.handleJobPostingClick.bind(this)
-  }
 
   componentDidMount() {
     const { fetchJobPostings } = this.props
     fetchJobPostings()
   }
 
-  handleJobPostingClick(id) {
-    this.setState({
-      fireRedirect: true,
-      jobPostingId: id
-    })
-  }
-
   render() {
-    if (this.state.fireRedirect) {
-      return <Redirect to={`/jobposting/${this.state.jobPostingId}`} />
+    const titleStyle = {
+      color: '#002234'
     }
     return (
       <div className='frontpage'>
+        <Typography variant='display1' align='center' className='job-postings__title' style={titleStyle}>
+          Open positions
+        </Typography>
         <div className='job-postings'>
           <div className='job-postings__list' >
             {this.props.jobPostings !== undefined && this.props.jobPostings.map(posting =>
@@ -47,7 +34,7 @@ class FrontPage extends Component {
   }
 }
 
-FrontPage.protoTypes = {
+FrontPage.propTypes = {
   jobPostings: PropTypes.array.isRequired
 }
 

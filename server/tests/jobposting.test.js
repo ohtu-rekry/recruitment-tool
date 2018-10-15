@@ -2,8 +2,8 @@ const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
 const bcrypt = require('bcryptjs')
-const { JobPosting, sequelize, Recruiter } = require('../db/models')
-const { tooLongContent, tooLongTitle } = require('../utils/jobpostingTestUtils')
+const { JobPosting, sequelize, Recruiter, PostingStage } = require('../db/models')
+const { tooLongTitle } = require('../utils/jobpostingTestUtils')
 
 beforeAll(async () => {
   await sequelize.sync({ logging: false })
@@ -34,7 +34,8 @@ describe('POST method', async () => {
   test('a valid job posting can be created if user is logged in', async () => {
     const newPosting = {
       title: 'Senior Java Developer',
-      content: 'We are looking for someone with a minimum of 5 years of experience coding with Java'
+      content: 'We are looking for someone with a minimum of 5 years of experience coding with Java',
+      stages: ['jobposting-test-example-stage1','jobposting-test-example-stage2']
     }
 
     await api
@@ -43,12 +44,14 @@ describe('POST method', async () => {
       .set('authorization', token)
       .expect(201)
       .expect('Content-Type', /application\/json/)
+      .catch(e => console.log(e))
   })
 
   test('a valid posting cannot be created if user is not logged in', async () => {
     const newPosting = {
       title: 'Junior Front End Developer',
-      content: 'If you are interested in learning new technologies for front-end development, then this is the job for you'
+      content: 'If you are interested in learning new technologies for front-end development, then this is the job for you',
+      stages: ['Applied', 'Interview 1', 'Exercise', 'Interview 2']
     }
 
     await api
@@ -60,7 +63,8 @@ describe('POST method', async () => {
 
   test('a posting cannot be created without a title', async () => {
     const newPosting = {
-      content: 'Our development team is missing an experienced UI designer'
+      content: 'Our development team is missing an experienced UI designer',
+      stages: ['Applied', 'Interview 1', 'Exercise', 'Interview 2']
     }
 
     const response = await api
@@ -75,7 +79,8 @@ describe('POST method', async () => {
 
   test('a posting cannot be created without content', async () => {
     const newPosting = {
-      title: 'UI designer'
+      title: 'UI designer',
+      stages: ['Applied', 'Interview 1', 'Exercise', 'Interview 2']
     }
 
     const response = await api
@@ -88,10 +93,27 @@ describe('POST method', async () => {
     expect(response.body).toEqual({ error: 'Content must be defined' })
   })
 
+  test('a posting cannot be created without stages', async () => {
+    const newPosting = {
+      title: 'Senior Java Developer',
+      content: 'We are looking for someone with a minimum of 5 years of experience coding with Java'
+    }
+
+    const response = await api
+      .post('/api/jobposting')
+      .send(newPosting)
+      .set('Authorization', token)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body).toEqual({ error: 'Stages must be defined' })
+  })
+
   test('a posting cannot be created with a title longer than 255 chars', async () => {
     const newPosting = {
       title: tooLongTitle,
-      content: 'We need you'
+      content: 'We need you',
+      stages: ['Applied', 'Interview 1', 'Exercise', 'Interview 2']
     }
 
     const response = await api
@@ -106,10 +128,11 @@ describe('POST method', async () => {
     })
   })
 
-  test('a posting cannot be created with a content longer than 4000 chars', async () => {
+  test('a posting cannot be created with less than one stage', async () => {
     const newPosting = {
-      title: 'Senior React developer',
-      content: tooLongContent
+      title: 'Senior Java Developer',
+      content: 'We are looking for someone with a minimum of 5 years of experience coding with Java',
+      stages: []
     }
 
     const response = await api
@@ -119,12 +142,20 @@ describe('POST method', async () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body).toEqual({
-      error: `Content is too long, ${tooLongContent.length} chars, when max is 4000`
-    })
+    expect(response.body).toEqual({ error: 'The job posting has to have at least one posting stage' })
   })
 
   afterAll(async () => {
+    await PostingStage.destroy({
+      where: {
+        stageName: 'jobposting-test-example-stage1'
+      }
+    })
+    await PostingStage.destroy({
+      where: {
+        stageName: 'jobposting-test-example-stage2'
+      }
+    })
     await Recruiter.destroy({
       where: {
         username: testRecruiter.username
