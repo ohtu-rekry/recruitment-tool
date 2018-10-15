@@ -100,9 +100,6 @@ export class JobPostingForm extends Component {
               error={error}
               disabled={!loggedIn}
             />
-            <div className='job-posting-form__character-limit'>
-              {characterLimit}
-            </div>
 
             <JobPostingStages />
 
