@@ -11,7 +11,9 @@ const databaseURL = productionEnv
   ? process.env.DATABASE_URL
   : `postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
 
-let sequelize = new Sequelize(databaseURL)
+let sequelize = new Sequelize(databaseURL, {
+  logging: false
+})
 
 const models = {
   Recruiter: sequelize.import('./recruiter'),

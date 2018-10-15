@@ -32,13 +32,15 @@ module.exports = {
       stageName: 'Interview',
       jobPostingId: jobPosting.id,
       createdAt: '2018-09-12 21:57:29.176+03',
-      updatedAt: '2018-09-12 21:57:29.176+03'
+      updatedAt: '2018-09-12 21:57:29.176+03',
+      orderNumber: 0
     },
     {
       stageName: 'Homework',
       jobPostingId: jobPosting.id,
       createdAt: '2018-09-12 21:57:30.176+03',
-      updatedAt: '2018-09-12 21:57:30.176+03'
+      updatedAt: '2018-09-12 21:57:30.176+03',
+      orderNumber: 1
     }], {})
 
     const interview = await PostingStage.findOne({ where: { stageName: 'Interview' } })
