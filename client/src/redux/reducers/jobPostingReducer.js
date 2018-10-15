@@ -3,6 +3,7 @@ import * as actions from '../actions/actions'
 
 const initialState = {
   jobPostings: [],
+  jobPostingStages: [{ stageName: 'Applied', canRemove: false }, { stageName: 'Accepted', canRemove: false }, { stageName: 'Rejected', canRemove: false }],
   creationRequestStatus: null
 }
 
@@ -23,7 +24,17 @@ const reducer = handleActions(
     ),
     [actions.removeJobPostingCreationStatus]: (state, action) => (
       { ...state, creationRequestStatus: null }
-    )
+    ),
+    [actions.addNewStageForJobPosting]: (state, action) => ({
+      jobPostingStages: [
+        ...state.jobPostingStages.slice(0, state.jobPostingStages.length - 2),
+        action.payload,
+        ...state.jobPostingStages.slice(state.jobPostingStages.length - 2)
+      ]
+    }),
+    [actions.removeStageInJobPosting]: (state, action) => ({
+      jobPostingStages: [...state.jobPostingStages.filter(state => state !== action.payload)]
+    })
   },
   initialState
 )

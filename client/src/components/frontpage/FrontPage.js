@@ -24,7 +24,7 @@ class FrontPage extends Component {
         </Typography>
         <div className='job-postings'>
           <div className='job-postings__list' >
-            {this.props.jobPostings.map(posting =>
+            {this.props.jobPostings !== undefined && this.props.jobPostings.map(posting =>
               <JobPostingListing key={posting.id} data={posting} onClick={() => this.handleJobPostingClick(posting.id)} />
             )}
           </div>

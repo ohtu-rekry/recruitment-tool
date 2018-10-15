@@ -213,5 +213,28 @@ body {
   .job-posting-form__form {
     min-width: 90%; }
 
+.job-posting-form-stages__new-stage-name {
+  display: inline-block;
+  margin-right: 35px;
+  width: 90%; }
+  @media screen and (max-width: 1050px) {
+    .job-posting-form-stages__new-stage-name {
+      width: 85%; } }
+  @media screen and (max-width: 600px) {
+    .job-posting-form-stages__new-stage-name {
+      width: 80%; } }
+  @media screen and (max-width: 460px) {
+    .job-posting-form-stages__new-stage-name {
+      width: 75%; } }
+
+.job-posting-form-stages__new-stage-add-button {
+  display: inline-block; }
+
+.job-posting-form-stages__stage-list {
+  padding: 5px 0 5px 0; }
+
+.job-posting-form-stages__single-stage {
+  padding: 5px; }
+
 body {
   background-color: #f5f5f5; }

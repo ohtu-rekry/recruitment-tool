@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
 import Typography from '@material-ui/core/Typography'
+
+import JobPostingStages from './JobPostingStages'
 import { addJobPosting } from '../../redux/actions/actions'
 
 export class JobPostingForm extends Component {
@@ -15,31 +18,35 @@ export class JobPostingForm extends Component {
     this.state = {
       title: '',
       content: '',
-      error: false
+      error: false,
+      fireRedirect: false
     }
   }
 
-  handleChange = ( event ) => {
+  handleChange = (event) => {
     this.setState({
       [event.target.id]: event.target.value,
       error: false
     })
   }
 
-  handleSubmit = ( event ) => {
+  handleSubmit = async (event) => {
     event.preventDefault()
     const { title, content } = this.state
     const recruiter = this.props.loggedIn
+    const stages = this.props.jobPostingStages
+
 
     const notOnlyWhitespaceRegex = /\S/
-    if(!(notOnlyWhitespaceRegex.test(title) && notOnlyWhitespaceRegex.test(content))) {
+    if (!(notOnlyWhitespaceRegex.test(title) && notOnlyWhitespaceRegex.test(content))) {
       this.setState({
         error: true
       })
       return
     }
 
-    this.props.addJobPosting(title, content, recruiter)
+    await this.props.addJobPosting(title, content, recruiter, stages)
+    this.setState({ fireRedirect: true })
   }
 
   render() {
@@ -48,7 +55,7 @@ export class JobPostingForm extends Component {
     const { creationRequestStatus, loggedIn } = this.props
 
     let snackbarId
-    if(creationRequestStatus) {
+    if (creationRequestStatus) {
       snackbarId = 'snackbar-' + creationRequestStatus.type
     }
 
@@ -93,6 +100,9 @@ export class JobPostingForm extends Component {
               error={error}
               disabled={!loggedIn}
             />
+
+            <JobPostingStages />
+
             <br />
             <Button id='button-submit'
               color='inherit'
@@ -102,6 +112,11 @@ export class JobPostingForm extends Component {
             >Create job posting</Button>
           </form>
         </Paper>
+        <div>
+          {this.state.fireRedirect && (
+            <Redirect to='/' />
+          )}
+        </div>
       </div>
     )
   }
@@ -111,12 +126,14 @@ export class JobPostingForm extends Component {
 JobPostingForm.propTypes = {
   creationRequestStatus: PropTypes.object,
   loggedIn: PropTypes.object,
+  jobPostingStages: PropTypes.array,
   addJobPosting: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
   creationRequestStatus: state.jobPostingReducer.creationRequestStatus,
-  loggedIn: state.loginReducer.loggedIn
+  loggedIn: state.loginReducer.loggedIn,
+  jobPostingStages: state.jobPostingReducer.jobPostingStages
 })
 
 const mapDispatchToProps = {
