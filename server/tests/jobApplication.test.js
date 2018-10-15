@@ -21,7 +21,7 @@ describe('POST jobApplication', async () => {
   const testJobPosting = {
     title: 'Data scientist',
     content: 'Looking for data expert',
-    stages: ['application-test-example-stage1','application-test-example-stage2']
+    stages: [{ stageName: 'application-test-example-stage1' }, { stageName: 'application-test-example-stage2' }]
   }
 
   beforeAll(async () => {
