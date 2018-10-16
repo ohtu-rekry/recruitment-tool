@@ -102,7 +102,7 @@ jobPostingRouter.post('/', async (request, response) => {
 jobPostingRouter.get('/:id/applicants', async (request, response) => {
   try {
     const token = request.token
-    const id = request.params.id
+    const postId = request.params.id
 
     if (!token) {
       return response.status(401).json({ error: 'Operation unauthorized' })
@@ -114,13 +114,30 @@ jobPostingRouter.get('/:id/applicants', async (request, response) => {
       return response.status(401).json({ error: 'Operation unauthorized' })
     }
 
-    const applicants = await JobApplication.findAll({
+    const stages = await PostingStage.findAll({
       where: {
-        jobPostingId: id
+        jobPostingId: postId
       }
     })
 
-    response.status(200).json(applicants)
+    const stagesWithApplicants = await Promise.all(
+      stages.map(async stage => {
+        const applicants = await JobApplication.findAll({
+          where: {
+            postingStageId: stage.id
+          }
+        })
+
+        //TODO: jotain järkevää tähän alapuolelle. Mitä hittoa oikeesti :d
+        const res = JSON.parse(JSON.stringify(stage))
+        res.applicants = [...applicants]
+
+        return res
+
+      })
+    )
+
+    response.status(200).json(stagesWithApplicants)
   } catch (error) {
     console.log(error)
   }
