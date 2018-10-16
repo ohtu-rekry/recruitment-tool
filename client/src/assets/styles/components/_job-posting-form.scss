@@ -20,15 +20,6 @@
       min-width: 90%;
     }
   
-    &__character-limit {
-      display: inline-flex;
-      float: right;
-      font-size: 14px;
-      padding-bottom: 10px;
-      @media screen and (min-width: 410px) {
-        font-size: 18px;
-      }
-    }
   }
 
   .job-posting-form-stages {
