@@ -3,7 +3,8 @@ import * as actions from '../actions/actions'
 
 const initialState = {
   errorMessage: null,
-  jobPosting: {}
+  jobPosting: {},
+  stages: []
 }
 
 const reducer = handleActions(
@@ -19,7 +20,13 @@ const reducer = handleActions(
     [actions.setJobPosting]: (state, action) => ({
       ...state,
       jobPosting: action.payload
-    })
+    }),
+    [actions.fetchApplicantsSuccess]: (state, action) => (
+      {
+        ...state,
+        stages: action.payload
+      }
+    )
   },
   initialState
 )

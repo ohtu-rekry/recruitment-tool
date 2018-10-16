@@ -8,6 +8,7 @@ import Header from '../Header'
 import Login from '../admin/Login'
 import JobPostingForm from '../jobPosting/JobPostingForm'
 import JobPosting from '../posting-page/JobPosting'
+import Applicants from '../applicants/Applicants'
 import App from '../App'
 
 class Routes extends Component {
@@ -45,6 +46,11 @@ class Routes extends Component {
               willBeLoggedIn || loggedIn
                 ? <JobPostingForm />
                 : <Redirect to='/admin/login' />
+            } />
+            <Route exact path="/jobposting/:id/applicants" render={() =>
+              loggedIn
+                ? <Applicants/>
+                : <Redirect to="/admin/login" />
             } />
             <Route exact path="/jobposting/:id" render={() => <JobPosting />} />
             <Route exact path="/" render={() => <App />} />
