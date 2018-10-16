@@ -28,7 +28,7 @@ module.exports = {
       },
       postingStageId: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       }
     })
   },
