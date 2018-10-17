@@ -48,7 +48,7 @@ class Routes extends Component {
                 : <Redirect to='/admin/login' />
             } />
             <Route exact path="/jobposting/:id/applicants" render={() =>
-              loggedIn
+              willBeLoggedIn || loggedIn
                 ? <Applicants/>
                 : <Redirect to="/admin/login" />
             } />
