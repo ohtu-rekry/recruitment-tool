@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     PostingStage.hasMany(models.JobApplication, {
       foreignKey: {name: 'postingStageId', allowNull: false },
       onDelete: 'CASCADE',
+      hooks: true,
       as: 'jobApplications'
     })
 

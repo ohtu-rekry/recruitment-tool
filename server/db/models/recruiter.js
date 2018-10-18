@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     Recruiter.hasMany(models.JobPosting, {
       foreignKey: { name: 'recruiterId', allowNull: false },
       onDelete: 'CASCADE',
+      hooks: true,
       as: 'jobPostings'
     })
   }

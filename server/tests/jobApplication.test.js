@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 
 const { app, server } = require('../src/server')
 const api = supertest(app)
-const { Recruiter, JobPosting, JobApplication, PostingStage, sequelize } = require('../db/models')
+const { Recruiter, sequelize } = require('../db/models')
 
 beforeAll(async () => {
   await sequelize.sync({ logging: false })
@@ -58,30 +58,6 @@ afterAll(async () => {
   await Recruiter.destroy({
     where: {
       username: 'recruiteradminjobapplicationtest'
-    }
-  })
-
-  await JobApplication.destroy({
-    where: {
-      applicantName: 'Mikko'
-    }
-  })
-
-  await PostingStage.destroy({
-    where: {
-      stageName: 'application-test-example-stage1'
-    }
-  })
-
-  await PostingStage.destroy({
-    where: {
-      stageName: 'application-test-example-stage2'
-    }
-  })
-
-  await JobPosting.destroy({
-    where: {
-      title: 'Data scientist'
     }
   })
 
