@@ -13,7 +13,8 @@ export class JobPosting extends Component {
       jobPosting: this.props.jobPosting,
       applicantName: '',
       applicantEmail: '',
-      inputError: null
+      inputError: null,
+      applicationSuccess: false
     }
   }
 
@@ -25,7 +26,8 @@ export class JobPosting extends Component {
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value,
-      inputError: null
+      inputError: null,
+      applicationSuccess: false
     })
   }
 
@@ -49,12 +51,13 @@ export class JobPosting extends Component {
 
     this.setState({
       applicantName: '',
-      applicantEmail: ''
+      applicantEmail: '',
+      applicationSuccess: 'Application was sent successfully!'
     })
   }
 
   render() {
-    const { applicantName, applicantEmail, inputError } = this.state
+    const { applicantName, applicantEmail, inputError, applicationSuccess } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
 
     return (
@@ -69,6 +72,7 @@ export class JobPosting extends Component {
           </Link>
         }
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+        {applicationSuccess && <SuccessMessage message={applicationSuccess} />}
         <p className='job-posting__content'>
           <ReactMarkdown source={jobPosting.content} />
         </p>
@@ -109,6 +113,14 @@ const ErrorMessage = ({ errorMessage }) => {
   return (
     <div className='job-posting__error-message'>
       {errorMessage}
+    </div>
+  )
+}
+
+const SuccessMessage = ({ message }) => {
+  return (
+    <div className='job-posting__success-message'>
+      {message}
     </div>
   )
 }
