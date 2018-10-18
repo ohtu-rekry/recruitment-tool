@@ -33,6 +33,12 @@ export class JobPosting extends Component {
     e.preventDefault()
     const { applicantName, applicantEmail } = this.state
 
+    const notOnlyWhitespaceRegex = /\S/
+    if (!notOnlyWhitespaceRegex.test(applicantName)) {
+      this.setState({ inputError: 'Please enter a name' })
+      return
+    }
+
     if (!EmailValidator.validate(applicantEmail)) {
       this.setState({ inputError: 'Please enter a valid email' })
       return
@@ -75,6 +81,7 @@ export class JobPosting extends Component {
               placeholder='Full name'
               value={applicantName}
               onChange={this.handleChange}
+              maxLength='255'
             ></input>
             <input
               required
@@ -83,6 +90,7 @@ export class JobPosting extends Component {
               placeholder='Email'
               value={applicantEmail}
               onChange={this.handleChange}
+              maxLength='255'
             ></input>
             <button
               className='job-posting__submit-button'
