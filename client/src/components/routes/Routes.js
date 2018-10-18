@@ -12,7 +12,7 @@ import Applicants from '../applicants/Applicants'
 import App from '../App'
 
 class Routes extends Component {
-  constructor( props ) {
+  constructor(props) {
     super(props)
 
     const willBeLoggedIn = (window.localStorage.getItem('loggedUser') !== null)

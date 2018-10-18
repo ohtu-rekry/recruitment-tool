@@ -31,7 +31,7 @@ export class JobPostingForm extends Component {
   }
 
   handleSubmit = async (event) => {
-    event.preventDefault()
+
     const { title, content } = this.state
     const recruiter = this.props.loggedIn
     const stages = this.props.jobPostingStages
@@ -104,12 +104,14 @@ export class JobPostingForm extends Component {
             <JobPostingStages />
 
             <br />
-            <Button id='button-submit'
-              color='inherit'
-              type="submit"
-              variant="contained"
-              disabled={!loggedIn}
-            >Create job posting</Button>
+            <div className='job-posting-form__submit-button'>
+              <Button id='button-submit'
+                color='inherit'
+                type="submit"
+                variant="contained"
+                disabled={!loggedIn}
+              >Create job posting</Button>
+            </div>
           </form>
         </Paper>
         <div>
