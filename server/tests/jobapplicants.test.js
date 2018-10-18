@@ -94,23 +94,23 @@ describe('FETCH applicants for jobPosting', async () => {
 
   afterAll(async () => {
     await JobApplication.destroy({
-      where: {},
-      truncate: true
+      where: { applicantName: newApplicant.applicantName }
+    })
+
+    await JobApplication.destroy({
+      where: { applicantName: newApplicant2.applicantName }
     })
 
     await PostingStage.destroy({
-      where: {},
-      truncate: true
+      where: { jobPostingId: jobPostingId }
     })
 
     await JobPosting.destroy({
-      where: {},
-      truncate: true
+      where: { title: newPosting.title }
     })
 
     await Recruiter.destroy({
-      where: {},
-      truncate: true
+      where: { username: newRecruiter.username }
     })
   })
 })
