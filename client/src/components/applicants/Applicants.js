@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { fetchApplicants }  from '../../redux/actions/actions'
+import * as actions from '../../redux/actions/actions'
 
 import ApplicationStages from './ApplicationStages'
 
@@ -21,24 +21,31 @@ export class Applicants extends Component {
   }
 
   componentWillReceiveProps(nProps) {
-    const { fetchApplicants } = this.props
+    const { fetchApplicants, fetchJobPosting } = this.props
     const postingId = window.location.href.split('/')[4]
     if (nProps.loggedIn && !this.state.isLoaded) {
+      fetchJobPosting(postingId)
       fetchApplicants(postingId)
       this.setState({ isLoaded: true })
     }
   }
 
   render() {
-    const { stages } = this.props
+    const { stages, jobPosting } = this.props
     return (
-      <div className='applicantion-stages'>
-        {stages.map(stage =>
-          <ApplicationStages
-            stage={stage}
-            key={stage.id}
-          />
-        )}
+      <div className='applicants'>
+        <div className='applicants__title'>{jobPosting.title}</div>
+        <button className='applicants__button'>
+          Copy as a template
+        </button>
+        <div className='applicantion-stages'>
+          {stages.map(stage =>
+            <ApplicationStages
+              stage={stage}
+              key={stage.id}
+            />
+          )}
+        </div>
       </div>
     )
   }
@@ -47,8 +54,7 @@ export class Applicants extends Component {
 Applicants.propTypes = {
   loggedIn: PropTypes.object,
   jobPosting: PropTypes.object,
-  stages: PropTypes.array,
-  fetchApplicants: PropTypes.func.isRequired
+  stages: PropTypes.array
 }
 
 const mapStateToProps = (state) => ({
@@ -58,7 +64,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  fetchApplicants
+  ...actions
 }
 
 export default connect(
