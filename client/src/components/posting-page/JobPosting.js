@@ -63,9 +63,9 @@ export class JobPosting extends Component {
           </Link>
         }
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
-        <p className='job-posting__content'>
+        <div className='job-posting__content'>
           <ReactMarkdown source={jobPosting.content} />
-        </p>
+        </div>
         <form className='job-posting__form' onSubmit={this.handleSubmit}>
           <div className='job-posting__form-container'>
             <input
@@ -90,7 +90,7 @@ export class JobPosting extends Component {
               Send
             </button>
           </div>
-          {inputError && <InputErrorMessage errorMessage={inputError}/>}
+          {inputError && <InputErrorMessage errorMessage={inputError} />}
         </form>
       </div>
     )

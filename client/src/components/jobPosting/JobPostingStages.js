@@ -15,6 +15,12 @@ export class JobPostingStages extends Component {
   }
 
   addNewStage = () => {
+
+    if (this.state.newStageName.length === 0 || !this.state.newStageName.trim()) {
+      console.log('lol')
+      return;
+    }
+
     this.props.addNewStageForJobPosting({ stageName: this.state.newStageName, canRemove: true })
     this.setState({
       newStageName: ''

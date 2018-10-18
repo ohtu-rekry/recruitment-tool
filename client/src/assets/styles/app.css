@@ -220,7 +220,8 @@ body {
     @media screen and (min-width: 410px) {
       .job-posting-form__character-limit {
         font-size: 18px; } }
-
+  .job-posting-form__submit-button {
+    margin-bottom: 10px; }
 .job-posting-form-stages__new-stage-name {
   display: inline-block;
   margin-right: 35px;
