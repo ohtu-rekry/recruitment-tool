@@ -265,12 +265,31 @@ body {
 .applicant:hover {
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2); }
 
+.applicants {
+  font-family: 'Lato', sans-serif; }
+  .applicants__title {
+    display: inline-block;
+    margin: 10px 15px 0 10px;
+    font-size: 20px;
+    font-weight: 700; }
+  .applicants__button {
+    height: 23px;
+    border: none;
+    background-color: #eeeded;
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    outline: none; }
+  .applicants__button:hover {
+    background-color: #e4e2e2; }
+
 .applicantion-stages {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
-  height: calc(100vh - 80px); }
+  height: calc(100vh - 110px); }
 
 .application-stage {
   flex: 0 0 auto;
@@ -282,12 +301,11 @@ body {
   align-content: center;
   text-align: center;
   background-color: #eeeded;
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
-  font-family: 'Lato', sans-serif; }
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2); }
   .application-stage__content {
     overflow-y: scroll;
     overflow-x: hidden;
-    max-height: calc(100vh - 180px); }
+    max-height: calc(100vh - 200px); }
   .application-stage__title {
     padding: 10px;
     margin-bottom: 10px;
