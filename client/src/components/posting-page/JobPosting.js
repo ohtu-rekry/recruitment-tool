@@ -73,9 +73,9 @@ export class JobPosting extends Component {
         }
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
         {applicationSuccess && <SuccessMessage message={applicationSuccess} />}
-        <p className='job-posting__content'>
+        <div className='job-posting__content'>
           <ReactMarkdown source={jobPosting.content} />
-        </p>
+        </div>
         <form className='job-posting__form' onSubmit={this.handleSubmit}>
           <div className='job-posting__form-container'>
             <input
