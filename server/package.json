@@ -14,7 +14,8 @@
     "lint": "node_modules/.bin/eslint .",
     "pretest": "node_modules/.bin/sequelize db:migrate",
     "test": "jest --verbose",
-    "migrate": "node_modules/.bin/sequelize db:migrate"
+    "db:migrate": "node_modules/.bin/sequelize db:migrate",
+    "db:seed": "node_modules/.bin/sequelize db:seed:all"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
