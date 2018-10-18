@@ -1,5 +1,5 @@
 const jobPostingRouter = require('express').Router()
-const { JobPosting, Recruiter, PostingStage } = require('../../db/models')
+const { JobPosting, Recruiter, PostingStage, JobApplication } = require('../../db/models')
 const jwt = require('jsonwebtoken')
 
 const validateBody = (body) => {
@@ -96,6 +96,50 @@ jobPostingRouter.post('/', async (request, response) => {
       console.log(exception)
       response.status(500).json({ error: 'Something went wrong..' })
     }
+  }
+})
+
+jobPostingRouter.get('/:id/applicants', async (request, response) => {
+  try {
+    const token = request.token
+    const postId = request.params.id
+
+    if (!token) {
+      return response.status(401).json({ error: 'Operation unauthorized' })
+    }
+
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+
+    if (!decodedToken.username) {
+      return response.status(401).json({ error: 'Operation unauthorized' })
+    }
+
+    const stages = await PostingStage.findAll({
+      where: {
+        jobPostingId: postId
+      }
+    })
+
+    const stagesWithApplicants = await Promise.all(
+      stages.map(async stage => {
+        const applicants = await JobApplication.findAll({
+          where: {
+            postingStageId: stage.id
+          }
+        })
+
+        //TODO: jotain järkevää tähän alapuolelle. Mitä hittoa oikeesti :d
+        const res = JSON.parse(JSON.stringify(stage))
+        res.applicants = [...applicants]
+
+        return res
+
+      })
+    )
+
+    response.status(200).json(stagesWithApplicants)
+  } catch (error) {
+    console.log(error)
   }
 })
 

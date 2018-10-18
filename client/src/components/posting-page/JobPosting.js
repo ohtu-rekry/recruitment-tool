@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../redux/actions/actions'
 import PropTypes from 'prop-types'
-import { LinkButton } from '../Buttons'
+import { Link } from 'react-router-dom'
 import EmailValidator from 'email-validator'
 import ReactMarkdown from 'react-markdown'
 
@@ -55,11 +55,13 @@ export class JobPosting extends Component {
       <div className='job-posting'>
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
         {loggedIn &&
-          <LinkButton
-            link={`/posting/${jobPosting.id}/applicants`}
-            text='Show applicants'
-          />}
-
+          <Link
+            to={`/jobposting/${jobPosting.id}/applicants`}
+            className='job-posting__link'
+          >
+            Show applicants
+          </Link>
+        }
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
         <p className='job-posting__content'>
           <ReactMarkdown source={jobPosting.content} />

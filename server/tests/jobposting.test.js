@@ -173,47 +173,6 @@ describe('POST method', async () => {
   })
 })
 
-/*describe('GET method', async () => {
-  beforeAll(async () => {
-    await JobPosting.create({
-      title: 'frontend developer',
-      content: '1 years of experience',
-      recruiterId: 1
-    })
-    await JobPosting.create({
-      title: 'backend developer',
-      content: '102 years of experience',
-      recruiterId: 1
-    })
-    await JobPosting.create({
-      title: 'php developer',
-      content: 'reconsider your life',
-      recruiterId: 1
-    })
-  })
-  test('can get jobpostings without being authentication', async () => {
-    const response = await api
-      .get('/api/jobposting')
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
-
-    expect(response.body.length === 3)
-  })
-  afterAll(async () => {
-    await JobPosting.destroy({
-      where: {
-        recruiterId: 1
-      }
-    })
-
-    await JobPosting.destroy({
-      where: {
-        id: 1
-      }
-    })
-  })
-})*/
-
 afterAll(async () => {
   await server.close()
   await sequelize.close()
