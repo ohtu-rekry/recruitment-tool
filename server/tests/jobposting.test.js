@@ -2,7 +2,7 @@ const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
 const bcrypt = require('bcryptjs')
-const { JobPosting, sequelize, Recruiter, PostingStage } = require('../db/models')
+const { sequelize, Recruiter } = require('../db/models')
 const { tooLongTitle } = require('../utils/jobpostingTestUtils')
 
 beforeAll(async () => {
@@ -145,26 +145,6 @@ describe('POST method', async () => {
   })
 
   afterAll(async () => {
-    await PostingStage.destroy({
-      where: {
-        stageName: 'jobposting-test-example-stage1'
-      }
-    })
-    await PostingStage.destroy({
-      where: {
-        stageName: 'jobposting-test-example-stage2'
-      }
-    })
-    await JobPosting.destroy({
-      where: {
-        title: 'Senior Java Developer'
-      }
-    })
-    await JobPosting.destroy({
-      where: {
-        title: 'Junior Front End Developer'
-      }
-    })
     await Recruiter.destroy({
       where: {
         username: testRecruiter.username

@@ -16,9 +16,7 @@ function* addJobPosting({ payload }) {
     const response = yield call(jobPostingApi.add, { jobPosting, recruiter })
 
     if (response.status === 201) {
-      const jobPostingWithRecruiter = response.data
-
-      yield put(actions.addJobPostingSuccess(jobPostingWithRecruiter))
+      yield put(actions.addJobPostingSuccess())
       yield delay(5000)
       yield put(actions.removeJobPostingCreationStatus())
     }
