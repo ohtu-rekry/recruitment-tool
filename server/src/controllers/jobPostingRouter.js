@@ -32,19 +32,21 @@ jobPostingRouter.post('/', async (request, response) => {
       recruiterId: recruiter.id
     })
 
-    return Promise.reject(body.stages.map((stage, index) =>
-      PostingStage.create({
-        stageName: stage.stageName,
-        orderNumber: index,
-        jobPostingId: posting.id
-      })
-    )).catch(error => {
+    try {
+      await Promise.all(body.stages.map((stage, index) =>
+        PostingStage.create({
+          stageName: stage.stageName,
+          orderNumber: index,
+          jobPostingId: posting.id
+        })
+      ))}
+    catch (error) {
       console.log(error)
       JobPosting.destroy({
         where: { id: posting.id }
       })
-      throw createError(error.status, error.message)
-    })
+      throw error
+    }
 })
 
 jobPostingRouter.get('/:id/applicants', async (request, response) => {
