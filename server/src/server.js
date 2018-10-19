@@ -1,30 +1,44 @@
 const express = require('express')
 const http = require('http')
-const cors = require('cors')
 const bodyParser = require('body-parser')
+const createError = require('http-errors')
+const morgan = require('morgan')
+const celebrate = require('celebrate')
 
 const loginRouter = require('./controllers/loginRouter')
 const recruiterRouter = require('./controllers/recruiterRouter')
 const jobPostingRouter = require('./controllers/jobPostingRouter')
 const jobApplicationRouter = require('./controllers/jobApplicationRouter')
 const { tokenExtractor } = require('../utils/middleware')
+const { jobPostingValidator, jobApplicationValidator } = require('./validators/validators')
 
 const PORT = process.env.port || 8080
 const HOST = '0.0.0.0'
 
 const app = express()
-app.use(cors())
+app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(tokenExtractor)
 
-app.get('/', (req, res) => {
-  res.send('Hello world! \n')
-})
-
 app.use('/api/login', loginRouter)
 app.use('/api/recruiter', recruiterRouter)
+app.post('/api/jobposting', jobPostingValidator, jobPostingRouter)
 app.use('/api/jobposting', jobPostingRouter)
+app.post('/api/jobapplication', jobApplicationValidator, jobApplicationRouter)
 app.use('/api/jobapplication', jobApplicationRouter)
+
+app.use(celebrate.errors())
+
+app.use((req, res, next) => {
+  return next(createError(400, 'Invalid request, something went wrong'))
+})
+
+app.use((error, req, res, next) => {
+  res.status(error.status || 500)
+  res.json({
+    error: error.message
+  })
+})
 
 const server = http.createServer(app)
 

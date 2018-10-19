@@ -9,8 +9,6 @@ jobApplicationRouter.get('/', async (req, res) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
 
     if (!token || !decodedToken.username) {
-      console.log(token)
-      console.log(decodedToken)
       return res.status(401).json({ error: 'Operation unauthorized' })
     }
 

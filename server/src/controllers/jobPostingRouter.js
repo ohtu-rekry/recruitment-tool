@@ -2,36 +2,6 @@ const jobPostingRouter = require('express').Router()
 const { JobPosting, Recruiter, PostingStage, JobApplication } = require('../../db/models')
 const jwt = require('jsonwebtoken')
 
-const validateBody = (body) => {
-  try {
-
-    if (!body.title) {
-      return 'Title must be defined'
-    }
-
-    if (!body.content) {
-      return 'Content must be defined'
-    }
-
-    if (!body.stages) {
-      return 'Stages must be defined'
-    }
-
-    if (body.title.length > 255) {
-      return `Title is too long, ${body.title.length} chars, when max is 255`
-    }
-
-    if (body.stages.length < 1) {
-      return 'The job posting has to have at least one posting stage'
-    }
-
-    return null
-  }
-  catch (e) {
-    throw e
-  }
-}
-
 jobPostingRouter.get('/', async (req, res) => {
   JobPosting.findAll().then(jobpostings => res.json(jobpostings))
 })
@@ -43,14 +13,7 @@ jobPostingRouter.post('/', async (request, response) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
 
     if (!token || !decodedToken.username) {
-      console.log(token)
-      console.log(decodedToken)
       return response.status(401).json({ error: 'Operation unauthorized' })
-    }
-
-    const errorMessage = validateBody(body)
-    if (errorMessage) {
-      return response.status(400).json({ error: errorMessage })
     }
 
     const recruiter = await Recruiter.findOne({
