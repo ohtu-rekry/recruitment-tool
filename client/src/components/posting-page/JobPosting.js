@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../redux/actions/actions'
 import PropTypes from 'prop-types'
-import { LinkButton } from '../Buttons'
+import { Link } from 'react-router-dom'
 import EmailValidator from 'email-validator'
 import ReactMarkdown from 'react-markdown'
 
@@ -13,7 +13,8 @@ export class JobPosting extends Component {
       jobPosting: this.props.jobPosting,
       applicantName: '',
       applicantEmail: '',
-      inputError: null
+      inputError: null,
+      applicationSuccess: false
     }
   }
 
@@ -25,13 +26,20 @@ export class JobPosting extends Component {
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value,
-      inputError: null
+      inputError: null,
+      applicationSuccess: false
     })
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
     const { applicantName, applicantEmail } = this.state
+
+    const notOnlyWhitespaceRegex = /\S/
+    if (!notOnlyWhitespaceRegex.test(applicantName)) {
+      this.setState({ inputError: 'Please enter a name' })
+      return
+    }
 
     if (!EmailValidator.validate(applicantEmail)) {
       this.setState({ inputError: 'Please enter a valid email' })
@@ -43,24 +51,28 @@ export class JobPosting extends Component {
 
     this.setState({
       applicantName: '',
-      applicantEmail: ''
+      applicantEmail: '',
+      applicationSuccess: 'Application was sent successfully!'
     })
   }
 
   render() {
-    const { applicantName, applicantEmail, inputError } = this.state
+    const { applicantName, applicantEmail, inputError, applicationSuccess } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
 
     return (
       <div className='job-posting'>
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
         {loggedIn &&
-          <LinkButton
-            link={`/posting/${jobPosting.id}/applicants`}
-            text='Show applicants'
-          />}
-
+          <Link
+            to={`/jobposting/${jobPosting.id}/applicants`}
+            className='job-posting__link'
+          >
+            Show applicants
+          </Link>
+        }
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+        {applicationSuccess && <SuccessMessage message={applicationSuccess} />}
         <div className='job-posting__content'>
           <ReactMarkdown source={jobPosting.content} />
         </div>
@@ -73,6 +85,7 @@ export class JobPosting extends Component {
               placeholder='Full name'
               value={applicantName}
               onChange={this.handleChange}
+              maxLength='255'
             ></input>
             <input
               required
@@ -81,6 +94,7 @@ export class JobPosting extends Component {
               placeholder='Email'
               value={applicantEmail}
               onChange={this.handleChange}
+              maxLength='255'
             ></input>
             <button
               className='job-posting__submit-button'
@@ -99,6 +113,14 @@ const ErrorMessage = ({ errorMessage }) => {
   return (
     <div className='job-posting__error-message'>
       {errorMessage}
+    </div>
+  )
+}
+
+const SuccessMessage = ({ message }) => {
+  return (
+    <div className='job-posting__success-message'>
+      {message}
     </div>
   )
 }

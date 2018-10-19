@@ -1,0 +1,71 @@
+.applicants {
+  font-family: 'Lato', sans-serif;
+  
+  &__title {
+    display: inline-block;
+    margin: 10px 15px 0 10px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  &__button {
+    height: 23px;
+    border: none;
+    background-color: $gray-darker;
+    border-radius: 12px;
+    padding: 3px 10px; 
+    font-size: 12px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  &__button:hover {
+    background-color: $gray-darkest;
+  }
+}
+
+.applicantion-stages {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: calc(100vh - 110px);
+}
+
+.application-stage {
+  flex: 0 0 auto;
+  height: fit-content;
+  width: 300px;
+  margin: 10px;
+  padding: 5px 3px 10px;
+  border-radius: 12px;
+  align-content: center;
+  text-align: center;
+  background-color: $gray-darker;
+  box-shadow: 0 2px 6px 0 rgba(0,0,0,0.2);
+
+  &__content {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: calc(100vh - 200px);
+  }
+
+  &__title {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: $emblica-blue;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,0.2);
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 12px;
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: auto;
+  }
+}
+
+.application-stage:hover {
+  box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
+}
+

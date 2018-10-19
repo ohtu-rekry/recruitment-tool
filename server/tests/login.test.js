@@ -13,7 +13,7 @@ beforeAll(async () => {
 
 describe('LOGIN AS RECRUITER', async () => {
   const newRecruiter = {
-    username: 'admin',
+    username: 'adminlogin',
     password: 'hunter2'
   }
 
