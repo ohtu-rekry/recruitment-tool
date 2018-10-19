@@ -1,13 +1,13 @@
-const jobPostingRouter = require('express').Router()
+const jobPostingRouter = require('express-promise-router')()
 const { JobPosting, Recruiter, PostingStage, JobApplication } = require('../../db/models')
 const jwt = require('jsonwebtoken')
+const createError = require('http-errors')
 
 jobPostingRouter.get('/', async (req, res) => {
-  JobPosting.findAll().then(jobpostings => res.json(jobpostings))
+  return Promise.resolve(JobPosting.findAll().then(jobpostings => res.json(jobpostings)))
 })
 
 jobPostingRouter.post('/', async (request, response) => {
-  try {
     const body = request.body
     const token = request.token
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
@@ -32,7 +32,7 @@ jobPostingRouter.post('/', async (request, response) => {
       recruiterId: recruiter.id
     })
 
-    await Promise.all(body.stages.map((stage, index) =>
+    return Promise.reject(body.stages.map((stage, index) =>
       PostingStage.create({
         stageName: stage.stageName,
         orderNumber: index,
@@ -43,23 +43,8 @@ jobPostingRouter.post('/', async (request, response) => {
       JobPosting.destroy({
         where: { id: posting.id }
       })
-      throw new Error('PostingStageError')
+      throw createError(error.status, error.message)
     })
-
-    response.status(201).json(posting)
-
-  } catch (exception) {
-    if (exception.name === 'JsonWebTokenError') {
-      response.status(401).json({ error: exception.message })
-
-    } else if (exception.name === 'Error' && exception.message === 'PostingStageError') {
-      response.status(400).json({ error: 'Could not create posting stages' })
-
-    } else {
-      console.log(exception)
-      response.status(500).json({ error: 'Something went wrong..' })
-    }
-  }
 })
 
 jobPostingRouter.get('/:id/applicants', async (request, response) => {
