@@ -3,13 +3,13 @@
 module.exports = (sequelize, DataTypes) => {
 
   const JobApplication = sequelize.define('JobApplication', {
-    applicantName: DataTypes.STRING,
-    applicantEmail: DataTypes.STRING
+    applicantName: {type: DataTypes.STRING, allowNull: false},
+    applicantEmail: {type: DataTypes.STRING, allowNull: false}
   }, {})
 
   JobApplication.associate = function(models) {
     JobApplication.belongsTo(models.PostingStage, {
-      foreignKey: 'postingStageId',
+      foreignKey: { name: 'postingStageId', allowNull: false },
       onDelete: 'CASCADE',
       hooks: true
     })

@@ -16,7 +16,7 @@ const reducer = handleActions(
       jobPostings: action.payload
     }),
     [actions.addJobPostingSuccess]: (state, action) => ({
-      jobPostings: [...state.jobPostings, action.payload],
+      ...state,
       creationRequestStatus: { message: creationSuccessMessage, type: 'success' }
     }),
     [actions.addJobPostingFailure]: (state, action) => (

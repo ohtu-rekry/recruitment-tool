@@ -219,14 +219,6 @@ body {
     color: #002234; }
   .job-posting-form__form {
     min-width: 90%; }
-  .job-posting-form__character-limit {
-    display: inline-flex;
-    float: right;
-    font-size: 14px;
-    padding-bottom: 10px; }
-    @media screen and (min-width: 410px) {
-      .job-posting-form__character-limit {
-        font-size: 18px; } }
 
 .job-posting-form-stages__new-stage-name {
   display: inline-block;
