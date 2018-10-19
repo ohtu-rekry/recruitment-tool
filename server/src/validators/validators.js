@@ -16,9 +16,25 @@ const jobApplicationValidator = celebrate({
   })
 })
 
+const loginValidator = celebrate({
+  body: Joi.object().keys({
+    username: Joi.string().required(),
+    password: Joi.string().required()
+  })
+})
+
+const recruiterValidator = celebrate({
+  body: Joi.object().keys({
+    username: Joi.string().required(),
+    password: Joi.string().required()
+  })
+})
+
 const validators = {
   jobPostingValidator,
-  jobApplicationValidator
+  jobApplicationValidator,
+  loginValidator,
+  recruiterValidator
 }
 
 module.exports = validators
