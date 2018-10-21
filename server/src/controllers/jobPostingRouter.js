@@ -1,68 +1,50 @@
 const jobPostingRouter = require('express-promise-router')()
 const { JobPosting, Recruiter, PostingStage, JobApplication } = require('../../db/models')
 const jwt = require('jsonwebtoken')
-const createError = require('http-errors')
+const { jwtMiddleware } = require('../../utils/middleware')
+const { jobPostingValidator } = require('../../utils/validators')
 
 jobPostingRouter.get('/', async (req, res) => {
-  return Promise.resolve(JobPosting.findAll().then(jobpostings => res.json(jobpostings)))
+  return await JobPosting.findAll().then(jobpostings => res.json(jobpostings))
 })
 
-jobPostingRouter.post('/', async (request, response) => {
-    const body = request.body
-    const token = request.token
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator,  async (req, res) => {
+  const body = req.body
 
-    if (!token || !decodedToken.username) {
-      return response.status(401).json({ error: 'Operation unauthorized' })
+  const decodedToken = jwt.verify(req.token, process.env.JWT_SECRET)
+
+  const recruiter = await Recruiter.findOne({
+    where: {
+      username: decodedToken.username
     }
+  })
 
-    const recruiter = await Recruiter.findOne({
-      where: {
-        username: decodedToken.username
-      }
-    })
+  const posting = await JobPosting.create({
+    title: body.title,
+    content: body.content,
+    recruiterId: recruiter.id
+  })
 
-    if (!recruiter) {
-      return response.status(500).json({ error: 'Logged in user not found in database' })
-    }
-
-    const posting = await JobPosting.create({
-      title: body.title,
-      content: body.content,
-      recruiterId: recruiter.id
-    })
-
-    try {
-      await Promise.all(body.stages.map((stage, index) =>
-        PostingStage.create({
-          stageName: stage.stageName,
-          orderNumber: index,
-          jobPostingId: posting.id
-        })
-      ))}
-    catch (error) {
-      console.log(error)
-      JobPosting.destroy({
-        where: { id: posting.id }
-      })
-      throw error
-    }
-})
-
-jobPostingRouter.get('/:id/applicants', async (request, response) => {
   try {
-    const token = request.token
-    const postId = request.params.id
+    await Promise.all(body.stages.map((stage, index) =>
+      PostingStage.create({
+        stageName: stage.stageName,
+        orderNumber: index,
+        jobPostingId: posting.id
+      })
+    ))
+    res.status(200).json({ message: 'Jobposting created succesfully' })
+  } catch (error) {
+    await JobPosting.destroy({
+      where: { id: posting.id }
+    })
+    throw error
+  }
+})
 
-    if (!token) {
-      return response.status(401).json({ error: 'Operation unauthorized' })
-    }
-
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-
-    if (!decodedToken.username) {
-      return response.status(401).json({ error: 'Operation unauthorized' })
-    }
+jobPostingRouter.get('/:id/applicants', jwtMiddleware, async (req, res) => {
+  try {
+    const postId = req.params.id
 
     const stages = await PostingStage.findAll({
       where: {
@@ -87,9 +69,9 @@ jobPostingRouter.get('/:id/applicants', async (request, response) => {
       })
     )
 
-    response.status(200).json(stagesWithApplicants)
+    res.status(200).json(stagesWithApplicants)
   } catch (error) {
-    console.log(error)
+    throw error
   }
 })
 
