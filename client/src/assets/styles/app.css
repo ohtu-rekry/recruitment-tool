@@ -219,9 +219,6 @@ body {
     color: #002234; }
   .job-posting-form__form {
     min-width: 90%; }
-<<<<<<< HEAD
-
-=======
   .job-posting-form__character-limit {
     display: inline-flex;
     float: right;
@@ -232,11 +229,7 @@ body {
         font-size: 18px; } }
   .job-posting-form__submit-button {
     margin-bottom: 10px; }
-<<<<<<< HEAD
->>>>>>> User can't add empty states, UI fixes
-=======
 
->>>>>>> Feature for copying existing stages for new job posting
 .job-posting-form-stages__new-stage-name {
   display: inline-block;
   margin-right: 35px;
@@ -281,7 +274,6 @@ body {
 .applicant:hover {
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2); }
 
-<<<<<<< HEAD
 .applicants {
   font-family: 'Lato', sans-serif; }
   .applicants__title {
@@ -291,20 +283,14 @@ body {
     font-weight: 700; }
   .applicants__button {
     height: 23px;
-    border: none;
-    background-color: #eeeded;
     border-radius: 12px;
     padding: 3px 10px;
     font-size: 12px;
     cursor: pointer;
-    outline: none; }
-  .applicants__button:hover {
-    background-color: #e4e2e2; }
+    outline: none;
+    display: inline-block; }
 
-.applicantion-stages {
-=======
 .application-stages {
->>>>>>> Feature for copying existing stages for new job posting
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
