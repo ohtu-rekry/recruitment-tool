@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import * as actions from '../../redux/actions/actions'
+import { fetchApplicants, copyStages } from '../../redux/actions/actions'
 
+import CopyStagesButton from './CopyStagesButton'
 import ApplicationStages from './ApplicationStages'
 
 export class Applicants extends Component {
@@ -64,7 +66,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  ...actions
+  fetchApplicants,
+  copyStages
 }
 
 export default connect(

@@ -97,6 +97,14 @@ function* fetchJobPostingApplicants({ payload }) {
   }
 }
 
+function* copyStages({ payload }) {
+  yield put(actions.copyStages(payload.stages))
+}
+
+function* clearCopiedStages() {
+  yield put(actions.clearCopiedStages())
+}
+
 export const getCurrentUser = state => state.loginReducer.loggedIn
 
 export const watchFetchJobPosting = takeLatest(actions.fetchJobPosting().type, fetchJobPosting)
@@ -109,3 +117,5 @@ export const watchFetchApplicants = takeLatest(
   actions.fetchApplicants().type,
   fetchJobPostingApplicants
 )
+export const watchCopyStages = takeEvery(actions.copyStages().type, copyStages)
+export const watchClearCopiedStages = takeEvery(actions.clearCopiedStages().type, clearCopiedStages)
