@@ -72,10 +72,7 @@ export class JobPosting extends Component {
           </Link>
         }
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
-<<<<<<< HEAD
         {applicationSuccess && <SuccessMessage message={applicationSuccess} />}
-=======
->>>>>>> User can't add empty states, UI fixes
         <div className='job-posting__content'>
           <ReactMarkdown source={jobPosting.content} />
         </div>

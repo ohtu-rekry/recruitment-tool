@@ -37,9 +37,9 @@ export class Applicants extends Component {
     return (
       <div className='applicants'>
         <div className='applicants__title'>{jobPosting.title}</div>
-        <button className='applicants__button'>
-          Copy as a template
-        </button>
+        <div className='applicants__button' onClick={() => this.props.copyStages(stages)}>
+          <CopyStagesButton />
+        </div>
         <div className='applicantion-stages'>
           {stages.map(stage =>
             <ApplicationStages

@@ -243,7 +243,7 @@ body {
   .job-posting-form-submit-button__submit-button {
     margin-bottom: 10px; }
 
-.job-posting-form-stages__new-stage-name {
+    .job-posting-form-stages__new-stage-name {
   display: inline-block;
   margin-right: 35px;
   width: 90%; }
@@ -313,7 +313,7 @@ body {
   .applicants__button:hover {
     background-color: #e4e2e2; }
 
-.application-stages {
+.applicantion-stages {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;

@@ -20,6 +20,9 @@ export const addEndDate = createAction('ADD_END_DATE', (endDate) => ({ endDate }
 export const copyStages = createAction('COPY_STAGES', (stages) => ({ stages }))
 export const clearCopiedStages = createAction('CLEAR_COPIED_STAGES')
 
+export const copyStages = createAction('COPY_STAGES', (stages) => ({ stages }))
+export const clearCopiedStages = createAction('CLEAR_COPIED_STAGES')
+
 export const sendApplication = createAction(
   'SEND_APPLICATION', (applicantName, applicantEmail, jobPostingId) => ({
     applicantName, applicantEmail, jobPostingId
