@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { fetchApplicants }  from '../../redux/actions/actions'
+import { fetchApplicants, copyStages } from '../../redux/actions/actions'
 
+import CopyStagesButton from './CopyStagesButton'
 import ApplicationStages from './ApplicationStages'
 
 export class Applicants extends Component {
@@ -32,7 +33,10 @@ export class Applicants extends Component {
   render() {
     const { stages } = this.props
     return (
-      <div className='applicantion-stages'>
+      <div className='application-stages'>
+        <div className='stages-copy-button' onClick={() => this.props.copyStages(stages)}>
+          <CopyStagesButton />
+        </div>
         {stages.map(stage =>
           <ApplicationStages
             stage={stage}
@@ -58,7 +62,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  fetchApplicants
+  fetchApplicants,
+  copyStages
 }
 
 export default connect(

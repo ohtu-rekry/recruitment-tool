@@ -15,6 +15,9 @@ export const removeJobPostingCreationStatus = createAction('REMOVE_JOB_POSTING_C
 export const addNewStageForJobPosting = createAction('ADD_NEW_STAGE_FOR_JOB_POSTING', (newStage) => (newStage))
 export const removeStageInJobPosting = createAction('REMOVE_STAGE_IN_JOB_POSTING', (stage) => (stage))
 
+export const copyStages = createAction('COPY_STAGES', (stages) => ({ stages }))
+export const clearCopiedStages = createAction('CLEAR_COPIED_STAGES')
+
 export const sendApplication = createAction(
   'SEND_APPLICATION', (applicantName, applicantEmail, jobPostingId) => ({
     applicantName, applicantEmail, jobPostingId

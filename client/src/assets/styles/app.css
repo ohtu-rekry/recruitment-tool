@@ -222,6 +222,7 @@ body {
         font-size: 18px; } }
   .job-posting-form__submit-button {
     margin-bottom: 10px; }
+
 .job-posting-form-stages__new-stage-name {
   display: inline-block;
   margin-right: 35px;
@@ -266,12 +267,15 @@ body {
 .applicant:hover {
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2); }
 
-.applicantion-stages {
+.application-stages {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
   height: calc(100vh - 80px); }
+
+.stages-copy-button {
+  display: inline; }
 
 .application-stage {
   flex: 0 0 auto;
