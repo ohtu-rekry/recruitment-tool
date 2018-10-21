@@ -24,12 +24,16 @@
   }
 }
 
-.applicantion-stages {
+.application-stages {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
   height: calc(100vh - 110px);
+}
+
+.stages-copy-button {
+  display: inline;
 }
 
 .application-stage {

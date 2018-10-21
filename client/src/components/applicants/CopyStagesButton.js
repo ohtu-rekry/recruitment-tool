@@ -1,16 +1,18 @@
-//jobposting/:id/applicants
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 
-export default CopyStagesButton = () => {
 
-  button = () => {
-    console.log('button')
-  }
-
+const CopyStagesButton = () => {
   return (
     <div>
-      {this.button}
-    </div>
+      <Link to='/jobposting/new'>
+        <Button variant='outlined'>
+          Copy Templates
+        </Button>
+      </Link>
+    </div >
   )
 }
+
+export default CopyStagesButton
