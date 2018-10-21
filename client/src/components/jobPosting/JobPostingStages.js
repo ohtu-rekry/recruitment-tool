@@ -15,7 +15,6 @@ export class JobPostingStages extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.stages)
     if (this.props.stages !== null) {
       this.addCopiedStagesToNewJobPosting()
     }
@@ -32,7 +31,7 @@ export class JobPostingStages extends Component {
 
   addNewStage = () => {
     if (this.state.newStageName.length === 0 || !this.state.newStageName.trim() || this.state.newStageName.length > 255) {
-      return;
+      return
     }
 
     this.props.addNewStageForJobPosting({ stageName: this.state.newStageName, canRemove: true })

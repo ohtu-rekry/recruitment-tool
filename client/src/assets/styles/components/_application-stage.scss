@@ -10,17 +10,12 @@
 
   &__button {
     height: 23px;
-    border: none;
-    background-color: $gray-darker;
     border-radius: 12px;
     padding: 3px 10px; 
     font-size: 12px;
     cursor: pointer;
     outline: none;
-  }
-
-  &__button:hover {
-    background-color: $gray-darkest;
+    display: inline-block;
   }
 }
 

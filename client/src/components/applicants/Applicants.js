@@ -40,7 +40,7 @@ export class Applicants extends Component {
         <div className='applicants__button' onClick={() => this.props.copyStages(stages)}>
           <CopyStagesButton />
         </div>
-        <div className='applicantion-stages'>
+        <div className='application-stages'>
           {stages.map(stage =>
             <ApplicationStages
               stage={stage}
