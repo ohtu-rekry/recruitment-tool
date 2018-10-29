@@ -11,7 +11,7 @@ min-height: 20%;
 font-family: 'Roboto', sans-serif;
 display: flex;
 flex-direction: column;
-align-items: center;
+align-items: left;
 
 @media screen and (min-width: 750px){
   max-width: 80%
@@ -25,6 +25,7 @@ align-items: center;
     padding: 0px 20px;
     color: $emblica-blue;
     font-size: 26px;
+    overflow-wrap: break-word;
   }
   
   &__content {
@@ -33,6 +34,7 @@ align-items: center;
   }
 
   &__form {
+    align-self: center;
     padding: 10px 10px;
   }
 
@@ -124,6 +126,10 @@ align-items: center;
   border-top-width: 1px;
   border-color: #c5c5c5;
   overflow-wrap: break-word;
+
+  &__link {
+    text-decoration: none;
+  }
 }
 
 .job-posting-listing:hover {
