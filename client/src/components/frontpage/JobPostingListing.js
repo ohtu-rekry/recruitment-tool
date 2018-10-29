@@ -14,7 +14,7 @@ const JobPostingListing = (props) => {
     <Link
       to={`/jobposting/${props.data.id}`}
       key={props.data.id}
-      className='job-posting__link' >
+      className='job-posting-listing__link' >
       <div className='job-posting-listing'>
         <div className='job-posting-listing__title'>
           <Typography variant='headline' style={titleStyle}>{props.data.title}</Typography>

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import * as actions from '../../redux/actions/actions'
 import PropTypes from 'prop-types'
 import { Link, withRouter } from 'react-router-dom'
+import Button from '@material-ui/core/Button'
 import EmailValidator from 'email-validator'
 import ReactMarkdown from 'react-markdown'
 
@@ -62,17 +63,18 @@ export class JobPosting extends Component {
     const { applicantName, applicantEmail, inputError } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
 
+    const LinkToApplicants = props => <Link to={`/jobposting/${jobPosting.id}/applicants`} {...props} />
+
     return (
       <div className='job-posting'>
-        <h2 className='job-posting__title'>{jobPosting.title}</h2>
         {loggedIn &&
-          <Link
-            to={`/jobposting/${jobPosting.id}/applicants`}
+          <Button
             className='job-posting__link'
-          >
-            Show applicants
-          </Link>
+            component={LinkToApplicants}>
+          See applicants
+          </Button>
         }
+        <h2 className='job-posting__title'>{jobPosting.title}</h2>
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
         <div className='job-posting__content'>
           <ReactMarkdown source={jobPosting.content} />

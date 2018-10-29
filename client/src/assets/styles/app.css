@@ -93,7 +93,7 @@ body {
   font-family: 'Roboto', sans-serif;
   display: flex;
   flex-direction: column;
-  align-items: center; }
+  align-items: left; }
   @media screen and (min-width: 750px) {
     .job-posting {
       max-width: 80%; } }
@@ -102,11 +102,13 @@ body {
   .job-posting__title {
     padding: 0px 20px;
     color: #002234;
-    font-size: 26px; }
+    font-size: 26px;
+    overflow-wrap: break-word; }
   .job-posting__content {
     padding: 10px 30px;
     margin-top: 0px; }
   .job-posting__form {
+    align-self: center;
     padding: 10px 10px; }
   .job-posting__form-input {
     border: 2;
@@ -180,6 +182,8 @@ body {
   border-top-width: 1px;
   border-color: #c5c5c5;
   overflow-wrap: break-word; }
+  .job-posting-listing__link {
+    text-decoration: none; }
 
 .job-posting-listing:hover {
   cursor: pointer;
