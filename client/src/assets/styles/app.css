@@ -352,4 +352,5 @@ body {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2); }
 
 body {
-  background-color: #f5f5f5; }
+  background-color: #f5f5f5;
+  margin: 0; }
