@@ -1,6 +1,3 @@
-const supertest = require('supertest')
-const { app, server } = require('../src/server')
-const api = supertest(app)
 const { Recruiter, sequelize } = require('../db/models')
 
 beforeAll(async () => {
@@ -37,6 +34,5 @@ test('Travis configuration for postgresql works', async () => {
 })
 
 afterAll(async () => {
-  await server.close()
   await sequelize.close()
 })

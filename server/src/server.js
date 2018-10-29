@@ -26,7 +26,7 @@ app.use('/api/jobapplication', jobApplicationRouter)
 /* eslint-disable-next-line */
 app.use((error, req, res, next) => {
   if (celebrate.isCelebrate(error)) {
-    const message = error.details[0].message.replace(/[^a-zA-Z1-9 ]/g, "")
+    const message = error.details[0].message.replace(/[^a-zA-Z1-9 ]/g, '')
     res.status(400)
     res.json({
       error: message

@@ -110,7 +110,7 @@ describe('FETCH applicants for jobPosting', async () => {
     })
 
     await JobPosting.destroy({
-      where: { content: 'POTUS NEEDED'}
+      where: { content: 'POTUS NEEDED' }
     })
 
     await Recruiter.destroy({
