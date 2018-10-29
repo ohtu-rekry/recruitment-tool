@@ -33,6 +33,8 @@
         height: 40px;
         font-size: 15px;
         padding-left: 5px; }
+      .admin-login-card__username-container_input:required, .admin-login-card__password-container_input:required {
+        box-shadow: none; }
     .admin-login-card__username_icon, .admin-login-card__password_icon {
       color: #002234;
       width: 20px;
@@ -170,6 +172,8 @@ body {
     @media screen and (min-width: 410px) {
       .job-posting__character-limit {
         font-size: 18px; } }
+  .job-posting input:required {
+    box-shadow: none; }
 
 .job-posting-listing {
   border-top-style: solid;
@@ -274,7 +278,7 @@ body {
     color: red; }
 
 .applicant {
-  margin: 10px 13px 10px 10px;
+  margin: 10px;
   padding: 10px 0;
   background-color: #f8f8f8;
   border-radius: 10px;
@@ -315,15 +319,15 @@ body {
   flex-wrap: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
-  height: calc(100vh - 110px); }
+  height: calc(100vh - 113px); }
 
 .stages-copy-button {
   display: inline; }
 
 .application-stage {
-  flex: 0 0 auto;
-  height: fit-content;
-  width: 300px;
+  flex: none;
+  display: table;
+  width: 290px;
   margin: 10px;
   padding: 5px 3px 10px;
   border-radius: 12px;
@@ -332,9 +336,9 @@ body {
   background-color: #eeeded;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2); }
   .application-stage__content {
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
-    max-height: calc(100vh - 200px); }
+    max-height: calc(100vh - 210px); }
   .application-stage__title {
     padding: 10px;
     margin-bottom: 10px;
@@ -347,6 +351,11 @@ body {
     white-space: nowrap;
     overflow-y: hidden;
     overflow-x: auto; }
+  .application-stage ::-webkit-scrollbar {
+    background: transparent;
+    width: 5px; }
+  .application-stage ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); }
 
 .application-stage:hover {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2); }
