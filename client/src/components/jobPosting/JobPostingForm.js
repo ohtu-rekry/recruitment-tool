@@ -100,24 +100,27 @@ export class JobPostingForm extends Component {
               error={error}
               disabled={!loggedIn}
             />
-
-            <JobPostingStages />
-
             <br />
+          </form>
+          <div className='job-posting-form__form'>
+            <JobPostingStages />
+          </div>
+          <div className='job-posting-form-submit-button'>
             <Button id='button-submit'
               color='inherit'
-              type="submit"
-              variant="contained"
+              type='submit'
+              form='job-posting-form'
+              variant='contained'
               disabled={!loggedIn}
             >Create job posting</Button>
-          </form>
+          </div>
         </Paper>
         <div>
           {this.state.fireRedirect && (
             <Redirect to='/' />
           )}
         </div>
-      </div>
+      </div >
     )
   }
 }
