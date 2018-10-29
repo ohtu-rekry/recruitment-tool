@@ -57,7 +57,7 @@ describe('CREATE RECRUITER USER', async () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(result.body).toEqual({ error: 'Password must include minimum 3 characters.' })
+    expect(result.body).toEqual({ error: 'password length must be at least 3 characters long' })
   })
 
   afterAll(async () => {

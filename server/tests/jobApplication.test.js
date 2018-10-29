@@ -85,6 +85,12 @@ afterAll(async () => {
     }
   })
 
+  await JobPosting.destroy({
+    where: {
+      content: 'POTUS NEEDED'
+    }
+  })
+
   await server.close()
   await sequelize.close()
 })

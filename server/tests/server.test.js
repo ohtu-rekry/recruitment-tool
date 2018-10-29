@@ -10,13 +10,6 @@ beforeAll(async () => {
     })
 })
 
-test('example test to run', async () => {
-  await api
-    .get('/')
-    .expect(200)
-    .expect('Hello world! \n')
-})
-
 test('Travis configuration for postgresql works', async () => {
   const newUser = await Recruiter.create({
     username: 'testuser',

@@ -23,14 +23,20 @@ app.use('/api/recruiter', recruiterRouter)
 app.use('/api/jobposting', jobPostingRouter)
 app.use('/api/jobapplication', jobApplicationRouter)
 
-app.use(celebrate.errors())
-
 /* eslint-disable-next-line */
 app.use((error, req, res, next) => {
-  res.status(error.status || 500)
-  res.json({
-    error: error.message
-  })
+  if (celebrate.isCelebrate(error)) {
+    const message = error.details[0].message.replace(/[^a-zA-Z1-9 ]/g, "")
+    res.status(400)
+    res.json({
+      error: message
+    })
+  } else {
+    res.status(error.status || 500)
+    res.json({
+      error: error.message
+    })
+  }
 })
 
 const server = http.createServer(app)

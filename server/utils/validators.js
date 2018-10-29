@@ -26,7 +26,7 @@ const loginValidator = celebrate({
 const recruiterValidator = celebrate({
   body: Joi.object().keys({
     username: Joi.string().required(),
-    password: Joi.string().required()
+    password: Joi.string().required().min(3)
   })
 })
 

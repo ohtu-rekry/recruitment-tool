@@ -33,7 +33,7 @@ jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator,  async (req, res)
         jobPostingId: posting.id
       })
     ))
-    res.status(200).json({ message: 'Jobposting created succesfully' })
+    res.status(201).json(posting)
   } catch (error) {
     await JobPosting.destroy({
       where: { id: posting.id }
