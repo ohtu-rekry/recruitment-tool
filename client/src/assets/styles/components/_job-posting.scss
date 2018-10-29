@@ -113,6 +113,10 @@ align-items: center;
       font-size: 18px;
     }
   }
+
+  input:required {
+    box-shadow: none;
+  }
 }
 
 .job-posting-listing {
