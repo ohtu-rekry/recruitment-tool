@@ -44,7 +44,6 @@ export class JobPostingForm extends Component {
       })
       return
     }
-    console.log(title, content, recruiter, stages)
     await this.props.addJobPosting(title, content, recruiter, stages)
     this.setState({ fireRedirect: true })
   }

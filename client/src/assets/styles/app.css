@@ -282,13 +282,18 @@ body {
     font-size: 20px;
     font-weight: 700; }
   .applicants__button {
+    background-color: #002234;
+    border: none;
+    color: white;
     height: 23px;
-    border-radius: 12px;
+    border-radius: 15px;
     padding: 3px 10px;
     font-size: 12px;
     cursor: pointer;
     outline: none;
     display: inline-block; }
+  .applicants__button:hover {
+    box-shadow: 0 0 1px 1.5px rgba(0, 0, 0, 0.2); }
 
 .application-stages {
   display: flex;
@@ -296,9 +301,6 @@ body {
   overflow-x: auto;
   overflow-y: hidden;
   height: calc(100vh - 110px); }
-
-.stages-copy-button {
-  display: inline; }
 
 .stages-copy-button {
   display: inline; }
