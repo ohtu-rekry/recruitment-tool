@@ -89,7 +89,7 @@ describe('FETCH applicants for jobPosting', async () => {
       .expect(401)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body).toEqual({ error: 'Operation unauthorized' })
+    expect(response.body).toEqual({ error: 'No authorization token was found' })
   })
 
   afterAll(async () => {
@@ -107,6 +107,10 @@ describe('FETCH applicants for jobPosting', async () => {
 
     await JobPosting.destroy({
       where: { title: newPosting.title }
+    })
+
+    await JobPosting.destroy({
+      where: { content: 'POTUS NEEDED' }
     })
 
     await Recruiter.destroy({

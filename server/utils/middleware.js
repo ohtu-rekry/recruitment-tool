@@ -1,3 +1,5 @@
+const expressJwt = require('express-jwt')
+
 const tokenExtractor = (request, response, next) => {
   const auth = request.get('authorization')
   let token = null
@@ -10,4 +12,6 @@ const tokenExtractor = (request, response, next) => {
   next()
 }
 
-module.exports = { tokenExtractor }
+const jwtMiddleware = expressJwt({ secret: process.env.JWT_SECRET })
+
+module.exports = { tokenExtractor, jwtMiddleware }
