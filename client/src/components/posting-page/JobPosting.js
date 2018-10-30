@@ -10,7 +10,6 @@ export class JobPosting extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      jobPosting: this.props.jobPosting,
       applicantName: '',
       applicantEmail: '',
       inputError: null,
@@ -21,6 +20,10 @@ export class JobPosting extends Component {
   componentDidMount() {
     const jobPostingId = window.location.href.split('/')[4]
     this.props.fetchJobPosting(jobPostingId)
+  }
+
+  componentWillUnmount() {
+    this.props.emptyJobPosting()
   }
 
   handleChange = (e) => {
@@ -136,7 +139,9 @@ const InputErrorMessage = ({ errorMessage }) => {
 JobPosting.propTypes = {
   errorMessage: PropTypes.string,
   jobPosting: PropTypes.object.isRequired,
-  loggedIn: PropTypes.object
+  loggedIn: PropTypes.object,
+  emptyJobPosting: PropTypes.func.isRequired,
+  fetchJobPosting: PropTypes.func.isRequired
 }
 
 InputErrorMessage.propTypes = {
