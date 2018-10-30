@@ -17,6 +17,7 @@ function* addJobPosting({ payload }) {
 
     if (response.status === 201) {
       yield put(actions.addJobPostingSuccess())
+      yield call(fetchJobPostings)
       yield delay(5000)
       yield put(actions.removeJobPostingCreationStatus())
     }
