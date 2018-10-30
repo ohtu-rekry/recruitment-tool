@@ -219,6 +219,16 @@ body {
     color: #002234; }
   .job-posting-form__form {
     min-width: 90%; }
+  .job-posting-form__character-limit {
+    display: inline-flex;
+    float: right;
+    font-size: 14px;
+    padding-bottom: 10px; }
+    @media screen and (min-width: 410px) {
+      .job-posting-form__character-limit {
+        font-size: 18px; } }
+  .job-posting-form__submit-button {
+    margin-bottom: 10px; }
 
 .job-posting-form-submit-button {
   padding: 15px; }
@@ -275,23 +285,28 @@ body {
     font-size: 20px;
     font-weight: 700; }
   .applicants__button {
-    height: 23px;
+    background-color: #002234;
     border: none;
-    background-color: #eeeded;
-    border-radius: 12px;
+    color: white;
+    height: 23px;
+    border-radius: 15px;
     padding: 3px 10px;
     font-size: 12px;
     cursor: pointer;
-    outline: none; }
+    outline: none;
+    display: inline-block; }
   .applicants__button:hover {
-    background-color: #e4e2e2; }
+    box-shadow: 0 0 1px 1.5px rgba(0, 0, 0, 0.2); }
 
-.applicantion-stages {
+.application-stages {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
   height: calc(100vh - 110px); }
+
+.stages-copy-button {
+  display: inline; }
 
 .application-stage {
   flex: 0 0 auto;

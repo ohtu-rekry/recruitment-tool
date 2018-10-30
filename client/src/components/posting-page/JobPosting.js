@@ -102,7 +102,7 @@ export class JobPosting extends Component {
               Send
             </button>
           </div>
-          {inputError && <InputErrorMessage errorMessage={inputError}/>}
+          {inputError && <InputErrorMessage errorMessage={inputError} />}
         </form>
       </div>
     )

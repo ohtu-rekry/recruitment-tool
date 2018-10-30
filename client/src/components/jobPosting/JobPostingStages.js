@@ -4,7 +4,7 @@ import { TextField, Button, Chip } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import PropTypes from 'prop-types'
 
-import { addNewStageForJobPosting, removeStageInJobPosting } from '../../redux/actions/actions'
+import { addNewStageForJobPosting, removeStageInJobPosting, clearCopiedStages } from '../../redux/actions/actions'
 
 export class JobPostingStages extends Component {
   constructor(props) {
@@ -14,7 +14,26 @@ export class JobPostingStages extends Component {
     }
   }
 
+  componentDidMount() {
+    if (this.props.stages !== null) {
+      this.addCopiedStagesToNewJobPosting()
+    }
+  }
+
+  async addCopiedStagesToNewJobPosting() {
+    await this.props.stages.forEach((stage) => {
+      if (stage.stageName !== 'Applied' && stage.stageName !== 'Rejected' && stage.stageName !== 'Accepted') {
+        this.props.addNewStageForJobPosting({ stageName: stage.stageName, canRemove: true })
+      }
+    })
+    await this.props.clearCopiedStages()
+  }
+
   addNewStage = () => {
+    if (this.state.newStageName.length === 0 || !this.state.newStageName.trim() || this.state.newStageName.length > 255) {
+      return
+    }
+
     this.props.addNewStageForJobPosting({ stageName: this.state.newStageName, canRemove: true })
     this.setState({
       newStageName: ''
@@ -84,12 +103,14 @@ JobPostingStages.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  jobPostingStages: state.jobPostingReducer.jobPostingStages
+  jobPostingStages: state.jobPostingReducer.jobPostingStages,
+  stages: state.jobPostingReducer.copiedStages
 })
 
 const mapDispatchToProps = {
   addNewStageForJobPosting,
-  removeStageInJobPosting
+  removeStageInJobPosting,
+  clearCopiedStages
 }
 
 export default connect(

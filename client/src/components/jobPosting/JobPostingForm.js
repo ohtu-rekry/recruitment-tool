@@ -31,7 +31,7 @@ export class JobPostingForm extends Component {
   }
 
   handleSubmit = async (event) => {
-    event.preventDefault()
+
     const { title, content } = this.state
     const recruiter = this.props.loggedIn
     const stages = this.props.jobPostingStages
@@ -44,7 +44,6 @@ export class JobPostingForm extends Component {
       })
       return
     }
-
     await this.props.addJobPosting(title, content, recruiter, stages)
     this.setState({ fireRedirect: true })
   }

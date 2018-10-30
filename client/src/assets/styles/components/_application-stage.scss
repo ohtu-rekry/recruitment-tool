@@ -9,27 +9,33 @@
   }
 
   &__button {
-    height: 23px;
+    background-color: #002234;
     border: none;
-    background-color: $gray-darker;
-    border-radius: 12px;
+    color: white;
+    height: 23px;
+    border-radius: 15px;
     padding: 3px 10px; 
     font-size: 12px;
     cursor: pointer;
     outline: none;
+    display: inline-block;
   }
 
   &__button:hover {
-    background-color: $gray-darkest;
+    box-shadow: 0 0 1px 1.5px rgba(0,0,0,0.2);
   }
 }
 
-.applicantion-stages {
+.application-stages {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
   height: calc(100vh - 110px);
+}
+
+.stages-copy-button {
+  display: inline;
 }
 
 .application-stage {

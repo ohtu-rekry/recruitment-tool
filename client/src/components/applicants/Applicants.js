@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import * as actions from '../../redux/actions/actions'
+import { Link } from 'react-router-dom'
 
 import ApplicationStages from './ApplicationStages'
 
@@ -30,15 +31,22 @@ export class Applicants extends Component {
     }
   }
 
+  handleCopyStages = () => {
+    const { stages, copyStages } = this.props
+    copyStages(stages)
+  }
+
   render() {
     const { stages, jobPosting } = this.props
     return (
       <div className='applicants'>
         <div className='applicants__title'>{jobPosting.title}</div>
-        <button className='applicants__button'>
-          Copy as a template
-        </button>
-        <div className='applicantion-stages'>
+        <Link to='/jobposting/new' style={{ textDecoration: 'none' }}>
+          <button className='applicants__button' onClick={this.handleCopyStages}>
+            Copy Templates
+          </button>
+        </Link>
+        <div className='application-stages'>
           {stages.map(stage =>
             <ApplicationStages
               stage={stage}
