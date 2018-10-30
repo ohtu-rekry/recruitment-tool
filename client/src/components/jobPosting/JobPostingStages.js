@@ -21,6 +21,12 @@ export class JobPostingStages extends Component {
     })
   }
 
+  handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      this.addNewStage()
+    }
+  }
+
   handleNameChange = (e) => {
     this.setState({
       newStageName: e.target.value
@@ -33,7 +39,7 @@ export class JobPostingStages extends Component {
 
   render() {
     return (
-      <div className='job-posting-form-stages'>
+      <div className='job-posting-form-stages' onKeyPress={this.handleKeyPress}>
         <h3>Define stages for this job posting</h3>
         <div className='job-posting-form-stages__new-stage-name'>
           <TextField

@@ -220,6 +220,9 @@ body {
   .job-posting-form__form {
     min-width: 90%; }
 
+.job-posting-form-submit-button {
+  padding: 15px; }
+
 .job-posting-form-stages__new-stage-name {
   display: inline-block;
   margin-right: 35px;
