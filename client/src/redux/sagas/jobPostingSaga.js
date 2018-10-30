@@ -80,6 +80,10 @@ function* fetchJobPosting({ payload }) {
   }
 }
 
+function* emptyJobPosting() {
+  yield put(actions.emptyJobPosting())
+}
+
 function* fetchJobPostingApplicants({ payload }) {
   try {
     const recruiter = yield select(getCurrentUser)
@@ -107,7 +111,9 @@ function* clearCopiedStages() {
 
 export const getCurrentUser = state => state.loginReducer.loggedIn
 
+export const watchFetchJobPostings = takeLatest(actions.fetchJobPostings().type, fetchJobPostings)
 export const watchFetchJobPosting = takeLatest(actions.fetchJobPosting().type, fetchJobPosting)
+export const watchEmptyJobPosting = takeLatest(actions.emptyJobPosting().type, emptyJobPosting)
 export const watchAddJobPosting = takeEvery(actions.addJobPosting().type, addJobPosting)
 export const watchNewStageToJobPosting = takeEvery(actions.addNewStageForJobPosting().type, addNewStageForJobPosting)
 export const watchRemoveStageInJobPosting = takeEvery(actions.removeStageInJobPosting().type, removeStageInJobPosting)
