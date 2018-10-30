@@ -31,13 +31,18 @@ export class Applicants extends Component {
     }
   }
 
+  handleCopyStages = () => {
+    const { stages, copyStages } = this.props
+    copyStages(stages)
+  }
+
   render() {
     const { stages, jobPosting } = this.props
     return (
       <div className='applicants'>
         <div className='applicants__title'>{jobPosting.title}</div>
         <Link to='/jobposting/new' style={{ textDecoration: 'none' }}>
-          <button className='applicants__button' onClick={() => this.props.copyStages(stages)}>
+          <button className='applicants__button' onClick={this.handleCopyStages}>
             Copy Templates
           </button>
         </Link>
