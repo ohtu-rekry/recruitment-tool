@@ -10,6 +10,7 @@ import JobPostingForm from '../jobPosting/JobPostingForm'
 import JobPosting from '../posting-page/JobPosting'
 import Applicants from '../applicants/Applicants'
 import App from '../App'
+import ApplicationSuccess from '../applicationSuccess/ApplicationSuccess'
 
 class Routes extends Component {
   constructor( props ) {
@@ -54,6 +55,7 @@ class Routes extends Component {
             } />
             <Route exact path="/jobposting/:id" render={() => <JobPosting />} />
             <Route exact path="/" render={() => <App />} />
+            <Route exact path="/success" render={() => <ApplicationSuccess />} />
           </Switch>
         </div>
       </Router>
