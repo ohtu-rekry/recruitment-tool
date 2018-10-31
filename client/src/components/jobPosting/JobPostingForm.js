@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import TimespanPicker from './TimespanPicker'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
@@ -101,6 +102,7 @@ export class JobPostingForm extends Component {
               disabled={!loggedIn}
             />
             <br />
+            <TimespanPicker/>
           </form>
           <div className='job-posting-form__form'>
             <JobPostingStages />
