@@ -47,12 +47,12 @@ export class TimespanPicker extends Component {
       <div>
         <div className='timespan-picker'>
           Visible from
-        <DatePicker
+          <DatePicker
             className='timespan-picker__datepicker'
             selected={this.state.startDate}
             onChange={this.handleStartDateChange} />
           to
-        <DatePicker
+          <DatePicker
             className='timespan-picker__datepicker'
             selected={this.state.endDate}
             onChange={this.handleEndDateChange} />
