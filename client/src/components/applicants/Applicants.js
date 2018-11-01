@@ -39,8 +39,8 @@ export class Applicants extends Component {
     copyStages(stages)
   }
 
-  onDrag = (applicant) => {
-    console.log(applicant)
+  onDrag = (event, applicant) => {
+    event.dataTransfer.setData('text', event.target.id)
     this.setState({
       selectedApplicant: applicant
     })
@@ -48,8 +48,6 @@ export class Applicants extends Component {
 
   onDrop = (stage) => {
     const { selectedApplicant } = this.state
-    console.log('selected: ', selectedApplicant)
-    
     this.props.moveApplicant(selectedApplicant, stage)
     this.setState({
       selectedApplicant: ''
@@ -58,6 +56,7 @@ export class Applicants extends Component {
 
   render() {
     const { stages, jobPosting } = this.props
+    const isDragged = this.state.selectedApplicant.length ? true : false
     return (
       <div className='applicants'>
         <div className='applicants__title'>{jobPosting.title}</div>
@@ -73,6 +72,7 @@ export class Applicants extends Component {
               key={stage.id}
               onDrag={this.onDrag}
               onDrop={this.onDrop}
+              isDragged={isDragged}
             />
           )}
         </div>

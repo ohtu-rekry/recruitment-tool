@@ -2,11 +2,21 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 class Applicant extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isDragged: false
+    }
+  }
 
   handleDrag = (event) => {
-    console.log('asd: ', this.props.applicant)
-    event.preventDefault()
     this.props.onDrag(event, this.props.applicant)
+    this.setState({ isDragged: true })
+  }
+
+  handleDragEnd = (event) => {
+    event.preventDefault()
+    this.setState({ isDragged: false })
   }
 
   render() {
@@ -18,12 +28,14 @@ class Applicant extends Component {
       hour: '2-digit',
       minute:'2-digit'
     })
-
+    console.log(this.state.isDragged)
     return (
       <div
         className='applicant'
         draggable
-        onDrag={this.handleDrag}
+        onDragStart={this.handleDrag}
+        onDragEnd={this.handleDragEnd}
+        style={{ opacity: this.state.isDragged && '0.3' }}
       >
         <div className='applicant__name'>
           {applicantName}

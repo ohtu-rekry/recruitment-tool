@@ -6,17 +6,31 @@ import Applicant from './Applicant'
 import * as actions from '../../redux/actions/actions'
 
 export class ApplicationStages extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isOver: false
+    }
+  }
 
   onDrag = (event, applicant) => {
-    event.preventDefault()
-    this.props.onDrag(applicant)
+    this.props.onDrag(event, applicant)
   }
 
   onDragOver = (event) => {
+    this.setState({ isOver: true })
+    let objDiv = document.getElementById('application-stage__content')
+    objDiv.scrollTop = objDiv.scrollHeight
+    event.preventDefault()
+  }
+
+  onDragLeave = (event) => {
+    this.setState({ isOver: false })
     event.preventDefault()
   }
 
   onDrop = () => {
+    this.setState({ isOver: false })
     this.props.onDrop(this.props.stage)
   }
 
@@ -29,9 +43,11 @@ export class ApplicationStages extends Component {
           {stage.stageName}
         </div>
         <div
+          id='application-stage__content'
           className='application-stage__content'
           onDrop={event => this.onDrop(event)}
-          onDragOver={(event => this.onDragOver(event))}
+          onDragOver={this.onDragOver}
+          onDragLeave={this.onDragLeave}
         >
           {stage.applicants && stage.applicants.map(applicant =>
             <Applicant
@@ -40,6 +56,11 @@ export class ApplicationStages extends Component {
               onDrag={this.onDrag}
             />
           )}
+          {this.state.isOver &&
+            <div className='application-stage__placeholder'>
+              Move applicant here
+            </div>
+          }
         </div>
       </div>
     )
