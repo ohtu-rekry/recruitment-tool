@@ -9,7 +9,10 @@ import ApplicationStages from './ApplicationStages'
 export class Applicants extends Component {
   constructor(props) {
     super(props)
-    this.state = { isLoaded: false }
+    this.state = {
+      isLoaded: false,
+      selectedApplicant: ''
+    }
   }
 
   componentDidMount() {
@@ -36,6 +39,23 @@ export class Applicants extends Component {
     copyStages(stages)
   }
 
+  onDrag = (applicant) => {
+    console.log(applicant)
+    this.setState({
+      selectedApplicant: applicant
+    })
+  }
+
+  onDrop = (stage) => {
+    const { selectedApplicant } = this.state
+    console.log('selected: ', selectedApplicant)
+    
+    this.props.moveApplicant(selectedApplicant, stage)
+    this.setState({
+      selectedApplicant: ''
+    })
+  }
+
   render() {
     const { stages, jobPosting } = this.props
     return (
@@ -51,6 +71,8 @@ export class Applicants extends Component {
             <ApplicationStages
               stage={stage}
               key={stage.id}
+              onDrag={this.onDrag}
+              onDrop={this.onDrop}
             />
           )}
         </div>

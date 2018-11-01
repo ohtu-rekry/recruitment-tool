@@ -41,3 +41,5 @@ export const applyFailure = createAction('APPLY_FAIL')
 export const fetchApplicants = createAction('FETCH_APPLICANTS')
 export const fetchApplicantsSuccess = createAction('FETCH_APPLICANTS_SUCCESS')
 
+export const moveApplicant = createAction('MOVE_APPLICANT', (applicant, newStage) => ({ applicant, newStage }))
+
