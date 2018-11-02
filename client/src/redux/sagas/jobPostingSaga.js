@@ -33,9 +33,11 @@ function* addJobPosting({ payload }) {
   }
 }
 
-function* fetchJobPostings() {
+function* fetchJobPostings({ payload }) {
   try {
-    const response = yield call(jobPostingApi.get)
+    const recruiter = payload.recruiter
+
+    const response = yield call(jobPostingApi.get, { recruiter })
 
     if (response.status === 200) {
       yield put(actions.setJobPostings(response.data))
