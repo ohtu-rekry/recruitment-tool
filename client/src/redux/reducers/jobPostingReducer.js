@@ -5,9 +5,15 @@ const initialState = {
   jobPostings: [],
   jobPostingStages: [{ stageName: 'Applied', canRemove: false }, { stageName: 'Accepted', canRemove: false }, { stageName: 'Rejected', canRemove: false }],
   creationRequestStatus: null,
+<<<<<<< e5fbf22d6d5515806af24ca7e6b92231de806d07
   startDate: {},
   endDate: {},
   copiedStages: null
+=======
+  copiedStages: null,
+  startDate: {},
+  endDate: {}
+>>>>>>> redux changes for hiding job posting
 }
 
 const creationSuccessMessage = 'Job posting successfully added'
@@ -57,6 +63,14 @@ const reducer = handleActions(
     [actions.clearCopiedStages]: (state, action) => ({
       ...state,
       copiedStages: null
+    }),
+    [actions.addStartDate]: (state, action) => ({
+      ...state,
+      startDate: action.payload
+    }),
+    [actions.addEndDate]: (state, action) => ({
+      ...state,
+      endDate: action.payload
     })
   },
   initialState

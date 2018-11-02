@@ -62,6 +62,10 @@ function* addEndDate({ payload }) {
 }
 
 export const watchFetchJobPostings = takeLatest(actions.fetchJobPostings().type, fetchJobPostings)
+<<<<<<< e5fbf22d6d5515806af24ca7e6b92231de806d07
+=======
+
+>>>>>>> redux changes for hiding job posting
 function* fetchJobPosting({ payload }) {
   try {
     const response = yield call(jobPostingApi.get)

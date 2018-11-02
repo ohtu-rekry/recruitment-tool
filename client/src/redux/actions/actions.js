@@ -16,9 +16,12 @@ export const addNewStageForJobPosting = createAction('ADD_NEW_STAGE_FOR_JOB_POST
 export const removeStageInJobPosting = createAction('REMOVE_STAGE_IN_JOB_POSTING', (stage) => (stage))
 export const addStartDate = createAction('ADD_START_DATE', (startDate) => ({ startDate }))
 export const addEndDate = createAction('ADD_END_DATE', (endDate) => ({ endDate }))
+<<<<<<< e5fbf22d6d5515806af24ca7e6b92231de806d07
 
 export const copyStages = createAction('COPY_STAGES', (stages) => ({ stages }))
 export const clearCopiedStages = createAction('CLEAR_COPIED_STAGES')
+=======
+>>>>>>> redux changes for hiding job posting
 
 export const copyStages = createAction('COPY_STAGES', (stages) => ({ stages }))
 export const clearCopiedStages = createAction('CLEAR_COPIED_STAGES')
