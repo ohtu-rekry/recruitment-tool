@@ -14,6 +14,8 @@ export const addJobPostingFailure = createAction('ADD_JOB_POSTING_FAILED')
 export const removeJobPostingCreationStatus = createAction('REMOVE_JOB_POSTING_CREATION_STATUS')
 export const addNewStageForJobPosting = createAction('ADD_NEW_STAGE_FOR_JOB_POSTING', (newStage) => (newStage))
 export const removeStageInJobPosting = createAction('REMOVE_STAGE_IN_JOB_POSTING', (stage) => (stage))
+export const addStartDate = createAction('ADD_START_DATE', (startDate) => ({ startDate }))
+export const addEndDate = createAction('ADD_END_DATE', (endDate) => ({ endDate }))
 
 export const sendApplication = createAction(
   'SEND_APPLICATION', (applicantName, applicantEmail, jobPostingId) => ({
@@ -33,4 +35,3 @@ export const applyFailure = createAction('APPLY_FAIL')
 
 export const fetchApplicants = createAction('FETCH_APPLICANTS')
 export const fetchApplicantsSuccess = createAction('FETCH_APPLICANTS_SUCCESS')
-

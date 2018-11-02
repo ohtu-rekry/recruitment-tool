@@ -4,7 +4,9 @@ import * as actions from '../actions/actions'
 const initialState = {
   jobPostings: [],
   jobPostingStages: [{ stageName: 'Applied', canRemove: false }, { stageName: 'Accepted', canRemove: false }, { stageName: 'Rejected', canRemove: false }],
-  creationRequestStatus: null
+  creationRequestStatus: null,
+  startDate: {},
+  endDate: {}
 }
 
 const creationSuccessMessage = 'Job posting successfully added'
@@ -34,6 +36,14 @@ const reducer = handleActions(
     }),
     [actions.removeStageInJobPosting]: (state, action) => ({
       jobPostingStages: [...state.jobPostingStages.filter(state => state !== action.payload)]
+    }),
+    [actions.addStartDate]: (state, action) => ({
+      ...state,
+      startDate: action.payload
+    }),
+    [actions.addEndDate]: (state, action) => ({
+      ...state,
+      endDate: action.payload
     })
   },
   initialState
