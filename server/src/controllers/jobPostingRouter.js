@@ -3,14 +3,30 @@ const { JobPosting, Recruiter, PostingStage, JobApplication } = require('../../d
 const jwt = require('jsonwebtoken')
 const { jwtMiddleware } = require('../../utils/middleware')
 const { jobPostingValidator } = require('../../utils/validators')
+const moment = require('moment')
+const momentTz = require('moment-timezone')
+
+
+function validateDate(date) {
+  if (date === undefined) {
+    return null
+  }
+
+  date = moment().startOf('day')
+  const timeZone = 'Europe/Helsinki'
+  return momentTz.tz(date, 'YYYY-MM-DD', timeZone)
+}
 
 jobPostingRouter.get('/', async (req, res) => {
-  return await JobPosting.findAll().then(jobpostings => res.json(jobpostings))
+  if (req.token !== null) {
+    return await JobPosting.findAll().then(jobpostings => res.json(jobpostings))
+  }
+
+  return 'lol'
 })
 
-jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator,  async (req, res) => {
+jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator, async (req, res) => {
   const body = req.body
-
   const decodedToken = jwt.verify(req.token, process.env.JWT_SECRET)
 
   const recruiter = await Recruiter.findOne({
@@ -19,10 +35,15 @@ jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator,  async (req, res)
     }
   })
 
+  const showFrom = validateDate(body.showFrom)
+  const showTo = validateDate(body.showTo)
+
   const posting = await JobPosting.create({
     title: body.title,
     content: body.content,
-    recruiterId: recruiter.id
+    recruiterId: recruiter.id,
+    showFrom: showFrom,
+    showTo: showTo
   })
 
   try {
@@ -38,6 +59,7 @@ jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator,  async (req, res)
     await JobPosting.destroy({
       where: { id: posting.id }
     })
+    console.log(error)
     throw error
   }
 })
