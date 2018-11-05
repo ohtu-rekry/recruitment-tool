@@ -93,7 +93,10 @@ jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request,
     const existingStages = await PostingStage.findAll({
       where: {
         id: {
-          [Sequelize.Op.in]: body.stages.map(stage => stage.id)
+          [Sequelize.Op.in]:
+            body.stages
+              .filter(stage => stage.id)
+              .map(stage => stage.id)
         }
       }
     })
@@ -107,7 +110,10 @@ jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request,
       where: {
         jobPostingId: postingId,
         id: {
-          [Sequelize.Op.notIn]: body.stages.map(stage => stage.id)
+          [Sequelize.Op.notIn]:
+            body.stages
+              .filter(stage => stage.id)
+              .map(stage => stage.id)
         }
       },
       include: [ 'jobApplications' ]

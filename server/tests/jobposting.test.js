@@ -336,7 +336,6 @@ describe('PUT method', async () => {
     test('a stage can be deleted', async () => {
       const modifiedPosting = {
         ...jobPostings[0],
-        content: 'TEST',
         stages: [ postingStages[0] ]
       }
 
