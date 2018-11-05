@@ -47,12 +47,14 @@ export class Applicants extends Component {
           </button>
         </Link>
         <div className='application-stages'>
-          {stages.map(stage =>
-            <ApplicationStages
-              stage={stage}
-              key={stage.id}
-            />
-          )}
+          {stages
+            .sort((a, b) => a.orderNumber - b.orderNumber)
+            .map(stage =>
+              <ApplicationStages
+                stage={stage}
+                key={stage.id}
+              />
+            )}
         </div>
       </div>
     )
