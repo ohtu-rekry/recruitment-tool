@@ -1,7 +1,8 @@
 const express = require('express')
 const http = require('http')
-const cors = require('cors')
 const bodyParser = require('body-parser')
+const morgan = require('morgan')
+const celebrate = require('celebrate')
 
 const loginRouter = require('./controllers/loginRouter')
 const recruiterRouter = require('./controllers/recruiterRouter')
@@ -13,18 +14,30 @@ const PORT = process.env.port || 8080
 const HOST = '0.0.0.0'
 
 const app = express()
-app.use(cors())
+app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(tokenExtractor)
-
-app.get('/', (req, res) => {
-  res.send('Hello world! \n')
-})
 
 app.use('/api/login', loginRouter)
 app.use('/api/recruiter', recruiterRouter)
 app.use('/api/jobposting', jobPostingRouter)
 app.use('/api/jobapplication', jobApplicationRouter)
+
+/* eslint-disable-next-line */
+app.use((error, req, res, next) => {
+  if (celebrate.isCelebrate(error)) {
+    const message = error.details[0].message.replace(/[^a-zA-Z1-9 ]/g, '')
+    res.status(400)
+    res.json({
+      error: message
+    })
+  } else {
+    res.status(error.status || 500)
+    res.json({
+      error: error.message
+    })
+  }
+})
 
 const server = http.createServer(app)
 

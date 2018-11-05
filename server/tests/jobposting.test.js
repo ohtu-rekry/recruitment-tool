@@ -73,7 +73,7 @@ describe('POST method', async () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body).toEqual({ error: 'Title must be defined' })
+    expect(response.body).toEqual({ error: 'title is required' })
   })
 
   test('a posting cannot be created without content', async () => {
@@ -89,7 +89,7 @@ describe('POST method', async () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body).toEqual({ error: 'Content must be defined' })
+    expect(response.body).toEqual({ error: 'content is required' })
   })
 
   test('a posting cannot be created without stages', async () => {
@@ -105,7 +105,7 @@ describe('POST method', async () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body).toEqual({ error: 'Stages must be defined' })
+    expect(response.body).toEqual({ error: 'stages is required' })
   })
 
   test('a posting cannot be created with a title longer than 255 chars', async () => {
@@ -123,7 +123,7 @@ describe('POST method', async () => {
       .expect('Content-Type', /application\/json/)
 
     expect(response.body).toEqual({
-      error: `Title is too long, ${tooLongTitle.length} chars, when max is 255`
+      error: 'title length must be less than or equal to 255 characters long'
     })
   })
 
@@ -141,7 +141,7 @@ describe('POST method', async () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body).toEqual({ error: 'The job posting has to have at least one posting stage' })
+    expect(response.body).toEqual({ error: 'stages must contain at least 1 items' })
   })
 
   afterAll(async () => {

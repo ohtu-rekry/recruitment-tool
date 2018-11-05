@@ -133,7 +133,7 @@ describe('CREATE OR CHANGE JOBAPPLICATION', async () => {
           .expect(400)
           .expect('Content-Type', /application\/json/)
 
-        expect(response.body).toEqual({ error: 'Job application must be defined' })
+        expect(response.body).toEqual({ error: 'jobApplicationId is required' })
       })
 
       test('without postingStageId', async () => {
@@ -148,7 +148,7 @@ describe('CREATE OR CHANGE JOBAPPLICATION', async () => {
           .expect(400)
           .expect('Content-Type', /application\/json/)
 
-        expect(response.body).toEqual({ error: 'Posting stage must be defined' })
+        expect(response.body).toEqual({ error: 'postingStageId is required' })
       })
 
       test('if posting stage does not exist in database', async () => {
@@ -205,6 +205,11 @@ describe('CREATE OR CHANGE JOBAPPLICATION', async () => {
     await JobPosting.destroy({
       where: {
         title: 'Data scientist'
+      }
+    })
+    await JobPosting.destroy({
+      where: {
+        content: 'POTUS NEEDED'
       }
     })
   })

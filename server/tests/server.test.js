@@ -1,6 +1,3 @@
-const supertest = require('supertest')
-const { app, server } = require('../src/server')
-const api = supertest(app)
 const { Recruiter, sequelize } = require('../db/models')
 
 beforeAll(async () => {
@@ -8,13 +5,6 @@ beforeAll(async () => {
     .catch(() => {
       console.log('Another model synchronizing process has already started')
     })
-})
-
-test('example test to run', async () => {
-  await api
-    .get('/')
-    .expect(200)
-    .expect('Hello world! \n')
 })
 
 test('Travis configuration for postgresql works', async () => {
@@ -44,6 +34,5 @@ test('Travis configuration for postgresql works', async () => {
 })
 
 afterAll(async () => {
-  await server.close()
   await sequelize.close()
 })
