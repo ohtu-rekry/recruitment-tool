@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../redux/actions/actions'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import EmailValidator from 'email-validator'
 import ReactMarkdown from 'react-markdown'
@@ -14,8 +14,7 @@ export class JobPosting extends Component {
       jobPosting: this.props.jobPosting,
       applicantName: '',
       applicantEmail: '',
-      inputError: null,
-      applicationSuccess: false
+      inputError: null
     }
   }
 
@@ -27,8 +26,7 @@ export class JobPosting extends Component {
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value,
-      inputError: null,
-      applicationSuccess: false
+      inputError: null
     })
   }
 
@@ -52,13 +50,14 @@ export class JobPosting extends Component {
 
     this.setState({
       applicantName: '',
-      applicantEmail: '',
-      applicationSuccess: 'Application was sent successfully!'
+      applicantEmail: ''
     })
+
+    this.props.history.push('/success')
   }
 
   render() {
-    const { applicantName, applicantEmail, inputError, applicationSuccess } = this.state
+    const { applicantName, applicantEmail, inputError } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
 
     const LinkToApplicants = props => <Link to={`/jobposting/${jobPosting.id}/applicants`} {...props} />
@@ -74,7 +73,6 @@ export class JobPosting extends Component {
         }
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
-        {applicationSuccess && <SuccessMessage message={applicationSuccess} />}
         <div className='job-posting__content'>
           <ReactMarkdown source={jobPosting.content} />
         </div>
@@ -119,14 +117,6 @@ const ErrorMessage = ({ errorMessage }) => {
   )
 }
 
-const SuccessMessage = ({ message }) => {
-  return (
-    <div className='job-posting__success-message'>
-      {message}
-    </div>
-  )
-}
-
 const InputErrorMessage = ({ errorMessage }) => {
   return (
     <div className='job-posting__form-input-error'>
@@ -155,7 +145,7 @@ const mapDispatchToProps = {
   ...actions
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(JobPosting)
+)(JobPosting))
