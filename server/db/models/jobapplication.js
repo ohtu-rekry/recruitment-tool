@@ -3,8 +3,8 @@
 module.exports = (sequelize, DataTypes) => {
 
   const JobApplication = sequelize.define('JobApplication', {
-    applicantName: {type: DataTypes.STRING, allowNull: false},
-    applicantEmail: {type: DataTypes.STRING, allowNull: false}
+    applicantName: { type: DataTypes.STRING, allowNull: false },
+    applicantEmail: { type: DataTypes.STRING, allowNull: false }
   }, {})
 
   JobApplication.associate = function(models) {
