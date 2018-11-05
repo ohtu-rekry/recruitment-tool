@@ -51,7 +51,6 @@ function* removeStageInJobPosting({ payload }) {
   yield put(actions.removeStageInJobPosting(payload.stage))
 }
 
-export const watchFetchJobPostings = takeLatest(actions.fetchJobPostings().type, fetchJobPostings)
 function* fetchJobPosting({ payload }) {
   try {
     const response = yield call(jobPostingApi.get)
@@ -89,6 +88,7 @@ function* fetchJobPostingApplicants({ payload }) {
 
 export const getCurrentUser = state => state.loginReducer.loggedIn
 
+export const watchFetchJobPostings = takeLatest(actions.fetchJobPostings().type, fetchJobPostings)
 export const watchFetchJobPosting = takeLatest(actions.fetchJobPosting().type, fetchJobPosting)
 export const watchAddJobPosting = takeEvery(actions.addJobPosting().type, addJobPosting)
 export const watchNewStageToJobPosting = takeEvery(actions.addNewStageForJobPosting().type, addNewStageForJobPosting)

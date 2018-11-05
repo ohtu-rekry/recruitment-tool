@@ -27,6 +27,7 @@ export const fetchJobPosting = createAction(
   'FETCH_JOBPOSTING', (postingId) => ({
     postingId
   }))
+export const emptyJobPosting = createAction('EMPTY_JOBPOSTING')
 export const fetchJobPostings = createAction('FETCH_JOBPOSTINGS')
 export const setJobPosting = createAction('SET_JOBPOSTING')
 export const setJobPostings = createAction('SET_JOBPOSTINGS')
