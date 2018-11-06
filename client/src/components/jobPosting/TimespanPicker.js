@@ -20,8 +20,7 @@ export class TimespanPicker extends Component {
   }
 
   handleStartDateChange(date) {
-    console.log(date)
-    if (date && (!this.state.endDate || date.isBefore(this.state.endDate))) {
+    if (date !== undefined && (date === null || !this.state.endDate || date.isBefore(this.state.endDate))) {
       this.setState({
         startDate: date,
         error: ''
@@ -35,7 +34,7 @@ export class TimespanPicker extends Component {
   }
 
   handleEndDateChange(date) {
-    if (date && date.isAfter(this.state.startDate)) {
+    if (date !== undefined && (date === null || date.isAfter(this.state.startDate))) {
       this.setState({
         endDate: date,
         error: ''
@@ -59,6 +58,7 @@ export class TimespanPicker extends Component {
             dateFormat='DD-MM-YYYY'
             timeFormat='timeFormat="HH:mm'
             placeholderText='Select start date'
+            isClearable={true}
             onChange={this.handleStartDateChange} />
           to
           <DatePicker
@@ -67,6 +67,7 @@ export class TimespanPicker extends Component {
             dateFormat='DD-MM-YYYY'
             timeFormat='timeFormat="HH:mm'
             placeholderText='Select end date'
+            isClearable={true}
             onChange={this.handleEndDateChange} />
         </div>
         {this.state.error && <p className='timespan-picker__error'>{this.state.error}</p>}
