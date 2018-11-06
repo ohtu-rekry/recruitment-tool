@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const root = '/api/jobapplication'
+export const root = '/api/jobapplication'
 
 export default class jobApplicationApi {
   static get() {
