@@ -9,7 +9,9 @@ function* addJobPosting({ payload }) {
     const jobPosting = {
       title: payload.title,
       content: payload.content,
-      stages: payload.stages
+      stages: payload.stages,
+      startDate: payload.startDate,
+      endDate: payload.endDate
     }
     const recruiter = payload.recruiter
 
@@ -49,6 +51,14 @@ function* addNewStageForJobPosting({ payload }) {
 
 function* removeStageInJobPosting({ payload }) {
   yield put(actions.removeStageInJobPosting(payload.stage))
+}
+
+function* addStartDate({ payload }) {
+  yield put(actions.addStartDate(payload.startDate))
+}
+
+function* addEndDate({ payload }) {
+  yield put(actions.addEndDate(payload.endDate))
 }
 
 function* fetchJobPosting({ payload }) {
@@ -97,3 +107,5 @@ export const watchFetchApplicants = takeLatest(
   actions.fetchApplicants().type,
   fetchJobPostingApplicants
 )
+export const watchAddStartDate = takeEvery(actions.addStartDate().type, addStartDate)
+export const watchAddEndDate = takeEvery(actions.addEndDate().type, addEndDate)
