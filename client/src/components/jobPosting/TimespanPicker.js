@@ -2,28 +2,39 @@ import React, { Component } from 'react'
 import DatePicker from 'react-datepicker'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { addStartDate, addEndDate } from '../../redux/actions/actions'
+import { addShowFrom, addShowTo } from '../../redux/actions/actions'
+import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 
 export class TimespanPicker extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      startDate: null,
-      endDate: null,
+      showFrom: moment(),
+      showTo: null,
       error: ''
     }
-    this.handleStartDateChange = this.handleStartDateChange.bind(this)
-    this.handleEndDateChange = this.handleEndDateChange.bind(this)
+    this.handleShowFromChange = this.handleShowFromChange.bind(this)
+    this.handleShowToChange = this.handleShowToChange.bind(this)
   }
 
-  handleStartDateChange(date) {
-    if (date !== undefined && (date === null || !this.state.endDate || date.isBefore(this.state.endDate))) {
-      this.setState({
-        startDate: date,
-        error: ''
-      })
-      this.props.addStartDate({ date })
+  handleShowFromChange(date) {
+    if (date !== undefined && (date === null || !this.state.showTo || date.isBefore(this.state.showTo))) {
+      if (date === null) {
+        this.setState({
+          showFrom: null,
+          showTo: null,
+          error: ''
+        })
+        this.props.addShowFrom({ date })
+        this.props.addShowTo({ date })
+      } else {
+        this.setState({
+          showFrom: date,
+          error: ''
+        })
+        this.props.addShowFrom({ date })
+      }
     } else {
       this.setState({
         error: 'Selected date needs to be before end date'
@@ -31,13 +42,13 @@ export class TimespanPicker extends Component {
     }
   }
 
-  handleEndDateChange(date) {
-    if (date !== undefined && (date === null || date.isAfter(this.state.startDate))) {
+  handleShowToChange(date) {
+    if (date !== undefined && (date === null || date.isAfter(this.state.showFrom))) {
       this.setState({
-        endDate: date,
+        showTo: date,
         error: ''
       })
-      this.props.addEndDate({ date })
+      this.props.addShowTo({ date })
     } else if (date) {
       this.setState({
         error: 'Selected date needs to be after start date'
@@ -52,21 +63,23 @@ export class TimespanPicker extends Component {
           Visible from
           <DatePicker
             className='timespan-picker__datepicker'
-            selected={this.state.startDate}
+            selected={this.state.showFrom}
             dateFormat='DD-MM-YYYY'
             timeFormat='timeFormat="HH:mm'
             placeholderText='Select start date'
             isClearable={true}
-            onChange={this.handleStartDateChange} />
+            minDate={moment()}
+            onChange={this.handleShowFromChange} />
           to
           <DatePicker
             className='timespan-picker__datepicker'
-            selected={this.state.endDate}
+            selected={this.state.showTo}
             dateFormat='DD-MM-YYYY'
             timeFormat='timeFormat="HH:mm'
             placeholderText='Select end date'
             isClearable={true}
-            onChange={this.handleEndDateChange} />
+            minDate={moment()}
+            onChange={this.handleShowToChange} />
         </div>
         {this.state.error && <p className='timespan-picker__error'>{this.state.error}</p>}
       </div>
@@ -75,18 +88,18 @@ export class TimespanPicker extends Component {
 }
 
 TimespanPicker.propTypes = {
-  startDate: PropTypes.object,
-  endDate: PropTypes.object
+  showFrom: PropTypes.object,
+  showTo: PropTypes.object
 }
 
 const mapStateToProps = (state) => ({
-  startDate: state.jobPostingReducer.startDate,
-  endDate: state.jobPostingReducer.endDate
+  showFrom: state.jobPostingReducer.showFrom,
+  showTo: state.jobPostingReducer.showTo
 })
 
 const mapDispatchToProps = {
-  addStartDate,
-  addEndDate
+  addShowFrom,
+  addShowTo
 }
 
 export default connect(

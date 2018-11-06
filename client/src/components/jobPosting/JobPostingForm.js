@@ -36,8 +36,8 @@ export class JobPostingForm extends Component {
     const { title, content } = this.state
     const recruiter = this.props.loggedIn
     const stages = this.props.jobPostingStages
-    const startDate = this.props.startDate
-    const endDate = this.props.endDate
+    const showFrom = this.props.showFrom
+    const showTo = this.props.showTo
 
     const notOnlyWhitespaceRegex = /\S/
     if (!(notOnlyWhitespaceRegex.test(title) && notOnlyWhitespaceRegex.test(content))) {
@@ -46,7 +46,7 @@ export class JobPostingForm extends Component {
       })
       return
     }
-    await this.props.addJobPosting(title, content, recruiter, stages, startDate, endDate)
+    await this.props.addJobPosting(title, content, recruiter, stages, showFrom, showTo)
     this.setState({ fireRedirect: true })
   }
 
@@ -133,16 +133,16 @@ JobPostingForm.propTypes = {
   loggedIn: PropTypes.object,
   jobPostingStages: PropTypes.array,
   addJobPosting: PropTypes.func.isRequired,
-  startDate: PropTypes.object,
-  endDate: PropTypes.object
+  showFrom: PropTypes.object,
+  showTo: PropTypes.object
 }
 
 const mapStateToProps = (state) => ({
   creationRequestStatus: state.jobPostingReducer.creationRequestStatus,
   loggedIn: state.loginReducer.loggedIn,
   jobPostingStages: state.jobPostingReducer.jobPostingStages,
-  startDate: state.jobPostingReducer.startDate,
-  endDate: state.jobPostingReducer.endDate
+  showFrom: state.jobPostingReducer.showFrom,
+  showTo: state.jobPostingReducer.showTo
 })
 
 const mapDispatchToProps = {

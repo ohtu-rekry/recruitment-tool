@@ -15,8 +15,8 @@ export const removeJobPostingCreationStatus = createAction('REMOVE_JOB_POSTING_C
 export const addNewStageForJobPosting = createAction('ADD_NEW_STAGE_FOR_JOB_POSTING', (newStage) => (newStage))
 export const removeStageInJobPosting = createAction('REMOVE_STAGE_IN_JOB_POSTING', (stage) => (stage))
 
-export const addStartDate = createAction('ADD_START_DATE', (startDate) => ({ startDate }))
-export const addEndDate = createAction('ADD_END_DATE', (endDate) => ({ endDate }))
+export const addShowFrom = createAction('ADD_SHOW_FROM', (showFrom) => ({ showFrom }))
+export const addShowTo = createAction('ADD_SHOW_TO', (showTo) => ({ showTo }))
 
 export const copyStages = createAction('COPY_STAGES', (stages) => ({ stages }))
 export const clearCopiedStages = createAction('CLEAR_COPIED_STAGES')
