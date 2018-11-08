@@ -4,11 +4,9 @@ export const root = '/api/jobposting'
 
 export default class jobPostingApi {
   static get(payload) {
-
     let config = null
 
     if (payload.recruiter !== null) {
-
       config = {
         headers: { 'Authorization': 'bearer ' + payload.recruiter.token }
       }

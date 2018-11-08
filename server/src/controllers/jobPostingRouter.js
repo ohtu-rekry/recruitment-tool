@@ -1,12 +1,13 @@
 const jobPostingRouter = require('express-promise-router')()
-const { JobPosting, Recruiter, PostingStage, JobApplication } = require('../../db/models')
 const jwt = require('jsonwebtoken')
+const { JobPosting, Recruiter, PostingStage, JobApplication } = require('../../db/models')
 const { jwtMiddleware } = require('../../utils/middleware')
 <<<<<<< HEAD
 const { jobPostingValidator, postingPutValidator } = require('../../utils/validators')
 const Sequelize = require('sequelize')
 =======
 const { jobPostingValidator } = require('../../utils/validators')
+<<<<<<< HEAD
 const moment = require('moment')
 const momentTz = require('moment-timezone')
 
@@ -21,13 +22,19 @@ function validateDate(date) {
   return momentTz.tz(date, 'YYYY-MM-DD', timeZone)
 }
 >>>>>>> Database changes and backend started for hiding jobpostings
+=======
+const { validateDate, handleJobPostingsForAdmin, handleJobPostingsForGuest } = require('../../utils/jobpostingDateHandlers')
+>>>>>>> Core functionality in backend for returning correct job postings
 
 jobPostingRouter.get('/', async (req, res) => {
-  if (req.token !== null) {
-    return await JobPosting.findAll().then(jobpostings => res.json(jobpostings))
-  }
 
-  return 'lol'
+  if (req.token !== null) {
+    const postings = await handleJobPostingsForAdmin()
+    return res.status(200).json(postings)
+  } else {
+    const postings = await handleJobPostingsForGuest()
+    return res.status(200).json(postings)
+  }
 })
 
 jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator, async (req, res) => {

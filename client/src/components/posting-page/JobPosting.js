@@ -19,7 +19,7 @@ export class JobPosting extends Component {
 
   componentDidMount() {
     const jobPostingId = window.location.href.split('/')[4]
-    this.props.fetchJobPosting(jobPostingId)
+    this.props.fetchJobPosting(jobPostingId, this.props.loggedIn)
   }
 
   componentWillUnmount() {

@@ -11,6 +11,7 @@ class FrontPage extends Component {
   componentDidMount() {
     const { fetchJobPostings } = this.props
     fetchJobPostings(this.props.loggedIn)
+    console.log(this.props.jobPostings)
   }
 
   render() {
