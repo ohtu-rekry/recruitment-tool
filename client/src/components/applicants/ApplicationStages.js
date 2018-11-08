@@ -60,6 +60,7 @@ export class ApplicationStages extends Component {
                 key={applicant.id}
                 applicant={applicant}
                 onDrag={this.onDrag}
+                toggleShowModal={this.props.toggleShowModal(applicant)}
               />
             )}
             <div

@@ -1,0 +1,46 @@
+.applicant-modal {
+  display: flex;
+  align-items: center;
+  justify-content: 'center';
+  position: 'fixed';
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  padding: '1rem';
+  background-color: $gandalf-the-gray;
+  opacity: 1;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.applicant-modal__card {
+  background-color: $gray-lightest;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px 0 rgba(0,0,0,0.2);
+  align-items: center;
+  cursor: pointer;
+
+  &__name {
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  &__name, &__email {
+    word-break: break-all;
+    padding: 0 10px;
+  }
+
+  &__date {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  &__close-button {
+    display: inline-block;
+    position: 'fixed';
+    top: 0;
+    right: 0;
+  }
+}
