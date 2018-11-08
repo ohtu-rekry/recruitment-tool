@@ -77,16 +77,11 @@ ApplicationStages.propTypes = {
   stage: PropTypes.object.isRequired
 }
 
-const mapStateToProps = (state) => ({
-  loggedIn: state.loginReducer.loggedIn,
-  loginError: state.loginReducer.loginError
-})
-
 const mapDispatchToProps = {
   ...actions
 }
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(ApplicationStages)
