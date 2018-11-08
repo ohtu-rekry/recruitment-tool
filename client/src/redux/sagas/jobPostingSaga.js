@@ -3,25 +3,41 @@ import { takeLatest, takeEvery, put, call, select } from 'redux-saga/effects'
 import * as actions from '../actions/actions'
 import jobPostingApi from '../apis/jobPostingApi'
 
-function* addJobPosting({ payload }) {
+function* submitJobPosting({ payload }) {
 
   try {
-    const jobPosting = {
+    /* const jobPosting = {
       title: payload.title,
       content: payload.content,
       stages: payload.stages,
       showFrom: payload.showFrom,
       showTo: payload.showTo
+    } */
+    const jobPosting = {
+      title: payload.title,
+      content: payload.content,
+      stages: payload.stages
     }
     const recruiter = payload.recruiter
+    const id = payload.id
 
-    const response = yield call(jobPostingApi.add, { jobPosting, recruiter })
+    let response
+    switch (payload.mode) {
+    case 'create':
+      response = yield call(jobPostingApi.add, { jobPosting, recruiter })
+      break
+    case 'edit':
+      response = yield call(jobPostingApi.edit, { jobPosting, recruiter, id })
+      break
+    default:
+      throw new Error('Job posting mode is neither create nor edit')
+    }
 
-    if (response.status === 201) {
+    if (response.status === 201 || response.status === 200) {
       yield put(actions.addJobPostingSuccess())
       yield call(fetchJobPostings)
       yield delay(5000)
-      yield put(actions.removeJobPostingCreationStatus())
+      yield put(actions.removeJobPostingStatus())
     }
   }
   catch (error) {
@@ -29,7 +45,7 @@ function* addJobPosting({ payload }) {
 
     yield put(actions.addJobPostingFailure({ message: errorMessage }))
     yield delay(5000)
-    yield put(actions.removeJobPostingCreationStatus())
+    yield put(actions.removeJobPostingStatus())
   }
 }
 
@@ -71,6 +87,30 @@ function* fetchJobPosting({ payload }) {
   }
 }
 
+function* fetchJobPostingWithStages({ payload }) {
+  try {
+    const recruiter = yield select(getCurrentUser)
+    const token = recruiter.token
+    const id = payload.id
+
+    const response = yield call(jobPostingApi.getOne, { id, token })
+
+    if (response.status === 200) {
+      const jobPosting = response.data
+      yield put(actions.setJobPosting(jobPosting))
+    }
+
+  } catch (error) {
+    const errorMessage = 'Could not fetch job posting. '
+      + error.message
+      + (error.response ? '. ' + error.response.data.error : '')
+
+    yield put(actions.addJobPostingFailure({ message: errorMessage }))
+    yield delay(5000)
+    yield put(actions.removeJobPostingStatus())
+  }
+}
+
 function* fetchJobPostingApplicants({ payload }) {
   try {
     const recruiter = yield select(getCurrentUser)
@@ -92,7 +132,8 @@ export const getCurrentUser = state => state.loginReducer.loggedIn
 
 export const watchFetchJobPostings = takeLatest(actions.fetchJobPostings().type, fetchJobPostings)
 export const watchFetchJobPosting = takeLatest(actions.fetchJobPosting().type, fetchJobPosting)
-export const watchAddJobPosting = takeEvery(actions.addJobPosting().type, addJobPosting)
+export const watchFetchJobPostingWithStages = takeLatest(actions.fetchJobPostingWithStages().type, fetchJobPostingWithStages)
+export const watchSubmitJobPosting = takeEvery(actions.submitJobPosting().type, submitJobPosting)
 export const watchNewStageToJobPosting = takeEvery(actions.addNewStageForJobPosting().type, addNewStageForJobPosting)
 export const watchRemoveStageInJobPosting = takeEvery(actions.removeStageInJobPosting().type, removeStageInJobPosting)
 export const watchFetchApplicants = takeLatest(

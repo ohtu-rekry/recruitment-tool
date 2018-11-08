@@ -18,6 +18,10 @@ export class TimespanPicker extends Component {
     this.handleShowToChange = this.handleShowToChange.bind(this)
   }
 
+  componentDidMount() {
+    this.props.addShowFrom(this.state.showFrom)
+  }
+
   handleShowFromChange(date) {
     if (date !== undefined && (date === null || !this.state.showTo || date.isBefore(this.state.showTo))) {
       if (date === null) {

@@ -45,13 +45,18 @@ class Routes extends Component {
             } />
             <Route path="/jobposting/new" render={() =>
               willBeLoggedIn || loggedIn
-                ? <JobPostingForm />
+                ? <JobPostingForm mode='create' />
                 : <Redirect to='/admin/login' />
             } />
             <Route exact path="/jobposting/:id/applicants" render={() =>
               willBeLoggedIn || loggedIn
                 ? <Applicants/>
                 : <Redirect to="/admin/login" />
+            } />
+            <Route exact path="/jobposting/:id/edit" render={() =>
+              willBeLoggedIn || loggedIn
+                ? <JobPostingForm mode='edit' />
+                : <Redirect to='/admin/login' />
             } />
             <Route exact path="/jobposting/:id" render={() => <JobPosting />} />
             <Route exact path="/" render={() => <App />} />

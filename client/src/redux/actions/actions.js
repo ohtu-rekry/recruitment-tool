@@ -8,10 +8,13 @@ export const logout = createAction('LOGOUT')
 export const logoutSuccess = createAction('LOGOUT_SUCCESS')
 export const logoutFailure = createAction('LOGOUT_FAILURE')
 
-export const addJobPosting = createAction('ADD_JOB_POSTING', (title, content, recruiter, stages) => ({ title, content, recruiter, stages }))
+export const submitJobPosting = createAction(
+  'SUBMIT_JOB_POSTING', (title, content, recruiter, stages, showFrom, showTo, mode, id) => ({
+    title, content, recruiter, stages, showFrom, showTo, mode, id
+  }))
 export const addJobPostingSuccess = createAction('ADDED_JOB_POSTING')
 export const addJobPostingFailure = createAction('ADD_JOB_POSTING_FAILED')
-export const removeJobPostingCreationStatus = createAction('REMOVE_JOB_POSTING_CREATION_STATUS')
+export const removeJobPostingStatus = createAction('REMOVE_JOB_POSTING_CREATION_STATUS')
 export const addNewStageForJobPosting = createAction('ADD_NEW_STAGE_FOR_JOB_POSTING', (newStage) => (newStage))
 export const removeStageInJobPosting = createAction('REMOVE_STAGE_IN_JOB_POSTING', (stage) => (stage))
 
@@ -20,6 +23,8 @@ export const addShowTo = createAction('ADD_SHOW_TO', (showTo) => ({ showTo }))
 
 export const copyStages = createAction('COPY_STAGES', (stages) => ({ stages }))
 export const clearCopiedStages = createAction('CLEAR_COPIED_STAGES')
+export const setStages = createAction('SET_STAGES', (stages) => ({ stages }))
+export const clearStages = createAction('CLEAR_STAGES')
 
 export const sendApplication = createAction(
   'SEND_APPLICATION', (applicantName, applicantEmail, jobPostingId) => ({
@@ -30,6 +35,7 @@ export const fetchJobPosting = createAction(
   'FETCH_JOBPOSTING', (postingId) => ({
     postingId
   }))
+export const fetchJobPostingWithStages = createAction('FETCH_JOBPOSTING_WITH_STAGES', (id) => ({ id }))
 export const emptyJobPosting = createAction('EMPTY_JOBPOSTING')
 export const fetchJobPostings = createAction('FETCH_JOBPOSTINGS')
 export const setJobPosting = createAction('SET_JOBPOSTING')
