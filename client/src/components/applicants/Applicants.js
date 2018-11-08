@@ -65,14 +65,16 @@ export class Applicants extends Component {
           </button>
         </Link>
         <div className='application-stages'>
-          {stages.map(stage =>
-            <ApplicationStages
-              stage={stage}
-              key={stage.id}
-              onDrag={this.onDrag}
-              onDrop={this.onDrop}
-            />
-          )}
+          {stages
+            .sort((a, b) => a.orderNumber - b.orderNumber)
+            .map(stage =>
+              <ApplicationStages
+                stage={stage}
+                key={stage.id}
+                onDrag={this.onDrag}
+                onDrop={this.onDrop}
+              />
+            )}
         </div>
       </div>
     )
