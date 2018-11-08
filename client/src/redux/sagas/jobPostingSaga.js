@@ -9,7 +9,9 @@ function* addJobPosting({ payload }) {
     const jobPosting = {
       title: payload.title,
       content: payload.content,
-      stages: payload.stages
+      stages: payload.stages,
+      showFrom: payload.showFrom,
+      showTo: payload.showTo
     }
     const recruiter = payload.recruiter
 

@@ -26,6 +26,10 @@
   }
 }
 
+.application-stages-container {
+  height: 100%;
+}
+
 .application-stages {
   display: flex;
   flex-wrap: nowrap;
@@ -70,6 +74,18 @@
     overflow-x: auto;
   }
 
+  &__placeholder {
+    pointer-events: none;
+    height: 85px;
+    margin: 10px;
+    background-color: $gandalf-the-gray;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px 0 rgba(0,0,0,0.2);
+    opacity: 0.6;
+    line-height: 85px;
+    cursor: pointer;
+  }
+
   ::-webkit-scrollbar {
     background: transparent;
     width: 5px;
@@ -79,8 +95,6 @@
     background-color: rgba(0, 0, 0, 0.2);
   }
 }
-
-
 
 .application-stage:hover {
   box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);

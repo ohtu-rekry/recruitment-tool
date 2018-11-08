@@ -71,3 +71,15 @@
       padding: 5px;
     }
   }
+
+.timespan-picker {
+  padding-top: 10px;
+  display: inline-flex;
+
+   &__datepicker {
+    margin: 0px 5px;
+  }
+   &__error {
+    color: red;
+  }
+} 

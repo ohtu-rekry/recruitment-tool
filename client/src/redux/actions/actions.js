@@ -15,6 +15,9 @@ export const removeJobPostingCreationStatus = createAction('REMOVE_JOB_POSTING_C
 export const addNewStageForJobPosting = createAction('ADD_NEW_STAGE_FOR_JOB_POSTING', (newStage) => (newStage))
 export const removeStageInJobPosting = createAction('REMOVE_STAGE_IN_JOB_POSTING', (stage) => (stage))
 
+export const addShowFrom = createAction('ADD_SHOW_FROM', (showFrom) => ({ showFrom }))
+export const addShowTo = createAction('ADD_SHOW_TO', (showTo) => ({ showTo }))
+
 export const copyStages = createAction('COPY_STAGES', (stages) => ({ stages }))
 export const clearCopiedStages = createAction('CLEAR_COPIED_STAGES')
 
@@ -37,4 +40,8 @@ export const applyFailure = createAction('APPLY_FAIL')
 
 export const fetchApplicants = createAction('FETCH_APPLICANTS')
 export const fetchApplicantsSuccess = createAction('FETCH_APPLICANTS_SUCCESS')
+
+export const moveApplicant = createAction('MOVE_APPLICANT', (applicant, newStage) => ({ applicant, newStage }))
+export const moveApplicantSuccess = createAction('MOVE_APPLICANT_SUCCESS')
+
 

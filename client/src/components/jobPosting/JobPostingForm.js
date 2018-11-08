@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
 import Typography from '@material-ui/core/Typography'
 
+import TimespanPicker from './TimespanPicker'
 import JobPostingStages from './JobPostingStages'
 import { addJobPosting } from '../../redux/actions/actions'
 
@@ -35,7 +36,8 @@ export class JobPostingForm extends Component {
     const { title, content } = this.state
     const recruiter = this.props.loggedIn
     const stages = this.props.jobPostingStages
-
+    const showFrom = this.props.showFrom
+    const showTo = this.props.showTo
 
     const notOnlyWhitespaceRegex = /\S/
     if (!(notOnlyWhitespaceRegex.test(title) && notOnlyWhitespaceRegex.test(content))) {
@@ -44,7 +46,7 @@ export class JobPostingForm extends Component {
       })
       return
     }
-    await this.props.addJobPosting(title, content, recruiter, stages)
+    await this.props.addJobPosting(title, content, recruiter, stages, showFrom, showTo)
     this.setState({ fireRedirect: true })
   }
 
@@ -100,6 +102,7 @@ export class JobPostingForm extends Component {
               disabled={!loggedIn}
             />
             <br />
+            <TimespanPicker/>
           </form>
           <div className='job-posting-form__form'>
             <JobPostingStages />
@@ -129,13 +132,17 @@ JobPostingForm.propTypes = {
   creationRequestStatus: PropTypes.object,
   loggedIn: PropTypes.object,
   jobPostingStages: PropTypes.array,
-  addJobPosting: PropTypes.func.isRequired
+  addJobPosting: PropTypes.func.isRequired,
+  showFrom: PropTypes.object,
+  showTo: PropTypes.object
 }
 
 const mapStateToProps = (state) => ({
   creationRequestStatus: state.jobPostingReducer.creationRequestStatus,
   loggedIn: state.loginReducer.loggedIn,
-  jobPostingStages: state.jobPostingReducer.jobPostingStages
+  jobPostingStages: state.jobPostingReducer.jobPostingStages,
+  showFrom: state.jobPostingReducer.showFrom,
+  showTo: state.jobPostingReducer.showTo
 })
 
 const mapDispatchToProps = {
