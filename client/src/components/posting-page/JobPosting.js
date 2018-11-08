@@ -62,19 +62,17 @@ export class JobPosting extends Component {
   render() {
     const { applicantName, applicantEmail, inputError } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
-
     const LinkToApplicants = props => <Link to={`/jobposting/${jobPosting.id}/applicants`} {...props} />
 
     return (
       <div className='job-posting'>
         {loggedIn &&
-          <Button
-            className='job-posting__link'
-            component={LinkToApplicants}>
+          <Button className='job-posting__link' component={LinkToApplicants}>
           See applicants
           </Button>
         }
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
+        {jobPosting.isHidden && <HiddenNotification jobPosting={jobPosting} />}
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
         <div className='job-posting__content'>
           <ReactMarkdown source={jobPosting.content} />
@@ -116,6 +114,17 @@ const ErrorMessage = ({ errorMessage }) => {
   return (
     <div className='job-posting__error-message'>
       {errorMessage}
+    </div>
+  )
+}
+
+const HiddenNotification = ({ jobPosting }) => {
+  const showFrom = jobPosting.showFrom.format('DD.MM.YYYY').toString()
+  const showTo = jobPosting.showTo.format('DD.MM.YYYY').toString()
+
+  return (
+    <div className='job-posting__hidden-notification'>
+      Visible from {showFrom} to {showTo}
     </div>
   )
 }

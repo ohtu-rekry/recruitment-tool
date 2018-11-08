@@ -116,6 +116,11 @@ align-items: left;
     }
   }
 
+  &__hidden-notification {
+    padding: 0px 20px;
+    color: #8f0000;    
+  }
+
   input:required {
     box-shadow: none;
   }
@@ -129,6 +134,9 @@ align-items: left;
 
   &__link {
     text-decoration: none;
+  }
+  &__hidden {
+    color: #8f0000;
   }
 }
 
