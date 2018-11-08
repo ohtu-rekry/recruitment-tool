@@ -21,8 +21,8 @@ export const sendApplication = createAction(
   }))
 
 export const fetchJobPosting = createAction(
-  'FETCH_JOBPOSTING', (postingId) => ({
-    postingId
+  'FETCH_JOBPOSTING', (postingId, recruiter) => ({
+    postingId, recruiter
   }))
 export const fetchJobPostings = createAction('FETCH_JOBPOSTINGS', (recruiter) => ({ recruiter }))
 export const setJobPosting = createAction('SET_JOBPOSTING')

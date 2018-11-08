@@ -20,7 +20,7 @@ export class JobPosting extends Component {
 
   componentDidMount() {
     const jobPostingId = window.location.href.split('/')[4]
-    this.props.fetchJobPosting(jobPostingId)
+    this.props.fetchJobPosting(jobPostingId, this.props.loggedIn)
   }
 
   handleChange = (e) => {
@@ -102,7 +102,7 @@ export class JobPosting extends Component {
               Send
             </button>
           </div>
-          {inputError && <InputErrorMessage errorMessage={inputError}/>}
+          {inputError && <InputErrorMessage errorMessage={inputError} />}
         </form>
       </div>
     )
