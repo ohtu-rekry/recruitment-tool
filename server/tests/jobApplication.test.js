@@ -1,5 +1,6 @@
 const supertest = require('supertest')
 const bcrypt = require('bcryptjs')
+const moment = require('moment')
 
 const { app, server } = require('../src/server')
 const api = supertest(app)
@@ -16,6 +17,8 @@ describe('CREATE OR CHANGE JOBAPPLICATION', async () => {
   let jobPostingId = null
   let token = null
   let firstPostingStage, secondPostingStage
+  const showFromDate = moment().subtract(5, 'days').format('YYYY/MM/DD')
+  const showToDate = moment().add(100, 'years').format('YYYY/MM/DD')
 
   const testRecruiter = {
     username: 'recruiteradminjobapplicationtest',
@@ -24,7 +27,10 @@ describe('CREATE OR CHANGE JOBAPPLICATION', async () => {
   const testJobPosting = {
     title: 'Data scientist',
     content: 'Looking for data expert',
-    stages: [{ stageName: 'application-test-stage1' }, { stageName: 'application-test-stage2' }]
+    stages: [{ stageName: 'application-test-stage1' }, { stageName: 'application-test-stage2' }, { stageName: 'application-test-stage3' }],
+    showFrom: showFromDate,
+    showTo: showToDate
+
   }
 
   beforeAll(async () => {
@@ -53,7 +59,6 @@ describe('CREATE OR CHANGE JOBAPPLICATION', async () => {
         orderNumber: 1
       }
     })
-
   })
 
   describe('POST', () => {

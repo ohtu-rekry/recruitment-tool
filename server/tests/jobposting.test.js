@@ -2,6 +2,7 @@ const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
 const bcrypt = require('bcryptjs')
+const moment = require('moment')
 const { JobPosting, sequelize, Recruiter, PostingStage } = require('../db/models')
 const { tooLongTitle } = require('../utils/jobpostingTestUtils')
 
@@ -31,11 +32,16 @@ describe('POST method', async () => {
     token = `Bearer ${response.body.token}`
   })
 
+  const showFromDate = moment().subtract(5, 'days').format('YYYY/MM/DD')
+  const showToDate = moment().add(100, 'years').format('YYYY/MM/DD')
+
   test('a valid job posting can be created if user is logged in', async () => {
     const newPosting = {
       title: 'Senior Java Developer',
       content: 'We are looking for someone with a minimum of 5 years of experience coding with Java',
-      stages: [{ stageName: 'jobposting-test-example-stage1' },{ stageName: 'jobposting-test-example-stage2' }]
+      stages: [{ stageName: 'application-test-stage1' }, { stageName: 'application-test-stage2' }, { stageName: 'application-test-stage3' }],
+      showFrom: showFromDate,
+      showTo: showToDate
     }
 
     await api
@@ -50,7 +56,7 @@ describe('POST method', async () => {
     const newPosting = {
       title: 'Junior Front End Developer',
       content: 'If you are interested in learning new technologies for front-end development, then this is the job for you',
-      stages: [{ stageName: 'Applied' },{ stageName:  'Interview 1' },{ stageName:  'Exercise' },{ stageName:  'Interview 2' }]
+      stages: [{ stageName: 'Applied' }, { stageName: 'Interview 1' }, { stageName: 'Exercise' }, { stageName: 'Interview 2' }]
     }
 
     await api
@@ -63,7 +69,7 @@ describe('POST method', async () => {
   test('a posting cannot be created without a title', async () => {
     const newPosting = {
       content: 'Our development team is missing an experienced UI designer',
-      stages: [{ stageName: 'Applied' },{ stageName:  'Interview 1' },{ stageName:  'Exercise' },{ stageName:  'Interview 2' }]
+      stages: [{ stageName: 'Applied' }, { stageName: 'Interview 1' }, { stageName: 'Exercise' }, { stageName: 'Interview 2' }]
     }
 
     const response = await api
@@ -79,7 +85,7 @@ describe('POST method', async () => {
   test('a posting cannot be created without content', async () => {
     const newPosting = {
       title: 'UI designer',
-      stages: [{ stageName: 'Applied' },{ stageName:  'Interview 1' },{ stageName:  'Exercise' },{ stageName:  'Interview 2' }]
+      stages: [{ stageName: 'Applied' }, { stageName: 'Interview 1' }, { stageName: 'Exercise' }, { stageName: 'Interview 2' }]
     }
 
     const response = await api
@@ -112,7 +118,7 @@ describe('POST method', async () => {
     const newPosting = {
       title: tooLongTitle,
       content: 'We need you',
-      stages: [{ stageName: 'Applied' },{ stageName:  'Interview 1' },{ stageName:  'Exercise' },{ stageName:  'Interview 2' }]
+      stages: [{ stageName: 'Applied' }, { stageName: 'Interview 1' }, { stageName: 'Exercise' }, { stageName: 'Interview 2' }]
     }
 
     const response = await api
@@ -131,7 +137,9 @@ describe('POST method', async () => {
     const newPosting = {
       title: 'Senior Java Developer',
       content: 'We are looking for someone with a minimum of 5 years of experience coding with Java',
-      stages: []
+      stages: [],
+      showFrom: 'Thu Nov 08 2018 10:03:15 GMT+0200 (Eastern)',
+      showTo: 'Sat Nov 10 2018 03:00:00 GMT+0200'
     }
 
     const response = await api
@@ -141,7 +149,7 @@ describe('POST method', async () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body).toEqual({ error: 'stages must contain at least 1 items' })
+    expect(response.body).toEqual({ error: 'stages must contain at least 3 items' })
   })
 
   afterAll(async () => {

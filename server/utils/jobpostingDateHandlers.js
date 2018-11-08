@@ -7,9 +7,8 @@ function validateDate(date) {
   if (date === undefined) {
     return null
   }
-
   const timeZone = 'Europe/Helsinki'
-  return momentTz.tz(date, 'YYYY-MM-DD', timeZone).startOf('day')
+  return momentTz.tz(date, 'YYYY-MM-DD', timeZone)
 }
 
 async function handleJobPostingsForAdmin() {
@@ -18,9 +17,9 @@ async function handleJobPostingsForAdmin() {
   const now = moment().startOf('day')
   jobpostings.forEach(jobposting => {
     if (moment(now).isSameOrAfter(jobposting.showFrom) && moment(now).isSameOrBefore(jobposting.showTo)) {
-      jobposting.hidden = false
+      jobposting.isHidden = false
     } else {
-      jobposting.hidden = true
+      jobposting.isHidden = true
     }
   })
   return jobpostings
