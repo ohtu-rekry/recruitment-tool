@@ -34,6 +34,7 @@ class Applicant extends Component {
         draggable
         onDragStart={this.handleDrag}
         onDragEnd={this.handleDragEnd}
+        onClick={this.props.toggleShowModal}
         style={{
           opacity: this.state.isDragged && '0.3',
           cursor: this.state.isDragged && 'grab'

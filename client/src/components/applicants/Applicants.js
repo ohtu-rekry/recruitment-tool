@@ -5,13 +5,15 @@ import * as actions from '../../redux/actions/actions'
 import { Link } from 'react-router-dom'
 
 import ApplicationStages from './ApplicationStages'
+import ApplicantModal from './ApplicantModal'
 
 export class Applicants extends Component {
   constructor(props) {
     super(props)
     this.state = {
       isLoaded: false,
-      selectedApplicant: ''
+      selectedApplicant: '',
+      modalApplicant: ''
     }
   }
 
@@ -54,6 +56,12 @@ export class Applicants extends Component {
     })
   }
 
+  toggleShowModal = (applicant) => () => {
+    this.setState({
+      modalApplicant: applicant
+    })
+  }
+
   render() {
     const { stages, jobPosting } = this.props
     return (
@@ -71,9 +79,16 @@ export class Applicants extends Component {
               key={stage.id}
               onDrag={this.onDrag}
               onDrop={this.onDrop}
+              toggleShowModal={this.toggleShowModal}
             />
           )}
         </div>
+        {this.state.modalApplicant &&
+          <ApplicantModal
+            applicant={this.state.modalApplicant}
+            toggleShowModal={this.toggleShowModal()}
+          />
+        }
       </div>
     )
   }
