@@ -28,14 +28,16 @@ class Applicant extends Component {
       hour: '2-digit',
       minute:'2-digit'
     })
-    console.log(this.state.isDragged)
     return (
       <div
         className='applicant'
         draggable
         onDragStart={this.handleDrag}
         onDragEnd={this.handleDragEnd}
-        style={{ opacity: this.state.isDragged && '0.3' }}
+        style={{
+          opacity: this.state.isDragged && '0.3',
+          cursor: this.state.isDragged && 'grab'
+        }}
       >
         <div className='applicant__name'>
           {applicantName}

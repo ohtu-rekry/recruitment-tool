@@ -21,22 +21,29 @@ function* sendApplication({ payload }) {
 
 function* moveApplicant({ payload }) {
   try {
-    console.log(payload)
-    
     const recruiter = yield select(getCurrentUser)
-    const jobPosting = yield select(getCurrentJobPosting)
     const token = recruiter.token
-    const applicant = payload.applicant.id
-    const newStage = payload.newStage.id
+    const applicant = payload.applicant
+    const newStage = payload.newStage
     const data = {
-      postingStageId: newStage,
-      jobApplicationId: applicant
+      postingStageId: newStage.id,
+      jobApplicationId: applicant.id
     }
 
     const response = yield call(jobApplicationApi.moveApplicants, { token, data })
-    console.log('resp: ', response)
-    
-    yield put(actions.fetchApplicants(jobPosting.id))
+
+    if (response.status === 200) {
+      const stages = yield select(getStages)
+      const filteredStages = stages.map(stage => (
+        { ...stage, applicants: stage.applicants.filter(a => a.id !== applicant.id) }
+      ))
+      const finalStages = filteredStages.map(stage => (stage.id === newStage.id) ?
+        { ...stage, applicants: [...stage.applicants, applicant] }
+        : { ...stage }
+      )
+      yield put(actions.moveApplicantSuccess(finalStages))
+    }
+
   } catch (e) {
     console.log(e)
   }
@@ -44,6 +51,7 @@ function* moveApplicant({ payload }) {
 
 export const getCurrentUser = state => state.loginReducer.loggedIn
 export const getCurrentJobPosting = state => state.postingReducer.jobPosting
+export const getStages = state => state.postingReducer.stages
 
 export const watchMoveApplicant = takeLatest(actions.moveApplicant().type, moveApplicant)
 export const watchSendApplication = takeLatest(actions.sendApplication().type, sendApplication)

@@ -56,7 +56,6 @@ export class Applicants extends Component {
 
   render() {
     const { stages, jobPosting } = this.props
-    const isDragged = this.state.selectedApplicant.length ? true : false
     return (
       <div className='applicants'>
         <div className='applicants__title'>{jobPosting.title}</div>
@@ -72,7 +71,6 @@ export class Applicants extends Component {
               key={stage.id}
               onDrag={this.onDrag}
               onDrop={this.onDrop}
-              isDragged={isDragged}
             />
           )}
         </div>

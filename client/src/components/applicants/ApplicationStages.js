@@ -19,8 +19,6 @@ export class ApplicationStages extends Component {
 
   onDragOver = (event) => {
     this.setState({ isOver: true })
-    let objDiv = document.getElementById('application-stage__content')
-    objDiv.scrollTop = objDiv.scrollHeight
     event.preventDefault()
   }
 
@@ -36,31 +34,39 @@ export class ApplicationStages extends Component {
 
   render() {
     const { stage } = this.props
+    const { isOver } = this.state
 
     return (
-      <div className='application-stage'>
-        <div className='application-stage__title'>
-          {stage.stageName}
-        </div>
+      <div
+        className='application-stage-container'
+        onDragOver={this.onDragOver}
+        onDragLeave={this.onDragLeave}
+        onDrop={this.onDrop}
+      >
         <div
-          id='application-stage__content'
-          className='application-stage__content'
-          onDrop={event => this.onDrop(event)}
-          onDragOver={this.onDragOver}
-          onDragLeave={this.onDragLeave}
+          className='application-stage'
         >
-          {stage.applicants && stage.applicants.map(applicant =>
-            <Applicant
-              key={applicant.id}
-              applicant={applicant}
-              onDrag={this.onDrag}
-            />
-          )}
-          {this.state.isOver &&
-            <div className='application-stage__placeholder'>
+          <div className='application-stage__title'>
+            {stage.stageName}
+          </div>
+          <div
+            id='application-stage__content'
+            className='application-stage__content'
+          >
+            {stage.applicants && stage.applicants.map(applicant =>
+              <Applicant
+                key={applicant.id}
+                applicant={applicant}
+                onDrag={this.onDrag}
+              />
+            )}
+            <div
+              style={{ display: !isOver && 'none' }}
+              className='application-stage__placeholder'
+            >
               Move applicant here
             </div>
-          }
+          </div>
         </div>
       </div>
     )

@@ -26,6 +26,10 @@
   }
 }
 
+.application-stages-container {
+  height: 100%;
+}
+
 .application-stages {
   display: flex;
   flex-wrap: nowrap;
@@ -53,7 +57,6 @@
   &__content {
     overflow-y: auto;
     overflow-x: hidden;
-    min-height: 120px;
     max-height: calc(100vh - 210px);
   }
 
@@ -72,13 +75,14 @@
   }
 
   &__placeholder {
+    pointer-events: none;
+    height: 85px;
     margin: 10px;
-    padding: 10px 0;
-    background-color: $gray-lightest;
+    background-color: $gandalf-the-gray;
     border-radius: 10px;
-    border: 2px dotted $gray-darker;
     box-shadow: 0 2px 6px 0 rgba(0,0,0,0.2);
-    opacity: 0.3;
+    opacity: 0.6;
+    line-height: 85px;
     cursor: pointer;
   }
 
@@ -90,6 +94,10 @@
   ::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.2);
   }
+}
+
+.drag * {
+  pointer-events: none;
 }
 
 
