@@ -4,10 +4,13 @@ import { Link } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography'
 
 const JobPostingListing = (props) => {
+  const titleColor = props.data.isHidden ? '#9a9a9a' : '#002234'
   const titleStyle = {
-    color: '#002234',
+    color: titleColor,
     fontSize: '22px',
-    padding: '20px 0px'
+    padding: '20px 0px',
+    display: 'inline-flex',
+    marginRight: '10px'
   }
 
   return (
@@ -18,11 +21,9 @@ const JobPostingListing = (props) => {
       <div className='job-posting-listing'>
         <div className='job-posting-listing__title'>
           <Typography variant='headline' style={titleStyle}>{props.data.title}</Typography>
-        </div>
-        <div className='job-posting-listing__content'>
+          {props.data.isHidden && <span className='job-posting-listing__hidden'>Hidden</span>}
         </div>
       </div>
-
     </Link>
   )
 }
