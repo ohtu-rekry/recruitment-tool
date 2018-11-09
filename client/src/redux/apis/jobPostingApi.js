@@ -11,7 +11,6 @@ export default class jobPostingApi {
         headers: { 'Authorization': 'bearer ' + payload.recruiter.token }
       }
     }
-
     return axios.get(root, config)
   }
 

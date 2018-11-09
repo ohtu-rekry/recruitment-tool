@@ -12,6 +12,7 @@ import TimespanPicker from './TimespanPicker'
 import JobPostingStages from './JobPostingStages'
 import { addJobPosting } from '../../redux/actions/actions'
 
+
 export class JobPostingForm extends Component {
 
   constructor(props) {
@@ -20,7 +21,8 @@ export class JobPostingForm extends Component {
       title: '',
       content: '',
       error: false,
-      fireRedirect: false
+      fireRedirect: false,
+      submitButtonDisabled: true
     }
   }
 
@@ -50,6 +52,18 @@ export class JobPostingForm extends Component {
     this.setState({ fireRedirect: true })
   }
 
+  showFromIsAdded = async (showFromChild) => {
+    if (showFromChild !== null) {
+      this.setState({
+        submitButtonDisabled: false
+      })
+    } else {
+      this.setState({
+        submitButtonDisabled: true
+      })
+    }
+  }
+
   render() {
     const { title, content, error } = this.state
     const helperText = error ? 'Required field cannot be empty' : '* is a required field'
@@ -59,7 +73,6 @@ export class JobPostingForm extends Component {
     if (creationRequestStatus) {
       snackbarId = 'snackbar-' + creationRequestStatus.type
     }
-
     return (
       <div>
         {creationRequestStatus
@@ -102,7 +115,7 @@ export class JobPostingForm extends Component {
               disabled={!loggedIn}
             />
             <br />
-            <TimespanPicker/>
+            <TimespanPicker isUpdated={this.showFromIsAdded} />
           </form>
           <div className='job-posting-form__form'>
             <JobPostingStages />
@@ -113,7 +126,7 @@ export class JobPostingForm extends Component {
               type='submit'
               form='job-posting-form'
               variant='contained'
-              disabled={!loggedIn}
+              disabled={this.state.submitButtonDisabled}
             >Create job posting</Button>
           </div>
         </Paper>
@@ -133,8 +146,9 @@ JobPostingForm.propTypes = {
   loggedIn: PropTypes.object,
   jobPostingStages: PropTypes.array,
   addJobPosting: PropTypes.func.isRequired,
-  showFrom: PropTypes.object,
-  showTo: PropTypes.object
+  showFrom: PropTypes.string,
+  showTo: PropTypes.string,
+  showFromIsAdded: PropTypes.func
 }
 
 const mapStateToProps = (state) => ({

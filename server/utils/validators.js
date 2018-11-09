@@ -5,7 +5,7 @@ const jobPostingValidator = celebrate({
     title: Joi.string().required().max(255),
     content: Joi.string().required(),
     stages: Joi.array().min(3).required(),
-    showFrom: Joi.date().allow(null),
+    showFrom: Joi.date().required(),
     showTo: Joi.date().allow(null)
   }),
 })

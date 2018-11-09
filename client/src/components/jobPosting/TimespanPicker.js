@@ -10,7 +10,7 @@ export class TimespanPicker extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      showFrom: moment(),
+      showFrom: null,
       showTo: null,
       error: ''
     }
@@ -18,37 +18,44 @@ export class TimespanPicker extends Component {
     this.handleShowToChange = this.handleShowToChange.bind(this)
   }
 
-  handleShowFromChange(date) {
+  async handleShowFromChange(date) {
     if (date !== undefined && (date === null || !this.state.showTo || date.isBefore(this.state.showTo))) {
       if (date === null) {
-        this.setState({
+        await this.setState({
           showFrom: null,
           showTo: null,
-          error: ''
+          error: 'Visible from is required'
         })
-        this.props.addShowFrom({ date })
-        this.props.addShowTo({ date })
+        this.props.addShowFrom(null)
       } else {
-        this.setState({
+        await this.setState({
           showFrom: date,
           error: ''
         })
-        this.props.addShowFrom({ date })
+        const formattedDate = moment(date).format('YYYY-MM-DD')
+        this.props.addShowFrom(formattedDate)
       }
     } else {
       this.setState({
         error: 'Selected date needs to be before end date'
       })
     }
+    const showFromValue = this.state.showFrom
+    this.props.isUpdated(showFromValue)
   }
 
-  handleShowToChange(date) {
+  async handleShowToChange(date) {
     if (date !== undefined && (date === null || date.isAfter(this.state.showFrom))) {
-      this.setState({
+      await this.setState({
         showTo: date,
         error: ''
       })
-      this.props.addShowTo({ date })
+      let formattedDate = moment(date).format('YYYY-MM-DD')
+      this.props.addShowTo(formattedDate)
+
+      formattedDate = moment(this.state.showFrom).format('YYYY-MM-DD')
+      this.props.addShowFrom(formattedDate)
+
     } else if (date) {
       this.setState({
         error: 'Selected date needs to be after start date'
@@ -88,8 +95,8 @@ export class TimespanPicker extends Component {
 }
 
 TimespanPicker.propTypes = {
-  showFrom: PropTypes.object,
-  showTo: PropTypes.object
+  showFrom: PropTypes.string,
+  showTo: PropTypes.string
 }
 
 const mapStateToProps = (state) => ({

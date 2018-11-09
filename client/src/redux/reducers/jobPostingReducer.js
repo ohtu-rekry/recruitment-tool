@@ -6,8 +6,8 @@ const initialState = {
   jobPostingStages: [{ stageName: 'Applied', canRemove: false }, { stageName: 'Accepted', canRemove: false }, { stageName: 'Rejected', canRemove: false }],
   creationRequestStatus: null,
   copiedStages: null,
-  showFrom: {},
-  showTo: {}
+  showFrom: null,
+  showTo: null
 }
 
 const creationSuccessMessage = 'Job posting successfully added'
@@ -51,11 +51,11 @@ const reducer = handleActions(
     }),
     [actions.addShowFrom]: (state, action) => ({
       ...state,
-      showFrom: action.payload
+      showFrom: action.payload.showFrom
     }),
     [actions.addShowTo]: (state, action) => ({
       ...state,
-      showTo: action.payload
+      showTo: action.payload.showTo
     })
   },
   initialState

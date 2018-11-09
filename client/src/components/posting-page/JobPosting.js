@@ -68,7 +68,7 @@ export class JobPosting extends Component {
       <div className='job-posting'>
         {loggedIn &&
           <Button className='job-posting__link' component={LinkToApplicants}>
-          See applicants
+            See applicants
           </Button>
         }
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
@@ -119,12 +119,9 @@ const ErrorMessage = ({ errorMessage }) => {
 }
 
 const HiddenNotification = ({ jobPosting }) => {
-  const showFrom = jobPosting.showFrom.format('DD.MM.YYYY').toString()
-  const showTo = jobPosting.showTo.format('DD.MM.YYYY').toString()
-
   return (
     <div className='job-posting__hidden-notification'>
-      Visible from {showFrom} to {showTo}
+      Visible from {jobPosting.showFrom} to {jobPosting.showTo}
     </div>
   )
 }

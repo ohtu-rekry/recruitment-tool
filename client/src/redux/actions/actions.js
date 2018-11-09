@@ -8,7 +8,7 @@ export const logout = createAction('LOGOUT')
 export const logoutSuccess = createAction('LOGOUT_SUCCESS')
 export const logoutFailure = createAction('LOGOUT_FAILURE')
 
-export const addJobPosting = createAction('ADD_JOB_POSTING', (title, content, recruiter, stages) => ({ title, content, recruiter, stages }))
+export const addJobPosting = createAction('ADD_JOB_POSTING', (title, content, recruiter, stages, showFrom, showTo) => ({ title, content, recruiter, stages, showFrom, showTo }))
 export const addJobPostingSuccess = createAction('ADDED_JOB_POSTING')
 export const addJobPostingFailure = createAction('ADD_JOB_POSTING_FAILED')
 export const removeJobPostingCreationStatus = createAction('REMOVE_JOB_POSTING_CREATION_STATUS')
