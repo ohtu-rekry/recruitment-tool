@@ -1,6 +1,6 @@
 const jobPostingRouter = require('express-promise-router')()
-const { JobPosting, Recruiter, PostingStage, JobApplication } = require('../../db/models')
 const jwt = require('jsonwebtoken')
+const { JobPosting, Recruiter, PostingStage, JobApplication } = require('../../db/models')
 const { jwtMiddleware } = require('../../utils/middleware')
 const { jobPostingValidator, postingPutValidator } = require('../../utils/validators')
 const Sequelize = require('sequelize')
