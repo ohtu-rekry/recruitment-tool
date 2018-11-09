@@ -79,6 +79,25 @@ jobPostingRouter.get('/:id/applicants', jwtMiddleware, async (req, res) => {
   }
 })
 
+jobPostingRouter.get('/:id', jwtMiddleware, async (req, res) => {
+  try {
+    const jobPostingId = req.params.id
+
+    const jobPostingWithStages = await JobPosting.findOne({
+      where: { id: jobPostingId },
+      include: [ 'postingStages' ]
+    })
+
+    if (!jobPostingWithStages) {
+      return res.status(400).json({ error: 'Invalid job posting ID' })
+    }
+
+    res.status(200).json(jobPostingWithStages)
+  } catch (error) {
+    throw error
+  }
+})
+
 jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request, response) => {
 
   try {

@@ -173,6 +173,71 @@ describe('POST method', async () => {
   })
 })
 
+describe('GET single job posting', async ()  => {
+
+  let token, jobPostingId
+  const testStageName = 'the best stage ever'
+  const testRecruiter = {
+    username: 'recruiteradminjobpostingtest',
+    password: 'fsdGSDjugs22'
+  }
+  const testJobPosting = {
+    title: 'awesome job',
+    content: 'thrilling description',
+    stages: [{ stageName: 'Applied' }, { stageName: testStageName }, { stageName: 'Accepted' }, { stageName: 'Rejected' }]
+  }
+
+  beforeAll(async () => {
+    const passwordHash = await bcrypt.hash(testRecruiter.password, 10)
+    await Recruiter.create({
+      username: testRecruiter.username,
+      password: passwordHash
+    })
+
+    const response = await api.post('/api/login').send(testRecruiter)
+    token = `Bearer ${response.body.token}`
+
+    const jobPostingResponse = await api.post('/api/jobposting').send(testJobPosting).set('Authorization', token)
+    jobPostingId = jobPostingResponse.body.id
+  })
+
+  test('logged in user can fetch job posting with posting stages', async () => {
+
+    const response = await api
+      .get(`/api/jobposting/${jobPostingId}`)
+      .set('Authorization', token)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    expect(JSON.stringify(response.body)).toContain(testJobPosting.title)
+    expect(JSON.stringify(response.body)).toContain(testStageName)
+  })
+
+  test('job posting cannot be fetched when user is not logged in', async () => {
+    await api
+      .get(`/api/jobposting/${jobPostingId}`)
+      .expect(401)
+  })
+
+  afterAll(async () => {
+    await PostingStage.destroy({
+      where: {
+        jobPostingId
+      }
+    })
+    await JobPosting.destroy({
+      where: {
+        id: jobPostingId
+      }
+    })
+    await Recruiter.destroy({
+      where: {
+        username: testRecruiter.username
+      }
+    })
+  })
+})
+
 describe('PUT method', async () => {
 
   let token = null
