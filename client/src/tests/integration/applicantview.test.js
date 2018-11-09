@@ -116,8 +116,8 @@ describe('Application view for one posting when user is logged in', () => {
         .map(applicant => applicant.props().applicant.id))
     ).toEqual([
       [],
-      [applications[0].id],
       [applications[1].id, applications[2].id],
+      [applications[0].id],
       [applications[3].id]
     ])
   })
