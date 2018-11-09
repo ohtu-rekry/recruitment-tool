@@ -2,13 +2,13 @@
 module.exports = (sequelize, DataTypes) => {
 
   const PostingStage = sequelize.define('PostingStage', {
-    stageName: {type: DataTypes.STRING, allowNull: false},
-    orderNumber: {type: DataTypes.INTEGER, allowNull: false}
+    stageName: { type: DataTypes.STRING, allowNull: false },
+    orderNumber: { type: DataTypes.INTEGER, allowNull: false }
   }, {})
 
   PostingStage.associate = function (models) {
     PostingStage.hasMany(models.JobApplication, {
-      foreignKey: {name: 'postingStageId', allowNull: false },
+      foreignKey: { name: 'postingStageId', allowNull: false },
       onDelete: 'CASCADE',
       hooks: true,
       as: 'jobApplications'

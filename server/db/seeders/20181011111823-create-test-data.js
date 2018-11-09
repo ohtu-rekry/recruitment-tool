@@ -1,10 +1,12 @@
 const { Recruiter, JobPosting, PostingStage } = require('../models')
+const bcrypt = require('bcryptjs')
 
 module.exports = {
   up: async (queryInterface) => {
+    const hashedPassword = await bcrypt.hash('test', 10)
     await queryInterface.bulkInsert('Recruiters', [{
       username: 'test',
-      password: 'test',
+      password: hashedPassword,
       createdAt: '2018-09-12 21:57:29.176+03',
       updatedAt: '2018-09-12 21:57:29.176+03'
     }], {})

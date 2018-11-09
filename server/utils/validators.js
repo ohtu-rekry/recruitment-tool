@@ -37,12 +37,25 @@ const applicationPatchValidator = celebrate({
   })
 })
 
+const postingPutValidator = celebrate({
+  body: Joi.object().keys({
+    id: Joi.number().integer(),
+    title: Joi.string().required().max(255),
+    content: Joi.string().required(),
+    stages: Joi.array().min(1).required(),
+    recruiterId: Joi.number().integer(),
+    createdAt: Joi.date(),
+    updatedAt: Joi.date()
+  }),
+})
+
 const validators = {
   jobPostingValidator,
   jobApplicationValidator,
   loginValidator,
   recruiterValidator,
-  applicationPatchValidator
+  applicationPatchValidator,
+  postingPutValidator
 }
 
 module.exports = validators
