@@ -35,20 +35,16 @@ describe('When applying to a job opening', () => {
     applicationForm = app.find('.job-posting__form')
   })
 
-  it('the job posting title is rendered', () => {
-    app.update()
-
-    expect(app.find('.job-posting__title')).toHaveLength(1)
-    expect(app.find('.job-posting__title').prop('children')).toBe(postings[0].title)
-  })
-
-  it('the job posting content is rendered', () => {
+  it('the job posting title and content is rendered', () => {
     app.update()
 
     expect(app.find('.job-posting__content')).toHaveLength(1)
     expect(app.find('ReactMarkdown')).toHaveLength(1)
     expect(app.find(JobPosting).find('ReactMarkdown')).toHaveLength(1)
     expect(app.find('ReactMarkdown').prop('source')).toBe(postings[0].content)
+
+    expect(app.find('.job-posting__title')).toHaveLength(1)
+    expect(app.find('.job-posting__title').prop('children')).toBe(postings[0].title)
   })
 
   it('the application form is rendered on the job posting page', () => {
