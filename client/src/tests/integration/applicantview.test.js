@@ -122,8 +122,7 @@ describe('Application view for one posting when user is logged in', () => {
     ])
   })
 
-  // Following test is commented out until the fix for ordering is merged to master
-  /* it('renders stages in order based on their orderNumber', () => {
+  it('renders stages in order based on their orderNumber', () => {
     app.update()
 
     expect(app.find(ApplicationStages).map(element => element.props().stage))
@@ -131,5 +130,4 @@ describe('Application view for one posting when user is logged in', () => {
         .map(element => element.props().stage)
         .sort((a, b) => a.orderNumber - b.orderNumber))
   })
-*/
 })
