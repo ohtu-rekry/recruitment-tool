@@ -1,6 +1,5 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import { Link } from 'react-router-dom'
 import { mock, getApp } from '../../setupTests'
 
 import FrontPage from '../../components/frontpage/FrontPage'

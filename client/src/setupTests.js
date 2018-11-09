@@ -45,4 +45,9 @@ export const getApp = component => (
   </Provider>
 )
 
-export const getSavedItems = () => savedItems
+export const setWindowLocation = (location) => {
+  Object.defineProperty(window.location, 'href', {
+    writable: true,
+    value: location
+  })
+}
