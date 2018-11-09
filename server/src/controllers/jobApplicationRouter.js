@@ -1,12 +1,19 @@
 const jobApplicationRouter = require('express').Router()
 const { jwtMiddleware } = require('../../utils/middleware')
-const { JobApplication, PostingStage } = require('../../db/models')
+const { JobApplication, PostingStage, JobPosting } = require('../../db/models')
 const { jobApplicationValidator, applicationPatchValidator } = require('../../utils/validators')
 
-jobApplicationRouter.get('/', jwtMiddleware, async (req, res) => {
+jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
   try {
-    const jobApplications = await JobApplication.findAll({})
-    res.json(jobApplications)
+    const jobApplications = await JobApplication.findAll({
+      include: [{
+        model: PostingStage,
+        include: [{
+          model: JobPosting
+        }]
+      }]
+    })
+    response.json(jobApplications)
   } catch (error) {
     throw error
   }
