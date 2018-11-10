@@ -92,6 +92,7 @@ jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request,
 
     const existingStages = await PostingStage.findAll({
       where: {
+        jobPostingId: postingId,
         id: {
           [Sequelize.Op.in]:
             body.stages
@@ -100,11 +101,6 @@ jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request,
         }
       }
     })
-
-    const newStages = body.stages.filter(stage =>
-      !(existingStages
-        .map(existing => existing.id)
-        .includes(stage.id)))
 
     const deletedStages = await PostingStage.findAll({
       where: {
@@ -119,23 +115,30 @@ jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request,
       include: [ 'jobApplications' ]
     })
 
+    const stagesInUpdatedJobPosting = body.stages.filter(stage => stage.stageName)
+
+    deletedStages
+      .map(stageModel => stageModel.dataValues)
+      .filter(stage => stage.jobApplications.length > 0)
+      .forEach(stage =>
+        stagesInUpdatedJobPosting.splice(stage.orderNumber, 0, stage))
+
+    const orderedStages = stagesInUpdatedJobPosting.map((stage, index) => ({ ...stage, order: index }))
+
+    const newStages = orderedStages.filter(stage =>
+      !((existingStages
+        .map(existing => existing.id)
+        .includes(stage.id))
+      || (deletedStages
+        .map(deleted => deleted.id)
+        .includes(stage.id))))
+
     const updatedPosting = await posting.update({
       title: body.title,
       content: body.content,
       showFrom: body.showFrom,
       showTo: body.showTo
     })
-
-    await Promise.all(
-      newStages
-        .filter(stage => stage.stageName)
-        .map((stage, index) =>
-          PostingStage.create({
-            stageName: stage.stageName,
-            orderNumber: stage.orderNumber || index,
-            jobPostingId: postingId
-          })
-        ))
 
     await Promise.all(deletedStages
       .filter(stage => stage.jobApplications.length === 0)
@@ -146,6 +149,23 @@ jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request,
           }
         })
       ))
+
+    await Promise.all(orderedStages
+      .filter(stage => existingStages.map(existing => existing.id).includes(stage.id))
+      .map(stage => PostingStage.update(
+        { orderNumber: stage.order },
+        { where: { id: stage.id } }
+      )))
+
+    await Promise.all(
+      newStages
+        .map((stage) =>
+          PostingStage.create({
+            stageName: stage.stageName,
+            orderNumber: stage.order,
+            jobPostingId: postingId
+          })
+        ))
 
     response.status(200).json({
       ...updatedPosting.toJSON(),
