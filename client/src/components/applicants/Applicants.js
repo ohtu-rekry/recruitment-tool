@@ -34,6 +34,10 @@ export class Applicants extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.emptyJobPosting()
+  }
+
   handleCopyStages = () => {
     const { stages, copyStages } = this.props
     copyStages(stages)
