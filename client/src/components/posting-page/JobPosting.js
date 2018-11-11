@@ -62,14 +62,11 @@ export class JobPosting extends Component {
   render() {
     const { applicantName, applicantEmail, inputError } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
-    const LinkToApplicants = props => <Link to={`/jobposting/${jobPosting.id}/applicants`} {...props} />
 
     return (
       <div className='job-posting'>
         {loggedIn &&
-          <Button className='job-posting__link' component={LinkToApplicants}>
-          See applicants
-          </Button>
+          <AdminButtons id={jobPosting.id} />
         }
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
         {jobPosting.isHidden && <HiddenNotification jobPosting={jobPosting} />}
@@ -108,6 +105,26 @@ export class JobPosting extends Component {
       </div>
     )
   }
+}
+
+const AdminButtons = ({ id }) => {
+  const LinkToApplicants = props => <Link to={`/jobposting/${id}/applicants`} {...props} />
+  const LinkToEditPage = props => <Link to={`/jobposting/${id}/edit`} {...props} />
+
+  return (
+    <div>
+      <Button
+        className='job-posting__link'
+        component={LinkToApplicants}>
+        See applicants
+      </Button>
+      <Button
+        className='job-posting__link'
+        component={LinkToEditPage}>
+        Edit
+      </Button>
+    </div>
+  )
 }
 
 const ErrorMessage = ({ errorMessage }) => {

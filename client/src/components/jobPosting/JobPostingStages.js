@@ -4,7 +4,7 @@ import { TextField, Button, Chip } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import PropTypes from 'prop-types'
 
-import { addNewStageForJobPosting, removeStageInJobPosting, clearCopiedStages } from '../../redux/actions/actions'
+import { addNewStageForJobPosting, removeStageInJobPosting, clearCopiedStages, clearStages } from '../../redux/actions/actions'
 
 export class JobPostingStages extends Component {
   constructor(props) {
@@ -18,6 +18,10 @@ export class JobPostingStages extends Component {
     if (this.props.stages !== null) {
       this.addCopiedStagesToNewJobPosting()
     }
+  }
+
+  componentWillUnmount() {
+    this.props.clearStages()
   }
 
   async addCopiedStagesToNewJobPosting() {
@@ -110,7 +114,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   addNewStageForJobPosting,
   removeStageInJobPosting,
-  clearCopiedStages
+  clearCopiedStages,
+  clearStages
 }
 
 export default connect(
