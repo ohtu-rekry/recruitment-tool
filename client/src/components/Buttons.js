@@ -1,11 +1,13 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 
 export const LinkButton = ({ link, text }) => {
+  const routerLink = props => <Link to={link} {...props} />
   return (
     <div>
-      <Button variant='contained' href={link} size='small'>{text}</Button>
+      <Button variant='contained' component={routerLink} size='small'>{text}</Button>
     </div>
   )
 }
