@@ -42,7 +42,7 @@ class AdminFrontPage extends Component {
 }
 
 AdminFrontPage.propTypes = {
-  loggedIn: PropTypes.object.isRequired,
+  loggedIn: PropTypes.object,
   applicants: PropTypes.array.isRequired
 }
 

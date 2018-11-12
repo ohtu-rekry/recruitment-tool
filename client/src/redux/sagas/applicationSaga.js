@@ -76,7 +76,13 @@ function* getApplicants() {
           }
         ]
       })
-
+      /*
+      Returns an array of unique stages.
+      First checks final results array res for a Stage object with identical name.
+      If there isn't one, it adds the stage to the final array. If there is,
+      it finds that stage object and combines applicants from that and the stage with
+      identical name.
+      */
       const uniqueStages = stages.reduce((res, stg) => {
         let result = res.find(stage =>
           stage.stageName.toLowerCase().trim() === stg.stageName.toLowerCase().trim()
@@ -89,6 +95,10 @@ function* getApplicants() {
         return res
       }, [])
 
+      /*
+      Sorts unique stages based on their order number.
+      Makes sure Accepted and Rejected stages are shown last.
+      */
       const sortedUniqueStages = uniqueStages.map(stage => {
         const highestOrderNumber = uniqueStages.reduce((a, b) =>
           a.orderNumber > b.orderNumber ? a.orderNumber : b.orderNumber
