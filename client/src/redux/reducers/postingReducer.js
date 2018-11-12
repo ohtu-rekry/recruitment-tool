@@ -23,7 +23,8 @@ const reducer = handleActions(
     }),
     [actions.emptyJobPosting]: (state) => ({
       ...state,
-      jobPosting: { }
+      jobPosting: { },
+      stages: []
     }),
     [actions.fetchApplicantsSuccess]: (state, action) => (
       {
