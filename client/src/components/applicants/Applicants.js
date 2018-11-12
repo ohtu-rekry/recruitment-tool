@@ -16,18 +16,18 @@ export class Applicants extends Component {
   }
 
   componentDidMount() {
-    const { fetchApplicants, loggedIn } = this.props
+    const { fetchApplicants, loggedIn, adminView } = this.props
     const postingId = window.location.href.split('/')[4]
-    if (loggedIn) {
+    if (loggedIn && !adminView) {
       fetchApplicants(postingId)
       this.setState({ isLoaded: true })
     }
   }
 
   componentWillReceiveProps(nProps) {
-    const { fetchApplicants, fetchJobPosting } = this.props
+    const { fetchApplicants, fetchJobPosting, adminView } = this.props
     const postingId = window.location.href.split('/')[4]
-    if (nProps.loggedIn && !this.state.isLoaded) {
+    if (nProps.loggedIn && !this.state.isLoaded && !adminView) {
       fetchJobPosting(postingId)
       fetchApplicants(postingId)
       this.setState({ isLoaded: true })
@@ -40,30 +40,41 @@ export class Applicants extends Component {
   }
 
   onDrag = (event, applicant) => {
-    event.dataTransfer.setData('text', event.target.id)
-    this.setState({
-      selectedApplicant: applicant
-    })
+    if (!this.props.adminView) {
+      event.dataTransfer.setData('text', event.target.id)
+      this.setState({
+        selectedApplicant: applicant
+      })
+    }
   }
 
   onDrop = (stage) => {
-    const { selectedApplicant } = this.state
-    this.props.moveApplicant(selectedApplicant, stage)
-    this.setState({
-      selectedApplicant: ''
-    })
+    if (!this.props.adminView) {
+      const { selectedApplicant } = this.state
+      this.props.moveApplicant(selectedApplicant, stage)
+      this.setState({
+        selectedApplicant: ''
+      })
+    }
   }
 
   render() {
-    const { stages, jobPosting } = this.props
+    let { stages, jobPosting, applicants, adminView } = this.props
+    if (applicants) {
+      stages = applicants
+    }
     return (
       <div className='applicants'>
-        <div className='applicants__title'>{jobPosting.title}</div>
-        <Link to='/jobposting/new' style={{ textDecoration: 'none' }}>
-          <button className='applicants__button' onClick={this.handleCopyStages}>
-            Copy Templates
-          </button>
-        </Link>
+        <div className='applicants__title'>
+          {applicants ? 'All applicants' : jobPosting.title}
+        </div>
+        {!adminView &&
+          <Link to='/jobposting/new' style={{ textDecoration: 'none' }}>
+            <button className='applicants__button' onClick={this.handleCopyStages}>
+              Copy Templates
+            </button>
+          </Link>
+        }
         <div className='application-stages'>
           {stages
             .sort((a, b) => a.orderNumber - b.orderNumber)
@@ -73,6 +84,7 @@ export class Applicants extends Component {
                 key={stage.id}
                 onDrag={this.onDrag}
                 onDrop={this.onDrop}
+                adminView={adminView}
               />
             )}
         </div>

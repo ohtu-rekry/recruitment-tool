@@ -18,8 +18,10 @@ export class ApplicationStages extends Component {
   }
 
   onDragOver = (event) => {
-    this.setState({ isOver: true })
-    event.preventDefault()
+    if (!this.props.adminView) {
+      this.setState({ isOver: true })
+      event.preventDefault()
+    }
   }
 
   onDragLeave = (event) => {

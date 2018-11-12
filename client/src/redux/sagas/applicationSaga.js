@@ -49,9 +49,71 @@ function* moveApplicant({ payload }) {
   }
 }
 
+function* getApplicants() {
+  try {
+    const recruiter = yield select(getCurrentUser)
+    const token = recruiter.token
+
+    const response = yield call(jobApplicationApi.get, { token })
+    let stages = []
+    if (response.status === 200) {
+      response.data.forEach(applicant => {
+        stages = [
+          ...stages,
+          {
+            id: applicant.PostingStage.id,
+            jobPostingId: applicant.PostingStage.jobPostingId,
+            orderNumber: applicant.PostingStage.orderNumber,
+            stageName: applicant.PostingStage.stageName,
+            applicants: [{
+              id: applicant.id,
+              postingStageId: applicant.postingStageId,
+              applicantEmail: applicant.applicantEmail,
+              applicantName: applicant.applicantName,
+              createdAt: applicant.createdAt,
+              jobPosting: applicant.PostingStage.JobPosting.title
+            }]
+          }
+        ]
+      })
+
+      const uniqueStages = stages.reduce((res, stg) => {
+        let result = res.find(stage =>
+          stage.stageName.toLowerCase().trim() === stg.stageName.toLowerCase().trim()
+        )
+        if(!result) return res.concat(stg)
+        const index = res.findIndex(existingStage =>
+          existingStage.stageName.toLowerCase().trim() === stg.stageName.toLowerCase().trim()
+        )
+        res[index].applicants = [...res[index].applicants, ...stg.applicants]
+        return res
+      }, [])
+
+      const sortedUniqueStages = uniqueStages.map(stage => {
+        const highestOrderNumber = uniqueStages.reduce((a, b) =>
+          a.orderNumber > b.orderNumber ? a.orderNumber : b.orderNumber
+        )
+
+        if (stage.stageName === 'Rejected') {
+          return { ...stage, orderNumber: highestOrderNumber + 2 }
+        } else if (stage.stageName === 'Accepted') {
+          return { ...stage, orderNumber: highestOrderNumber + 1 }
+        }
+        return stage
+      })
+
+      yield put(actions.getApplicantsSuccess(sortedUniqueStages))
+    }
+
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export const getCurrentUser = state => state.loginReducer.loggedIn
 export const getCurrentJobPosting = state => state.postingReducer.jobPosting
 export const getStages = state => state.postingReducer.stages
 
 export const watchMoveApplicant = takeLatest(actions.moveApplicant().type, moveApplicant)
 export const watchSendApplication = takeLatest(actions.sendApplication().type, sendApplication)
+export const watchGetApplicants = takeLatest(actions.getApplicants().type, getApplicants)

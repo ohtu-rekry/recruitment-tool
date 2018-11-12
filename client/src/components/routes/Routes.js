@@ -6,6 +6,7 @@ import * as actions from '../../redux/actions/actions'
 
 import Header from '../Header'
 import Login from '../admin/Login'
+import AdminFrontPage from '../frontpage/AdminFrontPage'
 import JobPostingForm from '../jobPosting/JobPostingForm'
 import JobPosting from '../posting-page/JobPosting'
 import Applicants from '../applicants/Applicants'
@@ -43,6 +44,11 @@ class Routes extends Component {
                 ? <Redirect to="/" />
                 : <Login />
             } />
+            <Route exact path="/" render={() =>
+              willBeLoggedIn || loggedIn
+                ? <AdminFrontPage />
+                : <App />
+            } />
             <Route path="/jobposting/new" render={() =>
               willBeLoggedIn || loggedIn
                 ? <JobPostingForm mode='create' />
@@ -50,7 +56,7 @@ class Routes extends Component {
             } />
             <Route exact path="/jobposting/:id/applicants" render={() =>
               willBeLoggedIn || loggedIn
-                ? <Applicants/>
+                ? <Applicants adminView={false} />
                 : <Redirect to="/admin/login" />
             } />
             <Route exact path="/jobposting/:id/edit" render={() =>
@@ -59,7 +65,7 @@ class Routes extends Component {
                 : <Redirect to='/admin/login' />
             } />
             <Route exact path="/jobposting/:id" render={() => <JobPosting />} />
-            <Route exact path="/" render={() => <App />} />
+            <Route exact path="/jobpostings" render={() => <App />} />
             <Route exact path="/success" render={() => <ApplicationSuccess />} />
           </Switch>
         </div>
