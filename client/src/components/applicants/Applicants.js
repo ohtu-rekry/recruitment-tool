@@ -94,7 +94,6 @@ export class Applicants extends Component {
           </Link>
         }
         <div className='application-stages'>
-<<<<<<< HEAD
           {stages
             .sort((a, b) => a.orderNumber - b.orderNumber)
             .map(stage =>
@@ -107,17 +106,6 @@ export class Applicants extends Component {
                 toggleShowModal={this.toggleShowModal}
               />
             )}
-=======
-          {stages.map(stage =>
-            <ApplicationStages
-              stage={stage}
-              key={stage.id}
-              onDrag={this.onDrag}
-              onDrop={this.onDrop}
-              toggleShowModal={this.toggleShowModal}
-            />
-          )}
->>>>>>> 1180c7e55b57da85325cfbabff591c2ceb336346
         </div>
         {this.state.modalApplicant &&
           <ApplicantModal

@@ -10,7 +10,7 @@ import Calendar from '@material-ui/icons/CalendarToday'
 class ApplicantModal extends React.Component {
 
   render() {
-    const { applicantName, applicantEmail, createdAt } = this.props.applicant
+    const { applicantName, applicantEmail, createdAt, jobPosting } = this.props.applicant
 
     let dateTime = new Date(createdAt).toLocaleString([], {
       day: '2-digit',
@@ -58,6 +58,7 @@ class ApplicantModal extends React.Component {
               {dateTime}
             </div>
           </div>
+          {jobPosting && <div className='applicant-modal__card__date'>Applied for: {jobPosting}</div>}
         </div>
       </Modal>
     )
