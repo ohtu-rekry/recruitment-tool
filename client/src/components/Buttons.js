@@ -7,7 +7,14 @@ export const LinkButton = ({ link, text }) => {
   const routerLink = props => <Link to={link} {...props} />
   return (
     <div>
-      <Button variant='contained' component={routerLink} size='small'>{text}</Button>
+      <Button
+        style={{ marginLeft: 5 }}
+        variant='contained'
+        component={routerLink}
+        size='small'
+      >
+        {text}
+      </Button>
     </div>
   )
 }

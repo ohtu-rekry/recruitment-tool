@@ -20,7 +20,7 @@ class Applicant extends Component {
   }
 
   render() {
-    const { applicantName, applicantEmail, createdAt } = this.props.applicant
+    const { applicantName, applicantEmail, createdAt, jobPosting } = this.props.applicant
     let dateTime = new Date(createdAt).toLocaleString([], {
       day: '2-digit',
       month: '2-digit',
@@ -46,6 +46,7 @@ class Applicant extends Component {
           {applicantEmail}
         </div>
         <div className='applicant__date'>Application sent: {dateTime}</div>
+        {jobPosting && <div className='applicant__date'>Applied for: {jobPosting}</div>}
       </div>
     )
   }

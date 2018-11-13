@@ -14,6 +14,7 @@ export default function* rootSaga() {
     jobPostingSaga.watchFetchJobPostingWithStages,
     jobPostingSaga.watchSubmitJobPosting,
     jobPostingSaga.watchFetchApplicants,
-    applicationSaga.watchMoveApplicant
+    applicationSaga.watchMoveApplicant,
+    applicationSaga.watchGetApplicants
   ])
 }
