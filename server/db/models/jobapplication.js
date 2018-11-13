@@ -13,6 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       hooks: true
     })
+    JobApplication.hasMany(models.ApplicationComment, {
+      foreignKey: { name: 'applicationCommentId', allowNull: false },
+      onDelete: 'CASCADE',
+      hooks: true,
+      as: 'applicationComments'
+    })
   }
 
   return JobApplication
