@@ -1,34 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Button } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
+import Modal from '@material-ui/core/Modal'
+import Clear from '@material-ui/icons/Clear'
+import Person from '@material-ui/icons/Person'
+import Email from '@material-ui/icons/Email'
+import Calendar from '@material-ui/icons/CalendarToday'
 
 class ApplicantModal extends React.Component {
-
-  componentWillMount() {
-    window.addEventListener('keyup', this.handleKeyPress)
-    document.addEventListener('click', this.handleClick)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keyup', this.handleKeyPress)
-    document.removeEventListener('click', this.handleClick)
-  }
-
-  handleKeyPress = (event) => {
-    console.log(event.key)
-    if (event.key === 'Escape') {
-      this.props.toggleShowModal()
-      window.removeEventListener('keyup', this.handleKeyPress)
-    }
-  }
-
-  handleClick = (event) => {
-    if (!this.modalCard.contains(event.target)) {
-      this.props.toggleShowModal()
-      document.removeEventListener('click', this.handleClick)
-    }
-  }
 
   render() {
     const { applicantName, applicantEmail, createdAt } = this.props.applicant
@@ -41,39 +20,53 @@ class ApplicantModal extends React.Component {
       minute: '2-digit'
     })
 
+    const buttonStyle = {
+      alignSelf: 'flex-end'
+    }
+
     return (
-      <div className='applicant-modal'>
-        <div
-          className='applicant-modal__card'
-          ref={node => this.modalCard = node}
-        >
-          <div className='applicant-modal__card__name'>
-            {applicantName}
-          </div>
-          <div className='applicant-modal__card__email'>
-            {applicantEmail}
-          </div>
-          <div className='applicant-modal__card__date'>
-            Application sent: {dateTime}
-          </div>
+      <Modal
+        open={true}
+        onClose={this.props.closeModal}
+      >
+        <div className='applicant-modal__card' >
           <Button
+            style={buttonStyle}
             mini
             variant="fab"
             color="inherit"
-            aria-label="X"
-            onClick={this.props.toggleShowModal}
+            aria-label="Close"
+            onClick={this.props.closeModal}
           >
-            <AddIcon />
+            <Clear />
           </Button>
+          <div>
+            <Person className='applicant-modal__card__icon' />
+            <div className='applicant-modal__card__name'>
+              {applicantName}
+            </div>
+          </div>
+          <div>
+            <Email className='applicant-modal__card__icon' />
+            <div className='applicant-modal__card__email'>
+              {applicantEmail}
+            </div>
+          </div>
+          <div>
+            <Calendar className='applicant-modal__card__icon' />
+            <div className='applicant-modal__card__date'>
+              {dateTime}
+            </div>
+          </div>
         </div>
-      </div>
+      </Modal>
     )
   }
 }
 
 ApplicantModal.propTypes = {
   applicant: PropTypes.object.isRequired,
-  toggleShowModal: PropTypes.func.isRequired
+  closeModal: PropTypes.func.isRequired
 }
 
 export default ApplicantModal

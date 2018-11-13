@@ -77,7 +77,8 @@ export class ApplicationStages extends Component {
 }
 
 ApplicationStages.propTypes = {
-  stage: PropTypes.object.isRequired
+  stage: PropTypes.object.isRequired,
+  toggleShowModal: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = {
