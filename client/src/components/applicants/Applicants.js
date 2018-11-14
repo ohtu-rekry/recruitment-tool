@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { DragDropContext } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import * as actions from '../../redux/actions/actions'
@@ -12,7 +13,6 @@ export class Applicants extends Component {
     super(props)
     this.state = {
       isLoaded: false,
-      selectedApplicant: '',
       modalApplicant: ''
     }
   }
@@ -45,23 +45,22 @@ export class Applicants extends Component {
     copyStages(stages)
   }
 
-  onDrag = (event, applicant) => {
-    if (!this.props.adminView) {
-      event.dataTransfer.setData('text', event.target.id)
-      this.setState({
-        selectedApplicant: applicant
-      })
-    }
-  }
+  onDrop = async (result) => {
+    const { destination, source, draggableId } = result
 
-  onDrop = (stage) => {
-    if (!this.props.adminView) {
-      const { selectedApplicant } = this.state
-      this.props.moveApplicant(selectedApplicant, stage)
-      this.setState({
-        selectedApplicant: ''
-      })
+    if (!destination) { return }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return
     }
+
+    await this.props.moveApplicant(
+      parseInt(draggableId, 10),
+      parseInt(destination.droppableId, 10)
+    )
   }
 
   toggleShowModal = (applicant) => {
@@ -75,6 +74,7 @@ export class Applicants extends Component {
     if (applicants) {
       stages = applicants
     }
+
     return (
       <div className='applicants'>
         <div className='applicants__title'>
@@ -87,20 +87,20 @@ export class Applicants extends Component {
             </button>
           </Link>
         }
-        <div className='application-stages'>
-          {stages
-            .sort((a, b) => a.orderNumber - b.orderNumber)
-            .map(stage =>
-              <ApplicationStages
-                stage={stage}
-                key={stage.id}
-                onDrag={this.onDrag}
-                onDrop={this.onDrop}
-                adminView={adminView}
-                toggleShowModal={this.toggleShowModal}
-              />
-            )}
-        </div>
+        <DragDropContext onDragEnd={this.onDrop}>
+          <div className='application-stages'>
+            {stages
+              .sort((a, b) => a.orderNumber - b.orderNumber)
+              .map(stage =>
+                <ApplicationStages
+                  stage={stage}
+                  key={stage.id}
+                  adminView={adminView}
+                  toggleShowModal={this.toggleShowModal}
+                />
+              )}
+          </div>
+        </DragDropContext>
         {this.state.modalApplicant &&
           <ApplicantModal
             applicant={this.state.modalApplicant}

@@ -2,75 +2,49 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Applicant from './Applicant'
+import { Droppable } from 'react-beautiful-dnd'
 
 import * as actions from '../../redux/actions/actions'
 
 export class ApplicationStages extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isOver: false
-    }
-  }
-
-  onDrag = (event, applicant) => {
-    this.props.onDrag(event, applicant)
-  }
-
-  onDragOver = (event) => {
-    if (!this.props.adminView) {
-      this.setState({ isOver: true })
-      event.preventDefault()
-    }
-  }
-
-  onDragLeave = (event) => {
-    this.setState({ isOver: false })
-    event.preventDefault()
-  }
-
-  onDrop = () => {
-    this.setState({ isOver: false })
-    this.props.onDrop(this.props.stage)
-  }
 
   render() {
-    const { stage } = this.props
-    const { isOver } = this.state
+    const { stage, adminView } = this.props
+    const stageIdString = '' + stage.id
 
     return (
       <div
-        className='application-stage-container'
-        onDragOver={this.onDragOver}
-        onDragLeave={this.onDragLeave}
-        onDrop={this.onDrop}
+        className='application-stage'
       >
-        <div
-          className='application-stage'
-        >
-          <div className='application-stage__title'>
-            {stage.stageName}
-          </div>
-          <div
-            id='application-stage__content'
-            className='application-stage__content'
-          >
-            {stage.applicants && stage.applicants.map(applicant =>
-              <Applicant
-                key={applicant.id}
-                applicant={applicant}
-                onDrag={this.onDrag}
-                toggleShowModal={this.props.toggleShowModal}
-              />
-            )}
-            <div
-              style={{ display: !isOver && 'none' }}
-              className='application-stage__placeholder'
-            >
-              Move applicant here
-            </div>
-          </div>
+        <div className='application-stage__title'>
+          {stage.stageName}
         </div>
+        <Droppable
+          droppableId={stageIdString}
+          id={stage.id}
+        >
+          {(provided) => (
+            <div
+              className='application-stage__content'
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {stage.applicants && stage.applicants
+                .sort((a,b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                .map((applicant, index) =>
+                  <Applicant
+                    key={applicant.id}
+                    applicant={applicant}
+                    index={index}
+                    adminView={adminView}
+                    toggleShowModal={this.props.toggleShowModal}
+                  />
+                )
+              }
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
       </div>
     )
   }

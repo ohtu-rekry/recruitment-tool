@@ -33,12 +33,6 @@ const reducer = handleActions(
         stages: action.payload
       }
     ),
-    [actions.moveApplicantSuccess]: (state, action) => (
-      {
-        ...state,
-        stages: action.payload
-      }
-    ),
     [actions.getApplicantsSuccess]: (state, action) => (
       {
         ...state,

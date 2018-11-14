@@ -24,29 +24,22 @@ function* moveApplicant({ payload }) {
   try {
     const recruiter = yield select(getCurrentUser)
     const token = recruiter.token
-    const applicant = payload.applicant
-    const newStage = payload.newStage
+    const { applicant, newStage } = payload
     const data = {
-      postingStageId: newStage.id,
-      jobApplicationId: applicant.id
+      postingStageId: newStage,
+      jobApplicationId: applicant
     }
 
     const response = yield call(jobApplicationApi.moveApplicants, { token, data })
 
     if (response.status === 200) {
-      const stages = yield select(getStages)
-      const filteredStages = stages.map(stage => (
-        { ...stage, applicants: stage.applicants.filter(a => a.id !== applicant.id) }
-      ))
-      const finalStages = filteredStages.map(stage => (stage.id === newStage.id) ?
-        { ...stage, applicants: [...stage.applicants, applicant] }
-        : { ...stage }
-      )
-      yield put(actions.moveApplicantSuccess(finalStages))
+      const jobPosting = yield select(getCurrentJobPosting)
+      yield put(actions.fetchApplicants(jobPosting.id))
     }
 
   } catch (e) {
     console.log(e)
+
   }
 }
 
