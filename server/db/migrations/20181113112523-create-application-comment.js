@@ -17,10 +17,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      attachmentId: {
-        allowNull: true,
-        type: Sequelize.INTEGER
-      },
       comment: {
         allowNull: false,
         type: Sequelize.TEXT
