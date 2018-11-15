@@ -67,7 +67,7 @@ const stages = [{
 it('Application view does not render applications or stages when user is not logged in', () => {
   mock.onGet(postingRoot).reply(200, postings)
   mock.onGet(`${postingRoot}/${postings[0].id}/applicants`).reply(200, stages)
-  setWindowLocation(`https://localhost:3000/jobposting/${postings[0].id}/`)
+  setWindowLocation(`https://localhost:3000/position/${postings[0].id}/`)
   store.getState().loginReducer.loggedIn = null
   const app = mount(getApp(<Applicants />))
 
@@ -81,7 +81,7 @@ describe('Application view for one posting when user is logged in', () => {
   beforeAll(() => {
     mock.onGet(postingRoot).reply(200, postings)
     mock.onGet(`${postingRoot}/${postings[0].id}/applicants`).reply(200, stages)
-    setWindowLocation(`https://localhost:3000/jobposting/${postings[0].id}/`)
+    setWindowLocation(`https://localhost:3000/position/${postings[0].id}/`)
     store.getState().loginReducer.loggedIn = testAdmin
     app = mount(getApp(<Applicants />))
   })

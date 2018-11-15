@@ -49,23 +49,23 @@ class Routes extends Component {
                 ? <AdminFrontPage />
                 : <App />
             } />
-            <Route path="/jobposting/new" render={() =>
+            <Route path="/position/new" render={() =>
               willBeLoggedIn || loggedIn
                 ? <JobPostingForm mode='create' />
                 : <Redirect to='/admin/login' />
             } />
-            <Route exact path="/jobposting/:id/applicants" render={() =>
+            <Route exact path="/position/:id/applicants" render={() =>
               willBeLoggedIn || loggedIn
                 ? <Applicants adminView={false} />
                 : <Redirect to="/admin/login" />
             } />
-            <Route exact path="/jobposting/:id/edit" render={() =>
+            <Route exact path="/position/:id/edit" render={() =>
               willBeLoggedIn || loggedIn
                 ? <JobPostingForm mode='edit' />
                 : <Redirect to='/admin/login' />
             } />
-            <Route exact path="/jobposting/:id" render={() => <JobPosting />} />
-            <Route exact path="/jobpostings" render={() => <App />} />
+            <Route exact path="/position/:id" render={() => <JobPosting />} />
+            <Route exact path="/positions" render={() => <App />} />
             <Route exact path="/success" render={() => <ApplicationSuccess />} />
           </Switch>
         </div>

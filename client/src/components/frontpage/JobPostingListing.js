@@ -15,7 +15,7 @@ const JobPostingListing = (props) => {
 
   return (
     <Link
-      to={`/jobposting/${props.data.id}`}
+      to={`/position/${props.data.id}`}
       key={props.data.id}
       className='job-posting-listing__link' >
       <div className='job-posting-listing'>

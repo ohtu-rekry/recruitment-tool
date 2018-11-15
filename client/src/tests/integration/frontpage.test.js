@@ -38,7 +38,7 @@ describe('<FrontPage />', () => {
 
     const listings = app.find(JobPostingListing)
 
-    expect(listings.at(0).find('[href="/jobposting/1"]')).toHaveLength(1)
-    expect(listings.at(1).find('[href="/jobposting/2"]')).toHaveLength(1)
+    expect(listings.at(0).find('[href="/position/1"]')).toHaveLength(1)
+    expect(listings.at(1).find('[href="/position/2"]')).toHaveLength(1)
   })
 })
