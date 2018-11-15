@@ -60,6 +60,7 @@ export class ApplicationStages extends Component {
                 key={applicant.id}
                 applicant={applicant}
                 onDrag={this.onDrag}
+                toggleShowModal={this.props.toggleShowModal}
               />
             )}
             <div
@@ -76,7 +77,8 @@ export class ApplicationStages extends Component {
 }
 
 ApplicationStages.propTypes = {
-  stage: PropTypes.object.isRequired
+  stage: PropTypes.object.isRequired,
+  toggleShowModal: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = {

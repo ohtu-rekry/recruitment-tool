@@ -5,13 +5,15 @@ import * as actions from '../../redux/actions/actions'
 import { Link } from 'react-router-dom'
 
 import ApplicationStages from './ApplicationStages'
+import ApplicantModal from './ApplicantModal'
 
 export class Applicants extends Component {
   constructor(props) {
     super(props)
     this.state = {
       isLoaded: false,
-      selectedApplicant: ''
+      selectedApplicant: '',
+      modalApplicant: ''
     }
   }
 
@@ -62,6 +64,12 @@ export class Applicants extends Component {
     }
   }
 
+  toggleShowModal = (applicant) => {
+    this.setState({
+      modalApplicant: applicant
+    })
+  }
+
   render() {
     let { stages, jobPosting, applicants, adminView } = this.props
     if (applicants) {
@@ -89,9 +97,16 @@ export class Applicants extends Component {
                 onDrag={this.onDrag}
                 onDrop={this.onDrop}
                 adminView={adminView}
+                toggleShowModal={this.toggleShowModal}
               />
             )}
         </div>
+        {this.state.modalApplicant &&
+          <ApplicantModal
+            applicant={this.state.modalApplicant}
+            closeModal={this.toggleShowModal}
+          />
+        }
       </div>
     )
   }
