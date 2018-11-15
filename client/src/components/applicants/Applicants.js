@@ -73,7 +73,7 @@ export class Applicants extends Component {
           {applicants ? 'All applicants' : jobPosting.title}
         </div>
         {!adminView &&
-          <Link to='/jobposting/new' style={{ textDecoration: 'none' }}>
+          <Link to='/position/new' style={{ textDecoration: 'none' }}>
             <button className='applicants__button' onClick={this.handleCopyStages}>
               Copy Templates
             </button>

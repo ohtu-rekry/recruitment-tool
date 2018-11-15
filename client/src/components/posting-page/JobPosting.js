@@ -108,8 +108,8 @@ export class JobPosting extends Component {
 }
 
 const AdminButtons = ({ id }) => {
-  const LinkToApplicants = props => <Link to={`/jobposting/${id}/applicants`} {...props} />
-  const LinkToEditPage = props => <Link to={`/jobposting/${id}/edit`} {...props} />
+  const LinkToApplicants = props => <Link to={`/position/${id}/applicants`} {...props} />
+  const LinkToEditPage = props => <Link to={`/position/${id}/edit`} {...props} />
 
   return (
     <div>
