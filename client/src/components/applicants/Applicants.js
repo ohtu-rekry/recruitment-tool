@@ -64,13 +64,7 @@ export class Applicants extends Component {
     }
   }
 
-  toggleShowModal = (applicant) => () => {
-    this.setState({
-      modalApplicant: applicant
-    })
-  }
-
-  toggleShowModal = (applicant) => () => {
+  toggleShowModal = (applicant) => {
     this.setState({
       modalApplicant: applicant
     })
@@ -110,7 +104,7 @@ export class Applicants extends Component {
         {this.state.modalApplicant &&
           <ApplicantModal
             applicant={this.state.modalApplicant}
-            closeModal={this.toggleShowModal(null)}
+            closeModal={this.toggleShowModal}
           />
         }
       </div>

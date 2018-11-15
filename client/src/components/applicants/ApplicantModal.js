@@ -9,6 +9,10 @@ import Calendar from '@material-ui/icons/CalendarToday'
 
 class ApplicantModal extends React.Component {
 
+  handleClose = () => {
+    this.props.closeModal(null)
+  }
+
   render() {
     const { applicantName, applicantEmail, createdAt, jobPosting } = this.props.applicant
 
@@ -27,7 +31,7 @@ class ApplicantModal extends React.Component {
     return (
       <Modal
         open={true}
-        onClose={this.props.closeModal}
+        onClose={this.handleClose}
       >
         <div className='applicant-modal__card' >
           <Button
@@ -36,7 +40,7 @@ class ApplicantModal extends React.Component {
             variant="fab"
             color="inherit"
             aria-label="Close"
-            onClick={this.props.closeModal}
+            onClick={this.handleClose}
           >
             <Clear />
           </Button>
