@@ -13,6 +13,100 @@ beforeAll(async () => {
     })
 })
 
+describe('POST and GET method successful', async () => {
+  let token = null
+  const testRecruiter = {
+    username: 'recruiteradminjobpostingtest',
+    password: 'fsdGSDjugs22'
+  }
+
+  beforeAll(async () => {
+    const passwordHash = await bcrypt.hash(testRecruiter.password, 10)
+    await Recruiter.create({
+      username: testRecruiter.username,
+      password: passwordHash
+    })
+
+    const response = await api.post('/api/login').send(testRecruiter)
+    token = `Bearer ${response.body.token}`
+  })
+
+  test('a valid job posting is created with correct timestamps and returned to all user types', async () => {
+    const newPosting = {
+      title: 'Front-End Developer',
+      content: 'Come here',
+      stages: [{ stageName: 'Applied' }, { stageName: 'Interview 1' }, { stageName: 'Exercise' }, { stageName: 'Interview 2' }],
+      showFrom: '2018-10-10',
+      showTo: '2050-11-11'
+    }
+
+    await api
+      .post('/api/jobposting')
+      .send(newPosting)
+      .set('Authorization', token)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('a valid job posting is created with correct timestamps and returned to only admins', async () => {
+    const newPosting = {
+      title: 'Data guy',
+      content: 'Come here',
+      stages: [{ stageName: 'Applied' }, { stageName: 'Interview 1' }, { stageName: 'Exercise' }, { stageName: 'Interview 2' }],
+      showFrom: null,
+      showTo: null
+    }
+
+    await api
+      .post('/api/jobposting')
+      .send(newPosting)
+      .set('Authorization', token)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('get job posting for all users', async () => {
+
+    const newPosting = {
+      title: 'Front-End Developer'
+    }
+
+    const response = await api
+      .get('/api/jobposting')
+      .expect(200)
+
+    expect(response.body[0].title).toEqual(newPosting.title)
+  })
+
+  test('get job posting for only admins', async () => {
+
+    const newPosting = {
+      title: 'Data guy'
+    }
+
+    const response = await api
+      .get('/api/jobposting')
+      .set('Authorization', token)
+      .expect(200)
+
+    expect(response.body[1].title).toEqual(newPosting.title)
+  })
+
+  afterAll(async () => {
+    await JobPosting.destroy({
+      where: {
+        title: 'Front-End Developer'
+      },
+    })
+    await JobPosting.destroy({
+      where: {
+        title: 'Back-End Developer'
+      }
+    })
+  })
+
+})
+
 describe('POST method', async () => {
 
   let token = null
@@ -152,6 +246,27 @@ describe('POST method', async () => {
     expect(response.body).toEqual({ error: 'stages must contain at least 3 items' })
   })
 
+  test('a posting cannot be created so that showFrom is null and showTo is not', async () => {
+    const newPosting = {
+      title: 'Front-End Developer',
+      content: 'Come here',
+      stages: [{ stageName: 'Applied' }, { stageName: 'Interview 1' }, { stageName: 'Exercise' }, { stageName: 'Interview 2' }],
+      showFrom: null,
+      showTo: 2018 - 11 - 11
+    }
+
+    const response = await api
+      .post('/api/jobposting')
+      .send(newPosting)
+      .set('Authorization', token)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+
+    expect(response.body).toEqual({ error: 'If showFrom is null then showTo must be null as well' })
+
+  })
+
   afterAll(async () => {
     await PostingStage.destroy({
       where: {
@@ -176,6 +291,11 @@ describe('POST method', async () => {
     await Recruiter.destroy({
       where: {
         username: testRecruiter.username
+      }
+    })
+    await JobPosting.destroy({
+      where: {
+        title: 'Full-Stack Developer'
       }
     })
   })

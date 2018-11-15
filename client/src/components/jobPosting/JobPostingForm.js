@@ -22,7 +22,6 @@ export class JobPostingForm extends Component {
       content: '',
       error: false,
       fireRedirect: false,
-      submitButtonDisabled: true
     }
   }
 
@@ -40,7 +39,6 @@ export class JobPostingForm extends Component {
     const stages = this.props.jobPostingStages
     const showFrom = this.props.showFrom
     const showTo = this.props.showTo
-
     const notOnlyWhitespaceRegex = /\S/
     if (!(notOnlyWhitespaceRegex.test(title) && notOnlyWhitespaceRegex.test(content))) {
       this.setState({
@@ -52,17 +50,6 @@ export class JobPostingForm extends Component {
     this.setState({ fireRedirect: true })
   }
 
-  showFromIsAdded = async (showFromChild) => {
-    if (showFromChild !== null) {
-      this.setState({
-        submitButtonDisabled: false
-      })
-    } else {
-      this.setState({
-        submitButtonDisabled: true
-      })
-    }
-  }
 
   render() {
     const { title, content, error } = this.state
@@ -115,7 +102,7 @@ export class JobPostingForm extends Component {
               disabled={!loggedIn}
             />
             <br />
-            <TimespanPicker isUpdated={this.showFromIsAdded} />
+            <TimespanPicker />
           </form>
           <div className='job-posting-form__form'>
             <JobPostingStages />
@@ -126,7 +113,6 @@ export class JobPostingForm extends Component {
               type='submit'
               form='job-posting-form'
               variant='contained'
-              disabled={this.state.submitButtonDisabled}
             >Create job posting</Button>
           </div>
         </Paper>

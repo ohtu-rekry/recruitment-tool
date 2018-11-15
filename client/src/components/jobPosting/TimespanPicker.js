@@ -23,8 +23,7 @@ export class TimespanPicker extends Component {
       if (date === null) {
         await this.setState({
           showFrom: null,
-          showTo: null,
-          error: 'Visible from is required'
+          showTo: null
         })
         this.props.addShowFrom(null)
       } else {
@@ -40,8 +39,6 @@ export class TimespanPicker extends Component {
         error: 'Selected date needs to be before end date'
       })
     }
-    const showFromValue = this.state.showFrom
-    this.props.isUpdated(showFromValue)
   }
 
   async handleShowToChange(date) {

@@ -7,14 +7,13 @@ const Sequelize = require('sequelize')
 const { validateDate, handleJobPostingsForAdmin, handleJobPostingsForGuest } = require('../../utils/jobPostingDateHandlers')
 
 jobPostingRouter.get('/', async (req, res) => {
-
+  let jobPostings
   if (req.token !== null) {
-    const postings = await handleJobPostingsForAdmin()
-    return res.status(200).json(postings)
+    jobPostings = await handleJobPostingsForAdmin()
   } else {
-    const postings = await handleJobPostingsForGuest()
-    return res.status(200).json(postings)
+    jobPostings = await handleJobPostingsForGuest()
   }
+  return res.status(200).json(jobPostings)
 })
 
 jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator, async (req, res) => {
@@ -29,6 +28,10 @@ jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator, async (req, res) 
 
   const showFrom = validateDate(body.showFrom)
   const showTo = validateDate(body.showTo)
+
+  if (showFrom === null && showTo !== null) {
+    return res.status(400).json({ error: 'If showFrom is null then showTo must be null as well' })
+  }
 
   const posting = await JobPosting.create({
     title: body.title,
