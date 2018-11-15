@@ -18,7 +18,12 @@ module.exports = (sequelize, DataTypes) => {
       hooks: true
     })
 
-    // TODO: When implementting model for attachment, it needs to be added here also
+    ApplicationComment.hasMany(models.Attachment, {
+      foreignKey: { name: 'applicationCommentId' , allowNull: true },
+      onDelete: 'CASCADE',
+      hooks: true,
+      as: 'attachments'
+    })
   }
 
   return ApplicationComment

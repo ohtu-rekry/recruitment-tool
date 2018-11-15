@@ -20,7 +20,8 @@ const models = {
   JobPosting: sequelize.import('./jobposting'),
   JobApplication: sequelize.import('./jobapplication'),
   PostingStage: sequelize.import('./postingstage'),
-  ApplicationComment: sequelize.import('./applicationcomment')
+  ApplicationComment: sequelize.import('./applicationcomment'),
+  Attachment: sequelize.import('./attachment')
 }
 
 
