@@ -256,12 +256,12 @@ describe('PUT method', async () => {
     })
 
     const createdPostings = await JobPosting.bulkCreate([{
-      id: 9879879,
+      id: 98798792,
       title: 'jobposting-test-example-title1',
       content: 'jobposting-test-example-content1',
       recruiterId: recruiter.id
     }, {
-      id: 678698,
+      id: 6786982,
       title: 'jobposting-test-example-title2',
       content: 'jobposting-test-example-content2',
       recruiterId: recruiter.id
@@ -277,13 +277,13 @@ describe('PUT method', async () => {
     }))
 
     const createdStages = await PostingStage.bulkCreate([{
-      id: 3749821,
+      id: 37498212,
       stageName: 'jobposting-test-example-stage1',
       orderNumber: 0,
       jobPostingId: jobPostings[0].id
     },
     {
-      id: 1436872,
+      id: 14368722,
       stageName: 'jobposting-test-example-stage2',
       orderNumber: 1,
       jobPostingId: jobPostings[0].id
@@ -299,7 +299,7 @@ describe('PUT method', async () => {
     }))
 
     await JobApplication.create({
-      applicantName: 'jobposting-test-example-applicant1',
+      applicantName: 'jobposting-test-example-applicant11',
       applicantEmail: 'jobposting-test@example.email1',
       postingStageId: postingStages[0].id
     })
@@ -473,7 +473,7 @@ describe('PUT method', async () => {
   afterAll(async () => {
     await JobApplication.destroy({
       where: {
-        applicantName: 'jobposting-test-example-applicant1'
+        applicantName: 'jobposting-test-example-applicant11'
       }
     })
 

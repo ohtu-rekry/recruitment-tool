@@ -1,5 +1,5 @@
 const jobPostingRouter = require('express-promise-router')()
-const { JobPosting, Recruiter, PostingStage, JobApplication } = require('../../db/models')
+const { JobPosting, Recruiter, PostingStage, JobApplication, ApplicationComment } = require('../../db/models')
 const jwt = require('jsonwebtoken')
 const { jwtMiddleware } = require('../../utils/middleware')
 const { jobPostingValidator, postingPutValidator } = require('../../utils/validators')
@@ -61,7 +61,11 @@ jobPostingRouter.get('/:id/applicants', jwtMiddleware, async (req, res) => {
         const applicants = await JobApplication.findAll({
           where: {
             postingStageId: stage.id
-          }
+          },
+          include: [{
+            model: ApplicationComment,
+            as: 'applicationComments'
+          }]
         })
 
         //TODO: jotain järkevää tähän alapuolelle. Mitä hittoa oikeesti :d
