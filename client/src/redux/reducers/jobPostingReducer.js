@@ -1,16 +1,17 @@
 import { handleActions } from 'redux-actions'
 import * as actions from '../actions/actions'
 
+const defaultStages = [{ stageName: 'Applied', canRemove: false }, { stageName: 'Accepted', canRemove: false }, { stageName: 'Rejected', canRemove: false }]
+const creationSuccessMessage = 'Job posting successfully added'
+
 const initialState = {
   jobPostings: [],
-  jobPostingStages: [{ stageName: 'Applied', canRemove: false }, { stageName: 'Accepted', canRemove: false }, { stageName: 'Rejected', canRemove: false }],
+  jobPostingStages: defaultStages,
   creationRequestStatus: null,
   copiedStages: null,
   showFrom: null,
   showTo: null
 }
-
-const creationSuccessMessage = 'Job posting successfully added'
 
 const reducer = handleActions(
   {
@@ -25,7 +26,7 @@ const reducer = handleActions(
     [actions.addJobPostingFailure]: (state, action) => ({
       ...state, creationRequestStatus: { ...action.payload, type: 'error' }
     }),
-    [actions.removeJobPostingCreationStatus]: (state, action) => ({
+    [actions.removeJobPostingStatus]: (state, action) => ({
       ...state, creationRequestStatus: null
     }),
     [actions.addNewStageForJobPosting]: (state, action) => ({
@@ -42,12 +43,26 @@ const reducer = handleActions(
     }),
     [actions.copyStages]: (state, action) => ({
       ...state,
-      jobPostingStages: [{ stageName: 'Applied', canRemove: false }, { stageName: 'Accepted', canRemove: false }, { stageName: 'Rejected', canRemove: false }],
+      jobPostingStages: defaultStages,
       copiedStages: action.payload.stages
     }),
     [actions.clearCopiedStages]: (state, action) => ({
       ...state,
       copiedStages: null
+    }),
+    [actions.setStages]: (state, action) => ({
+      ...state,
+      jobPostingStages: action.payload.stages
+        .sort((a, b) => a.orderNumber - b.orderNumber)
+        .map((stage) => {
+          const defaultStageNames = defaultStages.map(stage => stage.stageName)
+          const isNotDefaultStage = !defaultStageNames.includes(stage.stageName)
+          return ({ ...stage, canRemove: isNotDefaultStage })
+        }),
+    }),
+    [actions.clearStages]: (state, action) => ({
+      ...state,
+      jobPostingStages: defaultStages
     }),
     [actions.addShowFrom]: (state, action) => ({
       ...state,

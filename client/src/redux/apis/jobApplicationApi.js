@@ -1,10 +1,13 @@
 import axios from 'axios'
 
-const root = '/api/jobapplication'
+export const root = '/api/jobapplication'
 
 export default class jobApplicationApi {
-  static get() {
-    return axios.get(root) }
+  static get(payload) {
+    const config = {
+      headers: { 'Authorization': 'bearer ' + payload.token }
+    }
+    return axios.get(root, config) }
   static add(payload) {
     return axios.post(root, payload) }
   static moveApplicants(payload) {

@@ -19,8 +19,12 @@ class Applicant extends Component {
     this.setState({ isDragged: false })
   }
 
+  handleOpenModal = () => {
+    this.props.toggleShowModal(this.props.applicant)
+  }
+
   render() {
-    const { applicantName, applicantEmail, createdAt } = this.props.applicant
+    const { applicantName, applicantEmail, createdAt, jobPosting } = this.props.applicant
     let dateTime = new Date(createdAt).toLocaleString([], {
       day: '2-digit',
       month: '2-digit',
@@ -34,6 +38,7 @@ class Applicant extends Component {
         draggable
         onDragStart={this.handleDrag}
         onDragEnd={this.handleDragEnd}
+        onClick={this.handleOpenModal}
         style={{
           opacity: this.state.isDragged && '0.3',
           cursor: this.state.isDragged && 'grab'
@@ -46,13 +51,15 @@ class Applicant extends Component {
           {applicantEmail}
         </div>
         <div className='applicant__date'>Application sent: {dateTime}</div>
+        {jobPosting && <div className='applicant__date'>Applied for: {jobPosting}</div>}
       </div>
     )
   }
 }
 
 Applicant.propTypes = {
-  applicant: PropTypes.object.isRequired
+  applicant: PropTypes.object.isRequired,
+  toggleShowModal: PropTypes.func.isRequired
 }
 
 export default Applicant

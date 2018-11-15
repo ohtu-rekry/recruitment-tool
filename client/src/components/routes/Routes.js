@@ -6,6 +6,7 @@ import * as actions from '../../redux/actions/actions'
 
 import Header from '../Header'
 import Login from '../admin/Login'
+import AdminFrontPage from '../frontpage/AdminFrontPage'
 import JobPostingForm from '../jobPosting/JobPostingForm'
 import JobPosting from '../posting-page/JobPosting'
 import Applicants from '../applicants/Applicants'
@@ -43,18 +44,28 @@ class Routes extends Component {
                 ? <Redirect to="/" />
                 : <Login />
             } />
-            <Route path="/jobposting/new" render={() =>
+            <Route exact path="/" render={() =>
               willBeLoggedIn || loggedIn
-                ? <JobPostingForm />
+                ? <AdminFrontPage />
+                : <App />
+            } />
+            <Route path="/position/new" render={() =>
+              willBeLoggedIn || loggedIn
+                ? <JobPostingForm mode='create' />
                 : <Redirect to='/admin/login' />
             } />
-            <Route exact path="/jobposting/:id/applicants" render={() =>
+            <Route exact path="/position/:id/applicants" render={() =>
               willBeLoggedIn || loggedIn
-                ? <Applicants/>
+                ? <Applicants adminView={false} />
                 : <Redirect to="/admin/login" />
             } />
-            <Route exact path="/jobposting/:id" render={() => <JobPosting />} />
-            <Route exact path="/" render={() => <App />} />
+            <Route exact path="/position/:id/edit" render={() =>
+              willBeLoggedIn || loggedIn
+                ? <JobPostingForm mode='edit' />
+                : <Redirect to='/admin/login' />
+            } />
+            <Route exact path="/position/:id" render={() => <JobPosting />} />
+            <Route exact path="/positions" render={() => <App />} />
             <Route exact path="/success" render={() => <ApplicationSuccess />} />
           </Switch>
         </div>

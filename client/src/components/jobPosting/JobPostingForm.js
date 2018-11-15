@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 
 import TimespanPicker from './TimespanPicker'
 import JobPostingStages from './JobPostingStages'
-import { addJobPosting } from '../../redux/actions/actions'
+import { submitJobPosting, fetchJobPostingWithStages, emptyJobPosting, setStages } from '../../redux/actions/actions'
 
 
 export class JobPostingForm extends Component {
@@ -18,11 +18,37 @@ export class JobPostingForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      mode: props.mode,
+      id: null,
       title: '',
       content: '',
       error: false,
-      fireRedirect: false,
+      fireRedirect: false
     }
+  }
+
+  componentDidMount() {
+    if (this.state.mode === 'edit') {
+      const jobPostingId = window.location.href.split('/')[4]
+      this.setState({ id: jobPostingId })
+      this.props.fetchJobPostingWithStages(jobPostingId)
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.state.mode === 'edit' && this.props.jobPostingToEdit.id && this.props.jobPostingToEdit !== prevProps.jobPostingToEdit) {
+      const jobPosting = this.props.jobPostingToEdit
+      this.setState({
+        title: jobPosting.title,
+        content: jobPosting.content
+      })
+      const stages = jobPosting.postingStages
+      this.props.setStages(stages)
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.emptyJobPosting()
   }
 
   handleChange = (event) => {
@@ -32,9 +58,10 @@ export class JobPostingForm extends Component {
     })
   }
 
-  handleSubmit = async (event) => {
+  handleSubmit = (event) => {
+    event.preventDefault()
 
-    const { title, content } = this.state
+    const { title, content, mode, id } = this.state
     const recruiter = this.props.loggedIn
     const stages = this.props.jobPostingStages
     const showFrom = this.props.showFrom
@@ -46,20 +73,25 @@ export class JobPostingForm extends Component {
       })
       return
     }
-    await this.props.addJobPosting(title, content, recruiter, stages, showFrom, showTo)
-    this.setState({ fireRedirect: true })
+
+    this.props.submitJobPosting(title, content, recruiter, stages, showFrom, showTo, mode, id)
   }
 
 
   render() {
-    const { title, content, error } = this.state
+    const { title, content, error, mode } = this.state
     const helperText = error ? 'Required field cannot be empty' : '* is a required field'
+    const headline = mode === 'edit' ? 'Edit job posting' : 'Add new job posting'
+    const buttonText = mode === 'edit' ? 'Update job posting' : 'Create job posting'
     const { creationRequestStatus, loggedIn } = this.props
 
+    let fireRedirect = false
+    if (creationRequestStatus && creationRequestStatus.type === 'success') fireRedirect = true
+
     let snackbarId
-    if (creationRequestStatus) {
-      snackbarId = 'snackbar-' + creationRequestStatus.type
-    }
+
+    if (creationRequestStatus) snackbarId = 'snackbar-' + creationRequestStatus.type
+
     return (
       <div>
         {creationRequestStatus
@@ -70,17 +102,16 @@ export class JobPostingForm extends Component {
         }
 
         <Paper className='job-posting-form'>
-          <Typography className='job-posting-form__headline' variant='display1' color='inherit' gutterBottom>Add new job posting</Typography>
+          <Typography className='job-posting-form__headline' variant='display1' color='inherit' gutterBottom>{headline}</Typography>
           <form className='job-posting-form__form' id='job-posting-form' onSubmit={this.handleSubmit}>
             <TextField
               required
               fullWidth
               id="title"
               type="text"
-              value={title}
+              value={title || ''}
               label="Title"
               onChange={this.handleChange}
-              variant="outlined"
               error={error}
               inputProps={{ maxLength: 255 }}
               disabled={!loggedIn}
@@ -97,7 +128,6 @@ export class JobPostingForm extends Component {
               value={content}
               label="Content (Markdown syntax supported)"
               onChange={this.handleChange}
-              variant="outlined"
               error={error}
               disabled={!loggedIn}
             />
@@ -113,11 +143,11 @@ export class JobPostingForm extends Component {
               type='submit'
               form='job-posting-form'
               variant='contained'
-            >Create job posting</Button>
+            >{buttonText}</Button>
           </div>
         </Paper>
         <div>
-          {this.state.fireRedirect && (
+          {fireRedirect && (
             <Redirect to='/' />
           )}
         </div>
@@ -134,7 +164,12 @@ JobPostingForm.propTypes = {
   addJobPosting: PropTypes.func.isRequired,
   showFrom: PropTypes.string,
   showTo: PropTypes.string,
-  showFromIsAdded: PropTypes.func
+  showFromIsAdded: PropTypes.func,
+  jobPostingToEdit: PropTypes.object,
+  submitJobPosting: PropTypes.func.isRequired,
+  fetchJobPostingWithStages: PropTypes.func.isRequired,
+  emptyJobPosting: PropTypes.func.isRequired,
+  setStages: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -142,11 +177,15 @@ const mapStateToProps = (state) => ({
   loggedIn: state.loginReducer.loggedIn,
   jobPostingStages: state.jobPostingReducer.jobPostingStages,
   showFrom: state.jobPostingReducer.showFrom,
-  showTo: state.jobPostingReducer.showTo
+  showTo: state.jobPostingReducer.showTo,
+  jobPostingToEdit: state.postingReducer.jobPosting
 })
 
 const mapDispatchToProps = {
-  addJobPosting
+  submitJobPosting,
+  fetchJobPostingWithStages,
+  emptyJobPosting,
+  setStages
 }
 
 export default connect(

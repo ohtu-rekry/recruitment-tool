@@ -13,6 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       hooks: true,
       as: 'jobPostings'
     })
+    Recruiter.hasMany(models.ApplicationComment, {
+      foreignKey: { name: 'recruiterId', allowNull: false },
+      onDelete: 'CASCADE',
+      hooks: true,
+      as: 'applicationComments'
+    })
   }
   return Recruiter
 }
