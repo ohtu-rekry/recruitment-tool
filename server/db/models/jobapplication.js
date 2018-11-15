@@ -19,6 +19,13 @@ module.exports = (sequelize, DataTypes) => {
       hooks: true,
       as: 'applicationComments'
     })
+
+    JobApplication.hasMany(models.Attachment, {
+      foreignKey: { name: 'jobApplicationId' , allowNull: true },
+      onDelete: 'CASCADE',
+      hooks: true,
+      as: 'attachments'
+    })
   }
 
   return JobApplication
