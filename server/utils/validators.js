@@ -49,13 +49,20 @@ const postingPutValidator = celebrate({
   }),
 })
 
+const applicationCommentValidator = celebrate({
+  body: Joi.object().keys({
+    comment: Joi.string().trim().required()
+  })
+})
+
 const validators = {
   jobPostingValidator,
   jobApplicationValidator,
   loginValidator,
   recruiterValidator,
   applicationPatchValidator,
-  postingPutValidator
+  postingPutValidator,
+  applicationCommentValidator
 }
 
 module.exports = validators

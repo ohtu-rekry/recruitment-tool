@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 
 const { app, server } = require('../src/server')
 const api = supertest(app)
-const { Recruiter, JobPosting, JobApplication, PostingStage, sequelize, Sequelize } = require('../db/models')
+const { Recruiter, JobPosting, JobApplication, PostingStage, ApplicationComment, sequelize, Sequelize } = require('../db/models')
 
 beforeAll(async () => {
   await sequelize.sync({ logging: false })
@@ -218,7 +218,7 @@ describe('CREATE OR CHANGE JOBAPPLICATION', async () => {
 describe('GET all applications', async() => {
 
   const testRecruiter = {
-    username: 'recruiteradminjobpostingtest',
+    username: 'get-applications-test-recruiter',
     password: 'fsdGSDjugs22'
   }
   let jobPostings, postingStages, token, applications
@@ -421,6 +421,149 @@ describe('GET all applications', async() => {
         id: {
           [Sequelize.Op.in]: jobPostings.map(posting => posting.id)
         }
+      }
+    })
+    await Recruiter.destroy({
+      where: {
+        username: testRecruiter.username
+      }
+    })
+  })
+})
+
+describe('POST a comment to an application', async () => {
+
+  const testRecruiter = {
+    username: 'post-comment-test-username',
+    password: 'fsdGSDjugs22'
+  }
+  const validComment = {
+    comment: 'A valid comment on a job application'
+  }
+  let jobPosting, token, application
+
+  beforeAll(async () => {
+    const passwordHash = await bcrypt.hash(testRecruiter.password, 10)
+    await Recruiter.create({
+      username: testRecruiter.username,
+      password: passwordHash
+    })
+
+    let response = await api.post('/api/login').send(testRecruiter)
+    token = `Bearer ${response.body.token}`
+
+    response = await api
+      .post('/api/jobposting')
+      .set('authorization', token)
+      .send({
+        title: 'jobposting-test-example-title1',
+        content: 'jobposting-test-example-content1',
+        stages: [{
+          stageName: 'jobposting-test-example-stage1'
+        },
+        {
+          stageName: 'jobposting-test-example-stage2'
+        },
+        {
+          stageName: 'jobposting-test-example-stage3'
+        }]
+      })
+
+    jobPosting = response.body
+
+    response = await api
+      .post('/api/jobapplication')
+      .set('authorization', token)
+      .send({
+        applicantName: 'jobposting-test-example-applicant',
+        applicantEmail: 'jobposting-test@example.email',
+        jobPostingId: jobPosting.id
+      })
+
+    application = response.body
+  })
+
+  test('when user is not logged in is unsuccessful', async () => {
+    const response = await api
+      .post(`/api/jobapplication/${application.id}/comment`)
+      .send('A valid comment')
+      .expect(401)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body).toEqual({ error: 'No authorization token was found' })
+  })
+
+  describe('when user is logged in', async () => {
+
+    test('succeeds with a valid application id and non-empty comment', async () => {
+      const response = await api
+        .post(`/api/jobapplication/${application.id}/comment`)
+        .set('authorization', token)
+        .send(validComment)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+      expect(response.body.comment).toEqual(validComment.comment)
+      expect(response.body.jobApplicationId).toEqual(application.id)
+    })
+
+    test('is unsuccessful if comment is empty', async () => {
+
+      const response = await api
+        .post(`/api/jobapplication/${application.id}/comment`)
+        .set('authorization', token)
+        .send({ comment: '' })
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+
+      expect(response.body).toEqual({ error: 'comment is not allowed to be empty' })
+    })
+
+    test('is unsuccessful if a comment consisting only of whitespace is sent', async () => {
+
+      const response = await api
+        .post(`/api/jobapplication/${application.id}/comment`)
+        .set('authorization', token)
+        .send({ comment: '   ' })
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+
+      expect(response.body).toEqual({ error: 'comment is not allowed to be empty' })
+    })
+
+    test('is unsuccessful if ID of application is invalid or nonexistent', async () => {
+
+      const response = await api
+        .post('/api/jobapplication/0000/comment')
+        .set('authorization', token)
+        .send({ comment: 'A valid comment' })
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+
+      expect(response.body).toEqual({ error: 'Invalid job application ID' })
+    })
+  })
+
+  afterAll(async () => {
+
+    await ApplicationComment.destroy({
+      where: {
+        comment: validComment.comment
+      }
+    })
+    await JobApplication.destroy({
+      where: {
+        id: application.id
+      }
+    })
+    await PostingStage.destroy({
+      where: {
+        jobPostingId: jobPosting.id
+      }
+    })
+    await JobPosting.destroy({
+      where: {
+        id: jobPosting.id
       }
     })
     await Recruiter.destroy({
