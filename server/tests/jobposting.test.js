@@ -6,6 +6,7 @@ const { JobPosting, sequelize, Recruiter, PostingStage, JobApplication, Sequeliz
 const moment = require('moment')
 const { tooLongTitle } = require('../utils/jobpostingTestUtils')
 
+
 beforeAll(async () => {
   await sequelize.sync({ logging: false })
     .catch(() => {
@@ -75,7 +76,7 @@ describe('POST and GET method successful', async () => {
       .get('/api/jobposting')
       .expect(200)
 
-    expect(response.body[0].title).toEqual(newPosting.title)
+    expect(JSON.stringify(response.body)).toContain(newPosting.title)
   })
 
   test('get job posting for only admins', async () => {
@@ -89,7 +90,7 @@ describe('POST and GET method successful', async () => {
       .set('Authorization', token)
       .expect(200)
 
-    expect(response.body[1].title).toEqual(newPosting.title)
+    expect(JSON.stringify(response.body)).toContain(newPosting.title)
   })
 
   afterAll(async () => {
@@ -100,7 +101,7 @@ describe('POST and GET method successful', async () => {
     })
     await JobPosting.destroy({
       where: {
-        title: 'Back-End Developer'
+        title: 'Data guy'
       }
     })
   })
