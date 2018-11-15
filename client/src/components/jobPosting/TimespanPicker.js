@@ -19,7 +19,7 @@ export class TimespanPicker extends Component {
   }
 
 
-  handleShowFromChange(date) {
+  async handleShowFromChange(date) {
     if (date !== undefined && (date === null || !this.state.showTo || date.isBefore(this.state.showTo))) {
       if (date === null) {
         await this.setState({

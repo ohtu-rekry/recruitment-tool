@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button'
 import EmailValidator from 'email-validator'
 import ReactMarkdown from 'react-markdown'
 
+
 export class JobPosting extends Component {
   constructor(props) {
     super(props)
@@ -66,9 +67,6 @@ export class JobPosting extends Component {
     return (
       <div className='job-posting'>
         {loggedIn &&
-          <Button className='job-posting__link' component={LinkToApplicants}>
-            See applicants
-          </Button>
           <AdminButtons id={jobPosting.id} />
         }
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
