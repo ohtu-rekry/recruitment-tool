@@ -11,12 +11,17 @@ const jwt = require('jsonwebtoken')
 jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
   try {
     const jobApplications = await JobApplication.findAll({
-      include: [{
-        model: PostingStage,
-        include: [{
-          model: JobPosting
+      include: [
+        {
+          model: PostingStage,
+          include: [{
+            model: JobPosting
+          }]
+        },
+        {
+          model: ApplicationComment,
+          as: 'applicationComments'
         }]
-      }]
     })
     response.json(jobApplications)
   } catch (error) {

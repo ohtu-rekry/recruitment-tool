@@ -218,10 +218,10 @@ describe('CREATE OR CHANGE JOBAPPLICATION', async () => {
 describe('GET all applications', async() => {
 
   const testRecruiter = {
-    username: 'get-applications-test-recruiter',
+    username: 'get-applications-test-recruiter1',
     password: 'fsdGSDjugs22'
   }
-  let jobPostings, postingStages, token, applications
+  let jobPostings, postingStages, token, applications, comments
 
   beforeAll(async () => {
     const passwordHash = await bcrypt.hash(testRecruiter.password, 10)
@@ -229,6 +229,7 @@ describe('GET all applications', async() => {
       username: testRecruiter.username,
       password: passwordHash
     })
+
     const createdPostings = await JobPosting.bulkCreate([{
       id: 9879879,
       title: 'jobposting-test-example-title1',
@@ -240,6 +241,7 @@ describe('GET all applications', async() => {
       content: 'jobposting-test-example-content2',
       recruiterId: recruiter.id
     }])
+
     jobPostings = createdPostings.map(posting => ({
       id: posting.id,
       title: posting.title,
@@ -251,25 +253,25 @@ describe('GET all applications', async() => {
 
     const createdStages = await PostingStage.bulkCreate([{
       id: 3749821,
-      stageName: 'jobposting-test-example-stage1',
+      stageName: 'posting-test-example-stage1',
       orderNumber: 0,
       jobPostingId: jobPostings[0].id
     },
     {
       id: 1436872,
-      stageName: 'jobposting-test-example-stage2',
+      stageName: 'posting-test-example-stage2',
       orderNumber: 1,
       jobPostingId: jobPostings[0].id
     },
     {
       id: 78953203,
-      stageName: 'jobposting-test-example-stage3',
+      stageName: 'posting-test-example-stage3',
       orderNumber: 2,
       jobPostingId: jobPostings[0].id
     },
     {
       id: 9032075,
-      stageName: 'jobposting-test-example-stage4',
+      stageName: 'posting-test-example-stage4',
       orderNumber: 0,
       jobPostingId: jobPostings[1].id
     }])
@@ -303,7 +305,18 @@ describe('GET all applications', async() => {
       applicantName: 'jobposting-test-example-applicant4',
       applicantEmail: 'jobposting-test@example.email4',
       postingStageId: postingStages[1].id
-    }])
+    }], { returning: true })
+
+    comments = await ApplicationComment.bulkCreate([{
+      comment: 'jobapplication-test-example-comment1',
+      recruiterId: recruiter.id,
+      jobApplicationId: applications[0].id
+    }, {
+      comment: 'jobapplication-test-example-comment2',
+      recruiterId: recruiter.id,
+      jobApplicationId: applications[0].id
+    }], { returning: true })
+      .map(c => c.dataValues)
 
     const response = await api.post('/api/login').send(testRecruiter)
     token = `Bearer ${response.body.token}`
@@ -320,8 +333,11 @@ describe('GET all applications', async() => {
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
-      expect(response.body).toHaveLength(allApplications.length)
-      expect(response.body.map(appl => appl.id).sort((a, b) => a - b))
+      const testSpecificResponse = response.body.filter(appl =>
+        allApplications.map(a => a.id).includes(appl.id))
+
+      expect(testSpecificResponse).toHaveLength(allApplications.length)
+      expect(testSpecificResponse.map(appl => appl.id).sort((a, b) => a - b))
         .toEqual(allApplications.map(appl => appl.id).sort((a, b) => a - b))
     })
 
@@ -334,6 +350,7 @@ describe('GET all applications', async() => {
         .expect('Content-Type', /application\/json/)
 
       const application = response.body.filter(appl => appl.id === applications[0].id)
+
       expect(application).toHaveLength(1)
       expect(application[0].postingStageId).toBe(postingStages[0].id)
       expect(application[0].PostingStage.id).toBe(postingStages[0].id)
@@ -359,6 +376,22 @@ describe('GET all applications', async() => {
       expect(posting.content).toBe(jobPostings[0].content)
       expect(posting.id).toBe(jobPostings[0].id)
       expect(posting.recruiterId).toBe(jobPostings[0].recruiterId)
+    })
+
+    test('returned applications include comments', async () => {
+
+      const response = await api
+        .get('/api/jobapplication')
+        .set('authorization', token)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      const application = response.body.find(appl => appl.id === applications[0].id)
+      expect(application.applicationComments).toHaveLength(comments.length)
+
+      const returnedComments = application.applicationComments.map( comment => comment.comment )
+      expect(returnedComments).toContain(comments[0].comment)
+      expect(returnedComments).toContain(comments[1].comment)
     })
 
     test('posting stages without applications are not returned', async () => {
@@ -402,6 +435,14 @@ describe('GET all applications', async() => {
 
   afterAll(async () => {
 
+    await ApplicationComment.destroy({
+      where: {
+        id: {
+          [Sequelize.Op.in]: comments.map(comment => comment.id)
+        }
+      }
+    })
+
     await JobApplication.destroy({
       where: {
         id: {
@@ -443,6 +484,7 @@ describe('POST a comment to an application', async () => {
   let jobPosting, token, application
 
   beforeAll(async () => {
+
     const passwordHash = await bcrypt.hash(testRecruiter.password, 10)
     await Recruiter.create({
       username: testRecruiter.username,
