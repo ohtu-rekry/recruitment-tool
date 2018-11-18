@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+kubectl get podsapiVersion: apps/v1
 kind: Deployment
 metadata:
   name: recruitment-tool-server
@@ -19,6 +19,17 @@ spec:
         image: rekrysofta/recruitmenttool_server
         ports:
         - containerPort: 8080
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /etc/gcloud-service-account/emblica-212815-8c1abce476a1.json
         envFrom:
         - secretRef:
             name: database-staging
+        volumeMounts:
+        - name: gcloud-service-account
+          mountPath: /etc/gcloud-service-account
+          readOnly: true
+      volumes:
+      - name: gcloud-service-account
+        secret:
+          secretName: gcloud-service-account
