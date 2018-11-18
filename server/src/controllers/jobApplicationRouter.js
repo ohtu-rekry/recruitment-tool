@@ -1,11 +1,32 @@
 const jobApplicationRouter = require('express-promise-router')()
 const { jwtMiddleware } = require('../../utils/middleware')
+<<<<<<< HEAD
 const { JobApplication, PostingStage, JobPosting, ApplicationComment } = require('../../db/models')
+=======
+const { Storage } = require('@google-cloud/storage')
+const Multer = require('multer')
+const format = require('util').format
+const jwt = require('jsonwebtoken')
+const { JobApplication, PostingStage, JobPosting, Recruiter, ApplicationComment } = require('../../db/models')
+>>>>>>> Core functionality for sending files to gcloud
 const {
   jobApplicationValidator,
   applicationPatchValidator,
   applicationCommentValidator } = require('../../utils/validators')
 
+<<<<<<< HEAD
+=======
+const storage = new Storage({
+  projectId: 'emblica-212815'
+})
+const multer = Multer({
+  storage: Multer.MemoryStorage,
+  limits: {
+    fileSize: 10 * 1024 * 1024
+  },
+})
+
+>>>>>>> Core functionality for sending files to gcloud
 jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
   const jobApplications = await JobApplication.findAll({
     include: [
@@ -22,6 +43,7 @@ jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
   })
   response.json(jobApplications)
 })
+
 
 jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
   const body = req.body
@@ -107,6 +129,33 @@ jobApplicationRouter.get('/:id/comment', jwtMiddleware, async (request, response
   } catch (error) {
     throw error
   }
+})
+
+jobApplicationRouter.get('/upload', multer.single('file'), async (req, res, next) => {
+  const myBucket = storage.bucket('rekrysofta')
+  let file = myBucket.file('testi3.txt')
+  console.log(file)
+})
+
+jobApplicationRouter.post('/upload', multer.single('file'), async (req, res, next) => {
+  const bucket = storage.bucket('rekrysofta')
+  if (!req.file) {
+    res.status(400).send('No file uploaded')
+    return
+  }
+
+  const blob = bucket.file(req.file.originalname)
+  const blobStream = blob.createWriteStream()
+
+  blobStream.on('error', (err) => {
+    next(err)
+  })
+
+  blobStream.on('finish', () => {
+    const publicUrl = format(`gs://${bucket.name}/${blob.name}`)
+    res.status(200).send(publicUrl)
+  })
+  blobStream.end(req.file.buffer)
 })
 
 module.exports = jobApplicationRouter
