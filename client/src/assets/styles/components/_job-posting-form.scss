@@ -70,6 +70,19 @@
     &__single-stage {
       padding: 5px;
     }
+    &__single-stage-editable {
+      display:inline-flex;
+    }
+    &__stage-name-edit {
+      position: absolute;
+      padding: 5px;
+      display: none;
+
+      &__input {
+        width: 80px;
+        background-color: #e5e5e5;
+      }
+    }
   }
 
 .timespan-picker {

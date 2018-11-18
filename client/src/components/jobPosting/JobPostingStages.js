@@ -60,6 +60,15 @@ export class JobPostingStages extends Component {
     })
   }
 
+  handleStageClick = (jobPostingStage, e) => {
+    document.getElementById(jobPostingStage.stageName).style.display = 'block'
+    // Todo
+  }
+
+  handleStageRename = (jobPostingStage, e) => {
+    // Todo
+  }
+
   handleStageDelete = (stage) => {
     this.props.removeStageInJobPosting(stage)
   }
@@ -93,10 +102,15 @@ export class JobPostingStages extends Component {
           {this.props.jobPostingStages.map((jobPostingStage, index) => (
             <div key={index} className='job-posting-form-stages__single-stage'>
               {jobPostingStage.canRemove === true &&
-                <Chip
-                  label={index + 1 + '. ' + jobPostingStage.stageName}
-                  onDelete={() => this.handleStageDelete(jobPostingStage)}
-                />
+                <div className='job-posting-form-stages__single-stage-editable'>
+                  <Chip
+                    label={index + 1 + '. ' + jobPostingStage.stageName}
+                    onClick={this.handleStageClick.bind(this, jobPostingStage)}
+                    onDelete={() => this.handleStageDelete(jobPostingStage)} />
+                  <form id={jobPostingStage.stageName} onSubmit={this.handleStageRename.bind(this, jobPostingStage)} className='job-posting-form-stages__stage-name-edit'>
+                    <input className='job-posting-form-stages__stage-name-edit__input' type="text"></input>
+                  </form>
+                </div>
               }
               {jobPostingStage.canRemove === false &&
                 <Chip
