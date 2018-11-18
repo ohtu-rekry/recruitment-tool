@@ -32,8 +32,4 @@ spec:
       volumes:
       - name: gcloud-service-account
         secret:
-<<<<<<< HEAD
           secretName: gcloud-service-account
-=======
-          secretName: gcloud-service-account
->>>>>>> Core functionality for sending files to gcloud
