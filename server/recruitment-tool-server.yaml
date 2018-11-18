@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+kubectl get podsapiVersion: apps/v1
 kind: Deployment
 metadata:
   name: recruitment-tool-server
