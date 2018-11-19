@@ -1,34 +1,14 @@
 const jobApplicationRouter = require('express-promise-router')()
 const { jwtMiddleware } = require('../../utils/middleware')
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-const { JobApplication, PostingStage, JobPosting, ApplicationComment } = require('../../db/models')
-=======
-=======
->>>>>>> Core functionality for sending files to gcloud
 const { Storage } = require('@google-cloud/storage')
 const Multer = require('multer')
 const format = require('util').format
-const jwt = require('jsonwebtoken')
-const { JobApplication, PostingStage, JobPosting, Recruiter, ApplicationComment } = require('../../db/models')
->>>>>>> Core functionality for sending files to gcloud
-=======
-const jwt = require('jsonwebtoken')
 const { JobApplication, PostingStage, JobPosting, Recruiter, ApplicationComment, Attachment } = require('../../db/models')
->>>>>>> Added attachment handler
 const {
   jobApplicationValidator,
   applicationPatchValidator,
   applicationCommentValidator } = require('../../utils/validators')
-const handleAttachmentSending = require('../../utils/attachmentHandler')
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> Core functionality for sending files to gcloud
 const storage = new Storage({
   projectId: 'emblica-212815'
 })
@@ -38,13 +18,7 @@ const multer = Multer({
     fileSize: 10 * 1024 * 1024
   },
 })
-<<<<<<< HEAD
-=======
->>>>>>> Added attachment handler
-=======
->>>>>>> Core functionality for sending files to gcloud
 
->>>>>>> Core functionality for sending files to gcloud
 jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
   const jobApplications = await JobApplication.findAll({
     include: [
@@ -62,13 +36,6 @@ jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
   response.json(jobApplications)
 })
 
-<<<<<<< HEAD
-=======
-
-jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
-  try {
-    const body = req.body
->>>>>>> Core functionality for sending files to gcloud
 
 jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
   const body = req.body
@@ -80,7 +47,6 @@ jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
     }
   })
 
-<<<<<<< HEAD
   if (!firstPostingStage) {
     return res.status(400).json({ error: 'Could not find posting stage' })
   }
@@ -92,21 +58,6 @@ jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
   })
 
   res.status(201).json(jobApplication)
-=======
-    //let attachment
-    console.log(body)
-
-
-    const jobApplication = await JobApplication.create({
-      applicantName: body.applicantName,
-      applicantEmail: body.applicantEmail,
-      postingStageId: firstPostingStage.id
-    })
-
-    if (body.att)
-
-      res.status(201).json(jobApplication)
->>>>>>> Added attachment handler
 
 })
 
@@ -172,22 +123,27 @@ jobApplicationRouter.get('/:id/comment', jwtMiddleware, async (request, response
   }
 })
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Core functionality for sending files to gcloud
+
 jobApplicationRouter.get('/upload', multer.single('file'), async (req, res, next) => {
   const myBucket = storage.bucket('rekrysofta')
   let file = myBucket.file('testi3.txt')
   console.log(file)
-<<<<<<< HEAD
-=======
+})
+
 jobApplicationRouter.get('/upload', async (req, res) => {
   //http 302
   const bucket = storage.bucket('rekrysofta')
   const file = bucket.file('kannu.jpg')
 
   const lol = file.createReadStream()
+
+})
+jobApplicationRouter.get('/upload', async (req, res) => {
+
+  const bucket = storage.bucket('rekrysofta')
+  const file = bucket.file('kannu.jpg')
+
+  file.createReadStream()
     .on('error', (err) => {
       console.log('err ' + err)
     })
@@ -196,10 +152,6 @@ jobApplicationRouter.get('/upload', async (req, res) => {
     })
     .pipe(res)
   return lol
->>>>>>> Added attachment handler
-})
-
-=======
 })
 
 jobApplicationRouter.post('/upload', multer.single('file'), async (req, res, next) => {
@@ -222,6 +174,6 @@ jobApplicationRouter.post('/upload', multer.single('file'), async (req, res, nex
   })
   blobStream.end(req.file.buffer)
 })
->>>>>>> Core functionality for sending files to gcloud
+
 
 module.exports = jobApplicationRouter
