@@ -220,7 +220,7 @@ describe('CREATE OR CHANGE JOBAPPLICATION', async () => {
   })
 })
 
-describe('GET all applications', async() => {
+describe('GET all applications', async () => {
 
   const testRecruiter = {
     username: 'get-applications-test-recruiter',

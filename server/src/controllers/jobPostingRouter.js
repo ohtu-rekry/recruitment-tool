@@ -101,7 +101,7 @@ jobPostingRouter.get('/:id', jwtMiddleware, async (req, res) => {
 
     const jobPostingWithStages = await JobPosting.findOne({
       where: { id: jobPostingId },
-      include: [ 'postingStages' ]
+      include: ['postingStages']
     })
 
     if (!jobPostingWithStages) {
@@ -164,9 +164,9 @@ jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request,
       !((existingStages
         .map(existing => existing.id)
         .includes(stage.id))
-      || (deletedStages
-        .map(deleted => deleted.id)
-        .includes(stage.id))))
+        || (deletedStages
+          .map(deleted => deleted.id)
+          .includes(stage.id))))
 
     const updatedPosting = await posting.update({
       title: body.title,
