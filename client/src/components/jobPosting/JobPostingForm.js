@@ -161,7 +161,6 @@ JobPostingForm.propTypes = {
   creationRequestStatus: PropTypes.object,
   loggedIn: PropTypes.object,
   jobPostingStages: PropTypes.array,
-  addJobPosting: PropTypes.func.isRequired,
   showFrom: PropTypes.string,
   showTo: PropTypes.string,
   showFromIsAdded: PropTypes.func,
