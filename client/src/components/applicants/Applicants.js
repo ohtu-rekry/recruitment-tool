@@ -30,7 +30,7 @@ export class Applicants extends Component {
     const { fetchApplicants, fetchJobPosting, adminView } = this.props
     const postingId = window.location.href.split('/')[4]
     if (nProps.loggedIn && !this.state.isLoaded && !adminView) {
-      fetchJobPosting(postingId)
+      fetchJobPosting(postingId, nProps.loggedIn)
       fetchApplicants(postingId)
       this.setState({ isLoaded: true })
     }
@@ -40,9 +40,16 @@ export class Applicants extends Component {
     this.props.emptyJobPosting()
   }
 
-  handleCopyStages = () => {
-    const { stages, copyStages } = this.props
-    copyStages(stages)
+  handleCopyJobPosting = () => {
+    const { jobPosting, stages, copyJobPosting } = this.props
+
+    const copiedJobPosting = {
+      title: jobPosting.title,
+      content: jobPosting.content,
+      showFrom: jobPosting.showFrom,
+      showTo: jobPosting.showTo
+    }
+    copyJobPosting(copiedJobPosting, stages)
   }
 
   onDrop = (result) => {
@@ -84,9 +91,12 @@ export class Applicants extends Component {
           {applicants ? 'All applicants' : jobPosting.title}
         </div>
         {!adminView &&
-          <Link to='/position/new' style={{ textDecoration: 'none' }}>
-            <button className='applicants__button' onClick={this.handleCopyStages}>
-              Copy Templates
+          <Link
+            to={{ pathname: '/position/new', state: { mode: 'copy' } }}
+            style={{ textDecoration: 'none' }}
+          >
+            <button className='applicants__button' onClick={this.handleCopyJobPosting}>
+              Copy Position
             </button>
           </Link>
         }

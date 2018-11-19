@@ -95,7 +95,17 @@ function* fetchJobPostingWithStages({ payload }) {
 
     if (response.status === 200) {
       const jobPosting = response.data
-      yield put(actions.setJobPosting(jobPosting))
+
+      const newJobPosting = {
+        ...jobPosting,
+        postingStages: null
+      }
+      yield put(actions.setJobPosting(newJobPosting))
+
+      const stages = jobPosting.postingStages.slice().sort((a, b) => a.orderNumber - b.orderNumber)
+      yield put(actions.setStages(stages))
+
+      yield put(actions.setTimeSpan(jobPosting.showFrom, jobPosting.showTo))
     }
 
   } catch (error) {

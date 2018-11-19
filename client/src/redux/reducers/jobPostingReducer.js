@@ -9,9 +9,9 @@ const initialState = {
   jobPostings: [],
   jobPostingStages: defaultStages,
   creationRequestStatus: null,
-  copiedStages: null,
   showFrom: null,
   showTo: null,
+  setTimespan: false,
   defaultStageNames
 }
 
@@ -20,6 +20,17 @@ const reducer = handleActions(
     [actions.setJobPostings]: (state, action) => ({
       ...state,
       jobPostings: action.payload
+    }),
+    [actions.copyJobPosting]: (state, action) => ({
+      ...state,
+      showFrom: action.payload.jobPosting.showFrom,
+      showTo: action.payload.jobPosting.showTo,
+      setTimespan: true,
+      jobPostingStages: action.payload.stages
+        .map((stage) => {
+          const isRemovable = !defaultStageNames.includes(stage.stageName)
+          return ({ stageName: stage.stageName, canRemove: isRemovable })
+        })
     }),
     [actions.addJobPostingSuccess]: (state, action) => ({
       ...state,
@@ -43,15 +54,6 @@ const reducer = handleActions(
       ...state,
       jobPostingStages: [...state.jobPostingStages.filter(state => state !== action.payload)]
     }),
-    [actions.copyStages]: (state, action) => ({
-      ...state,
-      jobPostingStages: defaultStages,
-      copiedStages: action.payload.stages
-    }),
-    [actions.clearCopiedStages]: (state, action) => ({
-      ...state,
-      copiedStages: null
-    }),
     [actions.setStages]: (state, action) => ({
       ...state,
       jobPostingStages: action.payload.stages
@@ -59,9 +61,9 @@ const reducer = handleActions(
           const isRemovable = !defaultStageNames.includes(stage.stageName)
                               && stage.jobApplications.length === 0
           return ({ ...stage, canRemove: isRemovable })
-        }),
+        })
     }),
-    [actions.clearStages]: (state, action) => ({
+    [actions.clearStages]: (state) => ({
       ...state,
       jobPostingStages: defaultStages
     }),
@@ -72,6 +74,21 @@ const reducer = handleActions(
     [actions.addShowTo]: (state, action) => ({
       ...state,
       showTo: action.payload.showTo
+    }),
+    [actions.setTimeSpan]: (state, action) => ({
+      ...state,
+      showFrom: action.payload.showFrom,
+      showTo: action.payload.showTo,
+      setTimespan: true
+    }),
+    [actions.timespanSet]: (state) => ({
+      ...state,
+      setTimespan: false
+    }),
+    [actions.clearShowFromAndShowTo]: (state, action) => ({
+      ...state,
+      showFrom: null,
+      showTo: null
     })
   },
   initialState
