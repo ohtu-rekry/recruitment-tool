@@ -121,10 +121,43 @@ function* getApplicants() {
   }
 }
 
+function* addComment({ payload }) {
+  try {
+    const recruiter = yield select(getCurrentUser)
+    const data = {
+      token: recruiter.token,
+      applicationId: payload.applicationId,
+      data: { comment: payload.comment }
+    }
+
+    const response = yield call(jobApplicationApi.addComment, data)
+
+    if (response.status === 201) {
+      const applicants = yield select(getCurrentApplicants)
+
+      const commentedApplicant = applicants
+        .reduce((applicants, stage) => applicants.concat(stage.applicants), [])
+        .find(applicant => applicant.id === payload.applicationId)
+
+      if (!commentedApplicant.comments) {
+        commentedApplicant.comments = []
+      }
+
+      commentedApplicant.comments.push(response.data)
+      yield put(actions.addCommentSuccess(applicants))
+    }
+
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export const getCurrentUser = state => state.loginReducer.loggedIn
 export const getCurrentJobPosting = state => state.postingReducer.jobPosting
 export const getStages = state => state.postingReducer.stages
+export const getCurrentApplicants = state => state.postingReducer.applicants
 
 export const watchMoveApplicant = takeLatest(actions.moveApplicant().type, moveApplicant)
 export const watchSendApplication = takeLatest(actions.sendApplication().type, sendApplication)
 export const watchGetApplicants = takeLatest(actions.getApplicants().type, getApplicants)
+export const watchAddComment = takeLatest(actions.addComment().type, addComment)

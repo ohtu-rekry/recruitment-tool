@@ -44,7 +44,11 @@ const reducer = handleActions(
         ...state,
         applicants: action.payload
       }
-    )
+    ),
+    [actions.addCommentSuccess]: (state, action) => ({
+      ...state,
+      applicants: action.payload
+    })
   },
   initialState
 )
