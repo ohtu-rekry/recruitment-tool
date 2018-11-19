@@ -42,12 +42,12 @@ const reducer = handleActions(
     [actions.getApplicantsSuccess]: (state, action) => (
       {
         ...state,
-        applicants: action.payload
+        stages: action.payload
       }
     ),
     [actions.addCommentSuccess]: (state, action) => ({
       ...state,
-      applicants: action.payload
+      stages: action.payload
     })
   },
   initialState
