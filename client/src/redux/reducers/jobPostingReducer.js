@@ -64,6 +64,15 @@ const reducer = handleActions(
       ...state,
       jobPostingStages: defaultStages
     }),
+    [actions.renamePostingStage]: (state, action) => ({
+      ...state,
+      jobPostingStages: [...state.jobPostingStages.map(stage => {
+        if (stage.stageName === action.payload.postingStage.stageName) {
+          return {...stage, stageName: action.payload.stageUnderEdit}
+        }
+        return stage
+      })]
+    }),
     [actions.addShowFrom]: (state, action) => ({
       ...state,
       showFrom: action.payload

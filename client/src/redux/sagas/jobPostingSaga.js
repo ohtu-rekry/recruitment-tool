@@ -69,6 +69,10 @@ function* removeStageInJobPosting({ payload }) {
   yield put(actions.removeStageInJobPosting(payload.stage))
 }
 
+function* renamePostingStage( { payload }) {
+  yield put(actions.renamePostingStage(payload.jobPostingStage))
+}
+
 function* fetchJobPosting({ payload }) {
   try {
     const response = yield call(jobPostingApi.get)
@@ -136,6 +140,7 @@ export const watchFetchJobPostingWithStages = takeLatest(actions.fetchJobPosting
 export const watchSubmitJobPosting = takeEvery(actions.submitJobPosting().type, submitJobPosting)
 export const watchNewStageToJobPosting = takeEvery(actions.addNewStageForJobPosting().type, addNewStageForJobPosting)
 export const watchRemoveStageInJobPosting = takeEvery(actions.removeStageInJobPosting().type, removeStageInJobPosting)
+export const watchRenamePostingStage = takeEvery(actions.renamePostingStage().type, renamePostingStage)
 export const watchFetchApplicants = takeLatest(
   actions.fetchApplicants().type,
   fetchJobPostingApplicants

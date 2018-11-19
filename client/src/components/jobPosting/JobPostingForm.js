@@ -166,7 +166,6 @@ JobPostingForm.propTypes = {
   fetchJobPostingWithStages: PropTypes.func.isRequired,
   emptyJobPosting: PropTypes.func.isRequired,
   setStages: PropTypes.func.isRequired
-
 }
 
 const mapStateToProps = (state) => ({

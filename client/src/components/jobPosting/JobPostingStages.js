@@ -4,7 +4,7 @@ import { TextField, Button, Chip } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import PropTypes from 'prop-types'
 
-import { addNewStageForJobPosting, removeStageInJobPosting, clearCopiedStages, clearStages } from '../../redux/actions/actions'
+import { addNewStageForJobPosting, removeStageInJobPosting, clearCopiedStages, clearStages, renamePostingStage } from '../../redux/actions/actions'
 
 export class JobPostingStages extends Component {
   constructor(props) {
@@ -12,7 +12,8 @@ export class JobPostingStages extends Component {
     this.state = {
       newStageName: '',
       helperText: '',
-      error: false
+      error: false,
+      stageUnderEdit: ''
     }
   }
 
@@ -60,13 +61,23 @@ export class JobPostingStages extends Component {
     })
   }
 
-  handleStageClick = (jobPostingStage, e) => {
+  handleStageClick = (jobPostingStage) => {
     document.getElementById(jobPostingStage.stageName).style.display = 'block'
-    // Todo
   }
 
-  handleStageRename = (jobPostingStage, e) => {
-    // Todo
+  handleStageRenameChange = (e) => {
+    this.setState({
+      stageUnderEdit: e.target.value
+    })
+  }
+
+  handleStageRename = (e, jobPostingStage) => {
+    e.preventDefault()
+    this.props.renamePostingStage(jobPostingStage, this.state.stageUnderEdit)
+    document.getElementById(jobPostingStage.stageName).style.display = 'none'
+    this.setState({
+      stageUnderEdit: ''
+    })
   }
 
   handleStageDelete = (stage) => {
@@ -77,10 +88,11 @@ export class JobPostingStages extends Component {
     const error = this.state.error
     const helperText = error ? 'Invalid stage name. Stage was not added' : this.state.helperText
 
+    const classNames = 'job-posting-form-stages'
     return (
-      <div className='job-posting-form-stages' onKeyPress={this.handleKeyPress}>
+      <div className={classNames} onKeyPress={this.handleKeyPress}>
         <h3>Define stages for this job posting</h3>
-        <div className='job-posting-form-stages__new-stage-name'>
+        <div className={classNames + '__new-stage-name'}>
           <TextField
             fullWidth
             id="stageName"
@@ -93,22 +105,22 @@ export class JobPostingStages extends Component {
             error={error}
           />
         </div>
-        <div className='job-posting-form-stages__new-stage-add-button'>
+        <div className={classNames + '__new-stage-add-button'}>
           <Button mini variant="fab" color="inherit" aria-label="Add" onClick={() => this.addNewStage()}>
             <AddIcon />
           </Button>
         </div>
-        <div className='job-posting-form-stages__stage-list'>
+        <div className={classNames + '__stage-list'}>
           {this.props.jobPostingStages.map((jobPostingStage, index) => (
-            <div key={index} className='job-posting-form-stages__single-stage'>
+            <div key={index} className={classNames + '__single-stage'}>
               {jobPostingStage.canRemove === true &&
-                <div className='job-posting-form-stages__single-stage-editable'>
+                <div className={classNames + '__single-stage-editable'}>
                   <Chip
                     label={index + 1 + '. ' + jobPostingStage.stageName}
-                    onClick={this.handleStageClick.bind(this, jobPostingStage)}
+                    onClick={() => this.handleStageClick(jobPostingStage)}
                     onDelete={() => this.handleStageDelete(jobPostingStage)} />
-                  <form id={jobPostingStage.stageName} onSubmit={this.handleStageRename.bind(this, jobPostingStage)} className='job-posting-form-stages__stage-name-edit'>
-                    <input className='job-posting-form-stages__stage-name-edit__input' type="text"></input>
+                  <form id={jobPostingStage.stageName} onChange={this.handleStageRenameChange} onSubmit={(e) => this.handleStageRename(e, jobPostingStage)} className={classNames + '__stage-name-edit'}>
+                    <input className={classNames + '__stage-name-edit__input'} type="text"></input>
                   </form>
                 </div>
               }
@@ -138,7 +150,8 @@ const mapDispatchToProps = {
   addNewStageForJobPosting,
   removeStageInJobPosting,
   clearCopiedStages,
-  clearStages
+  clearStages,
+  renamePostingStage
 }
 
 export default connect(
