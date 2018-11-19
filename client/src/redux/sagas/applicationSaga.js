@@ -133,18 +133,24 @@ function* addComment({ payload }) {
     const response = yield call(jobApplicationApi.addComment, data)
 
     if (response.status === 201) {
-      const applicants = yield select(getCurrentApplicants)
+      const stages = yield select(getStages)
 
-      const commentedApplicant = applicants
-        .reduce((applicants, stage) => applicants.concat(stage.applicants), [])
-        .find(applicant => applicant.id === payload.applicationId)
+      const newStages = stages.map(stage => {
+        const commentedApplicant = {
+          ...stage.applicants.find(applicant =>
+            applicant.id === payload.applicationId
+          )
+        }
 
-      if (!commentedApplicant.comments) {
-        commentedApplicant.comments = []
-      }
+        if (commentedApplicant) {
+          commentedApplicant.comments = commentedApplicant.comments
+            ? [ ...commentedApplicant.comments, response.data ]
+            : []
+        }
+        return stage
+      })
 
-      commentedApplicant.comments.push(response.data)
-      yield put(actions.addCommentSuccess(applicants))
+      yield put(actions.addCommentSuccess(newStages))
     }
 
   } catch (e) {
@@ -155,7 +161,6 @@ function* addComment({ payload }) {
 export const getCurrentUser = state => state.loginReducer.loggedIn
 export const getCurrentJobPosting = state => state.postingReducer.jobPosting
 export const getStages = state => state.postingReducer.stages
-export const getCurrentApplicants = state => state.postingReducer.applicants
 
 export const watchMoveApplicant = takeLatest(actions.moveApplicant().type, moveApplicant)
 export const watchSendApplication = takeLatest(actions.sendApplication().type, sendApplication)
