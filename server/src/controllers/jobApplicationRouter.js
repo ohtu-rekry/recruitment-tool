@@ -1,5 +1,7 @@
 const jobApplicationRouter = require('express').Router()
 const { jwtMiddleware } = require('../../utils/middleware')
+const fs = require('fs')
+const http = require('http')
 const { Storage } = require('@google-cloud/storage')
 const Multer = require('multer')
 const format = require('util').format
@@ -123,10 +125,19 @@ jobApplicationRouter.post('/:id/comment', jwtMiddleware, applicationCommentValid
   }
 })
 
-jobApplicationRouter.get('/upload', multer.single('file'), async (req, res, next) => {
-  const myBucket = storage.bucket('rekrysofta')
-  let file = myBucket.file('testi3.txt')
-  console.log(file)
+jobApplicationRouter.get('/upload', async (req, res) => {
+
+  const bucket = storage.bucket('rekrysofta')
+  const file = bucket.file('kannu.jpg')
+
+  file.createReadStream()
+    .on('error', (err) => {
+      console.log('err ' + err)
+    })
+    .on('end', () => {
+      console.log('success')
+    })
+    .pipe(res)
 })
 
 jobApplicationRouter.post('/upload', multer.single('file'), async (req, res, next) => {
