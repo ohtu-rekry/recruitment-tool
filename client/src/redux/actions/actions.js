@@ -53,6 +53,7 @@ export const moveApplicantSuccess = createAction('MOVE_APPLICANT_SUCCESS')
 export const getApplicants = createAction('GET_APPLICANTS')
 export const getApplicantsSuccess = createAction('GET_APPLICANTS_SUCCESS')
 
-export const addComment = createAction('ADD_COMMENT', (comment, applicationId) => ({ comment, applicationId }))
+export const addComment = createAction('ADD_COMMENT',
+  (comment, applicationId, attachments) => ({ comment, applicationId, attachments }))
 export const addCommentSuccess = createAction('ADD_COMMENT_SUCCESS')
 

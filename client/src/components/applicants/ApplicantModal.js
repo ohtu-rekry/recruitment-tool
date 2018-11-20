@@ -1,46 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Button, Modal, TextField } from '@material-ui/core'
-import Clear from '@material-ui/icons/Clear'
-import Person from '@material-ui/icons/Person'
-import Email from '@material-ui/icons/Email'
-import Calendar from '@material-ui/icons/CalendarToday'
-import { addComment } from '../../redux/actions/actions'
+import { Button, Modal } from '@material-ui/core'
+import { Clear, Person, Email, CalendarToday as Calendar } from '@material-ui/icons'
+import ApplicantModalDropzone from './ApplicantModalDropzone'
 
 class ApplicantModal extends React.Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      comment: '',
-      commentError: false
-    }
-  }
-
-  handleSubmit = () => {
-    if (!this.state.comment.trim()) {
-      this.setState({ commentError: true })
-    } else {
-      this.props.addComment(this.state.comment, this.props.applicant.id)
-      this.setState({ comment: '', commentError: false })
-    }
-  }
-
-  handleCommentChange = (event) => {
-    this.setState({ comment: event.target.value, commentError: false })
-  }
-
-  handleCommentFocus = () => {
-    this.setState({ commentError: false })
-  }
-
-  handleCommentKeyPress = (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault()
-      this.handleSubmit()
-    }
-  }
 
   handleClose = () => {
     this.props.closeModal(null)
@@ -48,8 +12,6 @@ class ApplicantModal extends React.Component {
 
   render() {
     const { applicantName, applicantEmail, createdAt, jobPosting } = this.props.applicant
-    const { comment, commentError } = this.state
-    const helperText = commentError ? 'Cannot send empty comment' : 'Markdown syntax supported'
 
     let dateTime = new Date(createdAt).toLocaleString([], {
       day: '2-digit',
@@ -72,9 +34,9 @@ class ApplicantModal extends React.Component {
           <Button
             style={buttonStyle}
             mini
-            variant="fab"
-            color="inherit"
-            aria-label="Close"
+            variant='fab'
+            color='inherit'
+            aria-label='Close'
             onClick={this.handleClose}
           >
             <Clear />
@@ -101,28 +63,7 @@ class ApplicantModal extends React.Component {
             <div className='applicant-modal__card__date'>
               Applied for: {jobPosting}
             </div>}
-          <div className='applicant-modal__card__comment-input'>
-            <TextField
-              multiline
-              rowsMax='10'
-              required
-              fullWidth
-              id='comment'
-              type='text'
-              value={comment}
-              label='Comment'
-              helperText={helperText}
-              onChange={this.handleCommentChange}
-              error={commentError}
-              onFocus={this.handleCommentFocus}
-              onKeyPress={this.handleCommentKeyPress}
-            />
-          </div>
-          <div className='applicant-modal__card__comment-button'>
-            <Button color='inherit' variant='contained' aria-label='Add' onClick={this.handleSubmit}>
-              Send
-            </Button>
-          </div>
+          <ApplicantModalDropzone />
         </div>
       </Modal>
     )
@@ -131,15 +72,7 @@ class ApplicantModal extends React.Component {
 
 ApplicantModal.propTypes = {
   applicant: PropTypes.object.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  addComment: PropTypes.func.isRequired
+  closeModal: PropTypes.func.isRequired
 }
 
-const mapDispatchToProps = {
-  addComment
-}
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(ApplicantModal)
+export default ApplicantModal
