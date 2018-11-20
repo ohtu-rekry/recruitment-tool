@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import * as actions from '../../redux/actions/actions'
 import PropTypes from 'prop-types'
 import { Link, withRouter } from 'react-router-dom'
-import Button from '@material-ui/core/Button'
+import { Button, Chip } from '@material-ui/core/'
 import EmailValidator from 'email-validator'
 import ReactMarkdown from 'react-markdown'
+import Dropzone from 'react-dropzone'
 
 export class JobPosting extends Component {
   constructor(props) {
@@ -13,7 +14,8 @@ export class JobPosting extends Component {
     this.state = {
       applicantName: '',
       applicantEmail: '',
-      inputError: null
+      inputError: null,
+      attachments: []
     }
   }
 
@@ -35,7 +37,7 @@ export class JobPosting extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { applicantName, applicantEmail } = this.state
+    const { applicantName, applicantEmail, attachments } = this.state
 
     const notOnlyWhitespaceRegex = /\S/
     if (!notOnlyWhitespaceRegex.test(applicantName)) {
@@ -49,7 +51,7 @@ export class JobPosting extends Component {
     }
 
     const jobPostingId = window.location.href.split('/')[4]
-    this.props.sendApplication(applicantName, applicantEmail, jobPostingId)
+    this.props.sendApplication(applicantName, applicantEmail, jobPostingId, attachments)
 
     this.setState({
       applicantName: '',
@@ -59,8 +61,26 @@ export class JobPosting extends Component {
     this.props.history.push('/success')
   }
 
+  handleDropAttachment = (e) => {
+    this.setState({
+      attachments: this.state.attachments.concat(e),
+      inputError: null
+    })
+  }
+
+  handleAttachmentReject = () => {
+    this.setState({ inputError: 'Only .pdf and .zip files are accepted' })
+  }
+
+  handleAttachmentDelete = (deleteIndex) => {
+    const attachments = this.state.attachments
+      .filter((attachment, index) => index !== deleteIndex)
+
+    this.setState({ attachments, inputError: null })
+  }
+
   render() {
-    const { applicantName, applicantEmail, inputError } = this.state
+    const { applicantName, applicantEmail, inputError, attachments } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
 
     return (
@@ -94,13 +114,40 @@ export class JobPosting extends Component {
               onChange={this.handleChange}
               maxLength='255'
             ></input>
+          </div>
+          <div>
+            <Dropzone
+              onDropAccepted={this.handleDropAttachment}
+              onDropRejected={this.handleAttachmentReject}
+              accept='.pdf, .zip'
+              className={'job-posting__attachment-dropzone'}
+            >
+              {attachments.length === 0 &&
+                <div>
+                  Drop attachments here, or click to select files to upload
+                  <br/>
+                  Accepted file types are .zip and .pdf
+                </div>}
+              <div>
+                <div className='job-posting__attachment-dropzone__list'>
+                  {attachments.map((attachment, index) =>
+                    <Chip
+                      key={index}
+                      className='job-posting__attachment-dropzone__attachment'
+                      label={attachment.name}
+                      onDelete={() => this.handleAttachmentDelete(index)}
+                    />
+                  )}
+                </div>
+              </div>
+            </Dropzone>
             <button
               className='job-posting__submit-button'
               type='submit'>
               Send
             </button>
+            {inputError && <InputErrorMessage errorMessage={inputError} />}
           </div>
-          {inputError && <InputErrorMessage errorMessage={inputError} />}
         </form>
       </div>
     )
