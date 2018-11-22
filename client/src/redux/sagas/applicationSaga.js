@@ -149,7 +149,7 @@ function* addComment({ payload }) {
             : [ response.data ]
 
           const notCommentedApplicants = [
-            ...stage.applicnats.filter(applicant =>
+            ...stage.applicants.filter(applicant =>
               applicant.id !== payload.applicationId)
           ]
 
