@@ -8,16 +8,8 @@ const {
   jobApplicationValidator,
   applicationPatchValidator,
   applicationCommentValidator } = require('../../utils/validators')
+const handleAttachmentSending = require('../../utils/attachmentHandler')
 
-const storage = new Storage({
-  projectId: 'emblica-212815'
-})
-const multer = Multer({
-  storage: Multer.MemoryStorage,
-  limits: {
-    fileSize: 10 * 1024 * 1024
-  },
-})
 
 jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
   const jobApplications = await JobApplication.findAll({
@@ -139,11 +131,11 @@ jobApplicationRouter.get('/upload', async (req, res) => {
 
 })
 jobApplicationRouter.get('/upload', async (req, res) => {
-
+  //http 302
   const bucket = storage.bucket('rekrysofta')
   const file = bucket.file('kannu.jpg')
 
-  file.createReadStream()
+  const lol = file.createReadStream()
     .on('error', (err) => {
       console.log('err ' + err)
     })
@@ -154,26 +146,6 @@ jobApplicationRouter.get('/upload', async (req, res) => {
   return lol
 })
 
-jobApplicationRouter.post('/upload', multer.single('file'), async (req, res, next) => {
-  const bucket = storage.bucket('rekrysofta')
-  if (!req.file) {
-    res.status(400).send('No file uploaded')
-    return
-  }
-
-  const blob = bucket.file(req.file.originalname)
-  const blobStream = blob.createWriteStream()
-
-  blobStream.on('error', (err) => {
-    next(err)
-  })
-
-  blobStream.on('finish', () => {
-    const publicUrl = format(`gs://${bucket.name}/${blob.name}`)
-    res.status(200).send(publicUrl)
-  })
-  blobStream.end(req.file.buffer)
-})
 
 
 module.exports = jobApplicationRouter
