@@ -28,25 +28,74 @@ module.exports = {
       updatedAt: '2018-09-12 21:57:29.176+03'
     }], {})
 
-    const jobPosting = await JobPosting.findOne({ where: { title: 'Full-Stack Developer' } })
+    const fullStackPosting = await JobPosting.findOne({ where: { title: 'Full-Stack Developer' } })
+    const dataScientistPosting = await JobPosting.findOne({ where: { title: 'Data scientist' } })
 
     await queryInterface.bulkInsert('PostingStages', [{
-      stageName: 'Interview',
-      jobPostingId: jobPosting.id,
+      stageName: 'Applied',
+      jobPostingId: fullStackPosting.id,
       createdAt: '2018-09-12 21:57:29.176+03',
       updatedAt: '2018-09-12 21:57:29.176+03',
       orderNumber: 0
     },
     {
       stageName: 'Homework',
-      jobPostingId: jobPosting.id,
+      jobPostingId: fullStackPosting.id,
       createdAt: '2018-09-12 21:57:30.176+03',
       updatedAt: '2018-09-12 21:57:30.176+03',
       orderNumber: 1
+    },
+    {
+      stageName: 'Interview',
+      jobPostingId: fullStackPosting.id,
+      createdAt: '2018-09-12 21:57:29.176+03',
+      updatedAt: '2018-09-12 21:57:29.176+03',
+      orderNumber: 2
+    },
+    {
+      stageName: 'Accepted',
+      jobPostingId: fullStackPosting.id,
+      createdAt: '2018-09-12 21:57:30.176+03',
+      updatedAt: '2018-09-12 21:57:30.176+03',
+      orderNumber: 3
+    },
+    {
+      stageName: 'Rejected',
+      jobPostingId: fullStackPosting.id,
+      createdAt: '2018-09-12 21:57:29.176+03',
+      updatedAt: '2018-09-12 21:57:29.176+03',
+      orderNumber: 4
+    },
+    {
+      stageName: 'Applied',
+      jobPostingId: dataScientistPosting.id,
+      createdAt: '2018-09-12 21:57:30.176+03',
+      updatedAt: '2018-09-12 21:57:30.176+03',
+      orderNumber: 0
+    },
+    {
+      stageName: 'Accepted',
+      jobPostingId: dataScientistPosting.id,
+      createdAt: '2018-09-12 21:57:29.176+03',
+      updatedAt: '2018-09-12 21:57:29.176+03',
+      orderNumber: 1
+    },
+    {
+      stageName: 'Rejected',
+      jobPostingId: dataScientistPosting.id,
+      createdAt: '2018-09-12 21:57:30.176+03',
+      updatedAt: '2018-09-12 21:57:30.176+03',
+      orderNumber: 2
     }], {})
 
     const interview = await PostingStage.findOne({ where: { stageName: 'Interview' } })
     const homework = await PostingStage.findOne({ where: { stageName: 'Homework' } })
+    const dataScientistApplied = await PostingStage.findOne({
+      where: {
+        stageName: 'Applied',
+        jobPostingId: dataScientistPosting.id
+      }
+    })
 
     return queryInterface.bulkInsert('JobApplications', [{
       applicantName: 'Donald Trump',
@@ -61,6 +110,13 @@ module.exports = {
       postingStageId: homework.id,
       createdAt: '2018-09-13 21:57:29.176+03',
       updatedAt: '2018-09-13 21:57:29.176+03'
+    },
+    {
+      applicantName: 'Pocahontas',
+      applicantEmail: 'poca@colorofwind.com',
+      postingStageId: dataScientistApplied.id,
+      createdAt: '2018-11-02 08:23:29.176+03',
+      updatedAt: '2018-11-05 11:47:38.085+03'
     }], {})
   },
 
@@ -68,6 +124,8 @@ module.exports = {
     await queryInterface.bulkDelete('JobApplications', null, {})
     await queryInterface.bulkDelete('PostingStages', null, {})
     await queryInterface.bulkDelete('JobPostings', null, {})
-    return queryInterface.bulkDelete('Recruiters', null, {})
+    return queryInterface.bulkDelete('Recruiters', null, {
+      where: { username: 'test' }
+    })
   }
 }
