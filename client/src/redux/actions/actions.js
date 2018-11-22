@@ -27,8 +27,8 @@ export const setStages = createAction('SET_STAGES', (stages) => ({ stages }))
 export const clearStages = createAction('CLEAR_STAGES')
 
 export const sendApplication = createAction(
-  'SEND_APPLICATION', (applicantName, applicantEmail, jobPostingId) => ({
-    applicantName, applicantEmail, jobPostingId
+  'SEND_APPLICATION', (applicantName, applicantEmail, jobPostingId, attachments) => ({
+    applicantName, applicantEmail, jobPostingId, attachments
   }))
 
 export const fetchJobPosting = createAction(

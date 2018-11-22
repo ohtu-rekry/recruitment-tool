@@ -7,7 +7,8 @@ function* sendApplication({ payload }) {
     const application = {
       applicantName: payload.applicantName,
       applicantEmail: payload.applicantEmail,
-      jobPostingId: payload.jobPostingId
+      jobPostingId: payload.jobPostingId,
+      attachments: payload.attachments
     }
     const response = yield call(jobApplicationApi.add, application)
 
