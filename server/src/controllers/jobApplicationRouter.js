@@ -1,6 +1,7 @@
 const jobApplicationRouter = require('express-promise-router')()
 const { jwtMiddleware } = require('../../utils/middleware')
 <<<<<<< HEAD
+<<<<<<< HEAD
 const { JobApplication, PostingStage, JobPosting, ApplicationComment } = require('../../db/models')
 =======
 const { Storage } = require('@google-cloud/storage')
@@ -9,11 +10,17 @@ const format = require('util').format
 const jwt = require('jsonwebtoken')
 const { JobApplication, PostingStage, JobPosting, Recruiter, ApplicationComment } = require('../../db/models')
 >>>>>>> Core functionality for sending files to gcloud
+=======
+const jwt = require('jsonwebtoken')
+const { JobApplication, PostingStage, JobPosting, Recruiter, ApplicationComment, Attachment } = require('../../db/models')
+>>>>>>> Added attachment handler
 const {
   jobApplicationValidator,
   applicationPatchValidator,
   applicationCommentValidator } = require('../../utils/validators')
+const handleAttachmentSending = require('../../utils/attachmentHandler')
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 const storage = new Storage({
@@ -25,6 +32,8 @@ const multer = Multer({
     fileSize: 10 * 1024 * 1024
   },
 })
+=======
+>>>>>>> Added attachment handler
 
 >>>>>>> Core functionality for sending files to gcloud
 jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
@@ -55,6 +64,7 @@ jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
     }
   })
 
+<<<<<<< HEAD
   if (!firstPostingStage) {
     return res.status(400).json({ error: 'Could not find posting stage' })
   }
@@ -66,6 +76,21 @@ jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
   })
 
   res.status(201).json(jobApplication)
+=======
+    //let attachment
+    console.log(body)
+
+
+    const jobApplication = await JobApplication.create({
+      applicantName: body.applicantName,
+      applicantEmail: body.applicantEmail,
+      postingStageId: firstPostingStage.id
+    })
+
+    if (body.att)
+
+      res.status(201).json(jobApplication)
+>>>>>>> Added attachment handler
 
 })
 
@@ -131,31 +156,28 @@ jobApplicationRouter.get('/:id/comment', jwtMiddleware, async (request, response
   }
 })
 
+<<<<<<< HEAD
 jobApplicationRouter.get('/upload', multer.single('file'), async (req, res, next) => {
   const myBucket = storage.bucket('rekrysofta')
   let file = myBucket.file('testi3.txt')
   console.log(file)
-})
-
-jobApplicationRouter.post('/upload', multer.single('file'), async (req, res, next) => {
+=======
+jobApplicationRouter.get('/upload', async (req, res) => {
+  //http 302
   const bucket = storage.bucket('rekrysofta')
-  if (!req.file) {
-    res.status(400).send('No file uploaded')
-    return
-  }
+  const file = bucket.file('kannu.jpg')
 
-  const blob = bucket.file(req.file.originalname)
-  const blobStream = blob.createWriteStream()
-
-  blobStream.on('error', (err) => {
-    next(err)
-  })
-
-  blobStream.on('finish', () => {
-    const publicUrl = format(`gs://${bucket.name}/${blob.name}`)
-    res.status(200).send(publicUrl)
-  })
-  blobStream.end(req.file.buffer)
+  const lol = file.createReadStream()
+    .on('error', (err) => {
+      console.log('err ' + err)
+    })
+    .on('end', () => {
+      console.log('success')
+    })
+    .pipe(res)
+  return lol
+>>>>>>> Added attachment handler
 })
+
 
 module.exports = jobApplicationRouter
