@@ -142,12 +142,23 @@ function* addComment({ payload }) {
           )
         }
 
+        let newStage = stage
         if (commentedApplicant) {
           commentedApplicant.comments = commentedApplicant.comments
             ? [ ...commentedApplicant.comments, response.data ]
-            : []
+            : [ response.data ]
+
+          const notCommentedApplicants = [
+            ...stage.applicnats.filter(applicant =>
+              applicant.id !== payload.applicationId)
+          ]
+
+          newStage = {
+            ...stage,
+            applicants: [ ...notCommentedApplicants, commentedApplicant ]
+          }
         }
-        return stage
+        return newStage
       })
 
       yield put(actions.addCommentSuccess(newStages))
