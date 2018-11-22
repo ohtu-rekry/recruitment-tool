@@ -1,26 +1,13 @@
 const jobApplicationRouter = require('express').Router()
 const { jwtMiddleware } = require('../../utils/middleware')
-const fs = require('fs')
-const http = require('http')
-const { Storage } = require('@google-cloud/storage')
-const Multer = require('multer')
-const format = require('util').format
 const jwt = require('jsonwebtoken')
-const { JobApplication, PostingStage, JobPosting, Recruiter, ApplicationComment } = require('../../db/models')
+const { JobApplication, PostingStage, JobPosting, Recruiter, ApplicationComment, Attachment } = require('../../db/models')
 const {
   jobApplicationValidator,
   applicationPatchValidator,
   applicationCommentValidator } = require('../../utils/validators')
+const handleAttachmentSending = require('../../utils/attachmentHandler')
 
-const storage = new Storage({
-  projectId: 'emblica-212815'
-})
-const multer = Multer({
-  storage: Multer.MemoryStorage,
-  limits: {
-    fileSize: 10 * 1024 * 1024
-  },
-})
 
 jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
   try {
@@ -54,13 +41,19 @@ jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
       return res.status(500).json({ error: 'Could not find posting stage' })
     }
 
+    //let attachment
+    console.log(body)
+
+
     const jobApplication = await JobApplication.create({
       applicantName: body.applicantName,
       applicantEmail: body.applicantEmail,
       postingStageId: firstPostingStage.id
     })
 
-    res.status(201).json(jobApplication)
+    if (body.att)
+
+      res.status(201).json(jobApplication)
 
   } catch (error) {
     throw error
@@ -126,11 +119,11 @@ jobApplicationRouter.post('/:id/comment', jwtMiddleware, applicationCommentValid
 })
 
 jobApplicationRouter.get('/upload', async (req, res) => {
-
+  //http 302
   const bucket = storage.bucket('rekrysofta')
   const file = bucket.file('kannu.jpg')
 
-  file.createReadStream()
+  const lol = file.createReadStream()
     .on('error', (err) => {
       console.log('err ' + err)
     })
@@ -138,27 +131,8 @@ jobApplicationRouter.get('/upload', async (req, res) => {
       console.log('success')
     })
     .pipe(res)
+  return lol
 })
 
-jobApplicationRouter.post('/upload', multer.single('file'), async (req, res, next) => {
-  const bucket = storage.bucket('rekrysofta')
-  if (!req.file) {
-    res.status(400).send('No file uploaded')
-    return
-  }
-
-  const blob = bucket.file(req.file.originalname)
-  const blobStream = blob.createWriteStream()
-
-  blobStream.on('error', (err) => {
-    next(err)
-  })
-
-  blobStream.on('finish', () => {
-    const publicUrl = format(`gs://${bucket.name}/${blob.name}`)
-    res.status(200).send(publicUrl)
-  })
-  blobStream.end(req.file.buffer)
-})
 
 module.exports = jobApplicationRouter
