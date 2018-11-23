@@ -18,6 +18,10 @@ export class TimespanPicker extends Component {
     this.handleShowToChange = this.handleShowToChange.bind(this)
   }
 
+  componentDidMount() {
+    this.props.addShowTo(null)
+    this.props.addShowFrom(null)
+  }
 
   async handleShowFromChange(date) {
     if (date !== undefined && (date === null || !this.state.showTo || date.isBefore(this.state.showTo))) {
@@ -32,7 +36,7 @@ export class TimespanPicker extends Component {
           showFrom: date,
           error: ''
         })
-        const formattedDate = moment(date).format('YYYY-MM-DD')
+        const formattedDate = date.toLocaleString()
         this.props.addShowFrom(formattedDate)
       }
     } else {
@@ -48,10 +52,10 @@ export class TimespanPicker extends Component {
         showTo: date,
         error: ''
       })
-      let formattedDate = moment(date).format('YYYY-MM-DD')
+      let formattedDate = date.toLocaleString()
       this.props.addShowTo(formattedDate)
 
-      formattedDate = moment(this.state.showFrom).format('YYYY-MM-DD')
+      formattedDate = this.state.showFrom.toLocaleString()
       this.props.addShowFrom(formattedDate)
 
     } else if (date) {
