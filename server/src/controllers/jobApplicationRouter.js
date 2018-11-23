@@ -55,9 +55,6 @@ jobApplicationRouter.post('/', multer.array('Shape'), jobApplicationValidator, a
       return res.status(500).json({ error: 'Could not find posting stage' })
     }
 
-    console.log(body.attachments)
-
-
     const jobApplication = await JobApplication.create({
       applicantName: body.applicantName,
       applicantEmail: body.applicantEmail,
