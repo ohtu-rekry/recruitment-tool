@@ -25,7 +25,7 @@ export const copyStages = createAction('COPY_STAGES', (stages) => ({ stages }))
 export const clearCopiedStages = createAction('CLEAR_COPIED_STAGES')
 export const setStages = createAction('SET_STAGES', (stages) => ({ stages }))
 export const clearStages = createAction('CLEAR_STAGES')
-export const renamePostingStage = createAction('RENAME_POSTING_STAGE', (postingStage, stageUnderEdit) => ({postingStage, stageUnderEdit}))
+export const renamePostingStage = createAction('RENAME_POSTING_STAGE', (postingStage, stageUnderEdit) => ({ postingStage, stageUnderEdit }))
 
 export const sendApplication = createAction(
   'SEND_APPLICATION', (applicantName, applicantEmail, jobPostingId, attachments) => ({

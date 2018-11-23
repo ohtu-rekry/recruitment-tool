@@ -68,7 +68,7 @@ const reducer = handleActions(
       ...state,
       jobPostingStages: [...state.jobPostingStages.map(stage => {
         if (stage.stageName === action.payload.postingStage.stageName) {
-          return {...stage, stageName: action.payload.stageUnderEdit}
+          return { ...stage, stageName: action.payload.stageUnderEdit }
         }
         return stage
       })]
