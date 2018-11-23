@@ -12,7 +12,8 @@ const jobApplicationValidator = celebrate({
   body: Joi.object().keys({
     applicantName: Joi.string().required(),
     applicantEmail: Joi.string().email().required(),
-    jobPostingId: Joi.number().integer().required()
+    jobPostingId: Joi.number().integer().required(),
+    attachments: Joi.array()
   })
 })
 
