@@ -90,7 +90,7 @@ export class JobPostingStages extends Component {
 
     const classNames = 'job-posting-form-stages'
     return (
-      <div className={classNames} onKeyPress={this.handleKeyPress}>
+      <div className={classNames}>
         <h3>Define stages for this job posting</h3>
         <div className={classNames + '__new-stage-name'}>
           <TextField
@@ -100,6 +100,7 @@ export class JobPostingStages extends Component {
             value={this.state.newStageName}
             label={`Add ${this.props.jobPostingStages.length - 1}. stage (optional)`}
             onChange={this.handleNameChange}
+            onKeyPress={this.handleKeyPress}
             variant="outlined"
             helperText={helperText}
             error={error}
