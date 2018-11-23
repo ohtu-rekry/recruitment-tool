@@ -7,9 +7,11 @@ export default class jobApplicationApi {
     const config = {
       headers: { 'Authorization': 'bearer ' + payload.token }
     }
-    return axios.get(root, config) }
+    return axios.get(root, config)
+  }
   static add(payload) {
-    return axios.post(root, payload) }
+    return axios.post(root, payload)
+  }
   static moveApplicants(payload) {
     const config = {
       headers: { 'Authorization': 'bearer ' + payload.token }

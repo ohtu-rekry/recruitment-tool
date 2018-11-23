@@ -88,7 +88,7 @@ function* getApplicants() {
         let result = res.find(stage =>
           stage.stageName.toLowerCase().trim() === stg.stageName.toLowerCase().trim()
         )
-        if(!result) return res.concat(stg)
+        if (!result) return res.concat(stg)
         const index = res.findIndex(existingStage =>
           existingStage.stageName.toLowerCase().trim() === stg.stageName.toLowerCase().trim()
         )

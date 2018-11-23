@@ -35,9 +35,10 @@ export class JobPosting extends Component {
     })
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault()
     const { applicantName, applicantEmail, attachments } = this.state
+    let promiseAttachments
 
     const notOnlyWhitespaceRegex = /\S/
     if (!notOnlyWhitespaceRegex.test(applicantName)) {
@@ -50,8 +51,17 @@ export class JobPosting extends Component {
       return
     }
 
+
+    if (attachments.length > 0) {
+      promiseAttachments = attachments.map((attachment) => {
+        return this.readFile(attachment)
+      })
+    }
+
+    let base64typeAttachments = await Promise.all(promiseAttachments)
+
     const jobPostingId = window.location.href.split('/')[4]
-    this.props.sendApplication(applicantName, applicantEmail, jobPostingId, attachments)
+    this.props.sendApplication(applicantName, applicantEmail, jobPostingId, base64typeAttachments)
 
     this.setState({
       applicantName: '',
@@ -79,16 +89,32 @@ export class JobPosting extends Component {
     this.setState({ attachments, inputError: null })
   }
 
+  readFile(attachment) {
+    let reader = new FileReader()
+    let file = attachment
+    return new Promise((resolve, reject) => {
+      reader.addEventListener('load', function () {
+        resolve(this.result)
+      }, false)
+      if (file) {
+        return reader.readAsDataURL(file)
+      } else {
+        reject('foo')
+      }
+    })
+  }
+
   render() {
     const { applicantName, applicantEmail, inputError, attachments } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
 
     return (
-      <div className='job-posting'>
-        {loggedIn &&
+      <div className='job-posting' >
+        {
+          loggedIn &&
           <AdminButtons id={jobPosting.id} />
         }
-        <h2 className='job-posting__title'>{jobPosting.title}</h2>
+        < h2 className='job-posting__title' > {jobPosting.title}</h2>
         {jobPosting.isHidden && <HiddenNotification jobPosting={jobPosting} />}
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
         <div className='job-posting__content'>
@@ -125,7 +151,7 @@ export class JobPosting extends Component {
               {attachments.length === 0 &&
                 <div>
                   Drop attachments here, or click to select files to upload
-                  <br/>
+                  <br />
                   Accepted file types are .zip and .pdf
                 </div>}
               <div>
@@ -149,7 +175,7 @@ export class JobPosting extends Component {
             {inputError && <InputErrorMessage errorMessage={inputError} />}
           </div>
         </form>
-      </div>
+      </div >
     )
   }
 }

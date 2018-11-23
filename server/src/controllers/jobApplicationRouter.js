@@ -1,12 +1,20 @@
 const jobApplicationRouter = require('express').Router()
 const { jwtMiddleware } = require('../../utils/middleware')
 const jwt = require('jsonwebtoken')
+const Multer = require('multer')
 const { JobApplication, PostingStage, JobPosting, Recruiter, ApplicationComment, Attachment } = require('../../db/models')
 const {
   jobApplicationValidator,
   applicationPatchValidator,
   applicationCommentValidator } = require('../../utils/validators')
 const handleAttachmentSending = require('../../utils/attachmentHandler')
+
+const multer = Multer({
+  storage: Multer.MemoryStorage,
+  limits: {
+    fileSize: 10 * 1024 * 1024
+  },
+})
 
 
 jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
@@ -31,7 +39,8 @@ jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
 })
 
 
-jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
+jobApplicationRouter.post('/', multer.array('Shape'), jobApplicationValidator, async (req, res) => {
+  console.log(req.body)
   try {
     const body = req.body
 
@@ -46,8 +55,7 @@ jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
       return res.status(500).json({ error: 'Could not find posting stage' })
     }
 
-    //let attachment
-    console.log(body)
+    console.log(body.attachments)
 
 
     const jobApplication = await JobApplication.create({
