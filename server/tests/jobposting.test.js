@@ -394,11 +394,6 @@ describe('PUT method', async () => {
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
-      console.log(response.body)
-      console.log(response.body)
-      console.log(response.body)
-      console.log(response.body)
-      console.log(response.body)
       expect(response.body.id).toEqual(modifiedPosting.id)
       expect(response.body.stages).toHaveLength(3)
     })
