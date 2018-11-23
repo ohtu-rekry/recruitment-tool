@@ -37,7 +37,12 @@ describe('CREATE OR CHANGE JOBAPPLICATION', async () => {
     const loginResponse = await api.post('/api/login').send(testRecruiter)
     token = `Bearer ${loginResponse.body.token}`
 
-    const jobpostingResponse = await api.post('/api/jobposting').send(testJobPosting).set('authorization', token)
+    const jobpostingResponse
+      = await api
+        .post('/api/jobposting')
+        .set('authorization', token)
+        .send(testJobPosting)
+
     jobPostingId = jobpostingResponse.body.id
 
     firstPostingStage = await PostingStage.findOne({
@@ -579,7 +584,7 @@ describe('POST a comment to an application', async () => {
         .post('/api/jobapplication/0000/comment')
         .set('authorization', token)
         .send({ comment: 'A valid comment' })
-        .expect(400)
+        .expect(404)
         .expect('Content-Type', /application\/json/)
 
       expect(response.body).toEqual({ error: 'Invalid job application ID' })
