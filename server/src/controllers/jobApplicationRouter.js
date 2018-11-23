@@ -10,6 +10,13 @@ const {
   applicationCommentValidator } = require('../../utils/validators')
 const handleAttachmentSending = require('../../utils/attachmentHandler')
 
+const multer = Multer({
+  storage: Multer.MemoryStorage,
+  limits: {
+    fileSize: 10 * 1024 * 1024
+  },
+})
+
 
 jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
   const jobApplications = await JobApplication.findAll({
@@ -29,7 +36,8 @@ jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
 })
 
 
-jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
+jobApplicationRouter.post('/', multer.array('Shape'), jobApplicationValidator, async (req, res) => {
+  console.log(req.body)
   const body = req.body
 
   const firstPostingStage = await PostingStage.findOne({
@@ -42,6 +50,7 @@ jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
   if (!firstPostingStage) {
     return res.status(400).json({ error: 'Could not find posting stage' })
   }
+  console.log(body.attachments)
 
   const jobApplication = await JobApplication.create({
     applicantName: body.applicantName,
