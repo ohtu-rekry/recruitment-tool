@@ -136,16 +136,17 @@ function* addComment({ payload }) {
       const stages = yield select(getStages)
 
       const newStages = stages.map(stage => {
-        const commentedApplicant = {
-          ...stage.applicants.find(applicant =>
-            applicant.id === payload.applicationId
-          )
-        }
+        const commentedApplicant
+          = stage.applicants
+            .find(applicant =>
+              applicant.id === payload.applicationId
+            )
 
-        let newStage = stage
+        let newStage = { ...stage }
         if (commentedApplicant) {
-          commentedApplicant.comments = commentedApplicant.comments
-            ? [ ...commentedApplicant.comments, response.data ]
+          const newApplicant = { ...commentedApplicant }
+          newApplicant.applicationComments = newApplicant.applicationComments
+            ? [ ...newApplicant.applicationComments, response.data ]
             : [ response.data ]
 
           const notCommentedApplicants = [
@@ -153,10 +154,7 @@ function* addComment({ payload }) {
               applicant.id !== payload.applicationId)
           ]
 
-          newStage = {
-            ...stage,
-            applicants: [ ...notCommentedApplicants, commentedApplicant ]
-          }
+          newStage.applicants = [ ...notCommentedApplicants, newApplicant ]
         }
         return newStage
       })
