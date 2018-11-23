@@ -8,6 +8,13 @@ import * as actions from '../../redux/actions/actions'
 
 export class ApplicationStages extends Component {
 
+  componentDidUpdate(nProps) {
+    if (nProps.stage.applicants !== this.props.stage.applicants) {
+      const contentDiv = document.getElementById('application-stage__content')
+      contentDiv.scrollTop = 0
+    }
+  }
+
   render() {
     const { stage, adminView } = this.props
     const stageIdString = '' + stage.id
@@ -25,6 +32,7 @@ export class ApplicationStages extends Component {
         >
           {(provided) => (
             <div
+              id='application-stage__content'
               className='application-stage__content'
               ref={provided.innerRef}
               {...provided.droppableProps}
