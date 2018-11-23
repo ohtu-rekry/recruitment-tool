@@ -35,7 +35,7 @@ describe('POST method', async () => {
     const newPosting = {
       title: 'Senior Java Developer',
       content: 'We are looking for someone with a minimum of 5 years of experience coding with Java',
-      stages: [{ stageName: 'jobposting-test-example-stage1' },{ stageName: 'jobposting-test-example-stage2' }]
+      stages: [{ stageName: 'jobposting-test-example-stage1' }, { stageName: 'jobposting-test-example-stage2' }]
     }
 
     await api
@@ -50,7 +50,7 @@ describe('POST method', async () => {
     const newPosting = {
       title: 'Junior Front End Developer',
       content: 'If you are interested in learning new technologies for front-end development, then this is the job for you',
-      stages: [{ stageName: 'Applied' },{ stageName:  'Interview 1' },{ stageName:  'Exercise' },{ stageName:  'Interview 2' }]
+      stages: [{ stageName: 'Applied' }, { stageName: 'Interview 1' }, { stageName: 'Exercise' }, { stageName: 'Interview 2' }]
     }
 
     await api
@@ -63,7 +63,7 @@ describe('POST method', async () => {
   test('a posting cannot be created without a title', async () => {
     const newPosting = {
       content: 'Our development team is missing an experienced UI designer',
-      stages: [{ stageName: 'Applied' },{ stageName:  'Interview 1' },{ stageName:  'Exercise' },{ stageName:  'Interview 2' }]
+      stages: [{ stageName: 'Applied' }, { stageName: 'Interview 1' }, { stageName: 'Exercise' }, { stageName: 'Interview 2' }]
     }
 
     const response = await api
@@ -79,7 +79,7 @@ describe('POST method', async () => {
   test('a posting cannot be created without content', async () => {
     const newPosting = {
       title: 'UI designer',
-      stages: [{ stageName: 'Applied' },{ stageName:  'Interview 1' },{ stageName:  'Exercise' },{ stageName:  'Interview 2' }]
+      stages: [{ stageName: 'Applied' }, { stageName: 'Interview 1' }, { stageName: 'Exercise' }, { stageName: 'Interview 2' }]
     }
 
     const response = await api
@@ -112,7 +112,7 @@ describe('POST method', async () => {
     const newPosting = {
       title: tooLongTitle,
       content: 'We need you',
-      stages: [{ stageName: 'Applied' },{ stageName:  'Interview 1' },{ stageName:  'Exercise' },{ stageName:  'Interview 2' }]
+      stages: [{ stageName: 'Applied' }, { stageName: 'Interview 1' }, { stageName: 'Exercise' }, { stageName: 'Interview 2' }]
     }
 
     const response = await api
@@ -173,7 +173,7 @@ describe('POST method', async () => {
   })
 })
 
-describe('GET single job posting', async ()  => {
+describe('GET single job posting', async () => {
 
   let token, jobPostingId
   const testStageName = 'the best stage ever'
@@ -401,7 +401,7 @@ describe('PUT method', async () => {
     test('a stage can be deleted', async () => {
       const modifiedPosting = {
         ...jobPostings[0],
-        stages: [ postingStages[0] ]
+        stages: [postingStages[0]]
       }
 
       const response = await api
@@ -450,6 +450,29 @@ describe('PUT method', async () => {
       expect(response.body.stages.filter(stage =>
         stage.id === postingStages[0].id)).toHaveLength(1)
     })
+
+    test('a stage can be renamed', async () => {
+      const modifiedPosting = {
+        ...jobPostings[0],
+        stages: [{
+          id: 14368722,
+          stageName: 'jobposting-test-example-stage2-renamed',
+          orderNumber: 1,
+          jobPostingId: jobPostings[0].id
+        }]
+      }
+
+      const response = await api
+        .put(`/api/jobposting/${modifiedPosting.id}`)
+        .send(modifiedPosting)
+        .set('authorization', token)
+        .expect(200)
+
+      const renamedStage = response.body.stages.filter(stage => stage.stageName === 'jobposting-test-example-stage2-renamed')
+      expect(renamedStage).toHaveLength(1)
+      expect(response.body.stages).toHaveLength(2)
+    })
+
   })
 
   describe('when user is not logged in', async () => {
