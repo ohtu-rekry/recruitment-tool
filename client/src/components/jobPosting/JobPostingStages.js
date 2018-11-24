@@ -37,7 +37,7 @@ export class JobPostingStages extends Component {
   }
 
   addNewStage = () => {
-    if (this.state.newStageName.length === 0 || !this.state.newStageName.trim() || this.state.newStageName.length > 255) {
+    if (verifyStageName(this.state.newStageName)) {
       this.setState({ error: true })
       return
     }
@@ -73,11 +73,17 @@ export class JobPostingStages extends Component {
 
   handleStageRename = (e, jobPostingStage) => {
     e.preventDefault()
-    this.props.renamePostingStage(jobPostingStage, this.state.stageUnderEdit)
-    document.getElementById(jobPostingStage.stageName).style.display = 'none'
-    this.setState({
-      stageUnderEdit: ''
-    })
+    if (verifyStageName(this.state.stageUnderEdit)) {
+      this.props.renamePostingStage(jobPostingStage, this.state.stageUnderEdit)
+      document.getElementById(jobPostingStage.stageName).style.display = 'none'
+      this.setState({
+        stageUnderEdit: ''
+      })
+    } else {
+      this.setState({
+        error: true
+      })
+    }
   }
 
   handleStageDelete = (stage) => {
@@ -136,6 +142,14 @@ export class JobPostingStages extends Component {
       </div>
     )
   }
+}
+
+const verifyStageName = (stageName) => {
+  if (!stageName.trim() || stageName.length === 0 || stageName.length > 255
+    || stageName === 'Applied' || stageName === 'Rejected' || stageName === 'Accepted') {
+    return false
+  }
+  return true
 }
 
 JobPostingStages.propTypes = {
