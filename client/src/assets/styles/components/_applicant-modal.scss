@@ -5,12 +5,9 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   margin: 115px auto;
-  width: 50vw;
-  min-width: 300px;
-  max-width: 850px;
+  width: 60vw;
   min-height: 250px;
-  max-height: 500px;
-  overflow: hidden;
+  max-height: 70vh;
   padding: 15px 15px 20px 20px;
   display: flex;
   flex-direction: column;
@@ -82,5 +79,31 @@
     @media screen and (min-width: 800px) {
       width: calc(100% - 140px);
     }
+  }
+  
+  &__comments-title {
+    margin: 20px 0 10px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  &__comments {
+    max-height: 40vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    .comment {
+      padding: 15px 15px 5px 0;
+
+      &__content {
+        padding: 5px 0 10px;
+      }
+
+      &__border {
+        opacity: 0.1;
+        border-bottom: 1.5px solid $emblica-blue;
+      }
+    }
+
   }
 }

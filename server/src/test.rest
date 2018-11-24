@@ -1,0 +1,7 @@
+POST http://0.0.0.0:8080/api/jobapplication/1/comment
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6MSwiaWF0IjoxNTQzMDM3OTUyfQ.E3w-9iHbZR8ktnfLX32oWCQd6ubH_4IKPlTbPKtfr4Y
+
+{
+    "comment": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tristique nunc in nisi scelerisque condimentum. Aliquam erat volutpat. Proin suscipit nunc orci, id luctus lacus vulputate a. Ut euismod venenatis leo et varius. Praesent placerat vulputate augue vitae luctus. Sed quis aliquam felis. Nunc cursus pulvinar maximus. Maecenas consectetur turpis sit amet sapien sagittis, quis elementum diam sollicitudin. Donec ultrices urna id maximus elementum. Nunc porttitor nec augue ut auctor. In et eros turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras vel tempor justo. Duis volutpat vel sem quis blandit. Phasellus magna dui, consectetur eget risus et, iaculis convallis nibh. Nam auctor id erat ac semper. Etiam massa magna, volutpat ut ipsum non, dignissim bibendum nibh. Aliquam dolor augue, rutrum vitae lectus in, mollis pharetra ex. Sed dignissim nisi eu erat laoreet sagittis."
+}

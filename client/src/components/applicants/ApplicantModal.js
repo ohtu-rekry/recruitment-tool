@@ -1,12 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Button from '@material-ui/core/Button'
-import Modal from '@material-ui/core/Modal'
-import Clear from '@material-ui/icons/Clear'
-import Person from '@material-ui/icons/Person'
-import Email from '@material-ui/icons/Email'
-import CalendarToday from '@material-ui/icons/CalendarToday'
+import { Modal, Button } from '@material-ui/core'
+import { Clear, Person, Email, CalendarToday } from '@material-ui/icons'
 import ApplicantModalDropzone from './ApplicantModalDropzone'
+import ApplicationComment from '../comments/ApplicationComment'
 
 class ApplicantModal extends React.Component {
 
@@ -15,7 +12,14 @@ class ApplicantModal extends React.Component {
   }
 
   render() {
-    const { id, applicantName, applicantEmail, createdAt, jobPosting } = this.props.applicant
+    const {
+      id,
+      applicantName,
+      applicantEmail,
+      createdAt,
+      jobPosting,
+      applicationComments
+    } = this.props.applicant
 
     let dateTime = new Date(createdAt).toLocaleString([], {
       day: '2-digit',
@@ -68,6 +72,12 @@ class ApplicantModal extends React.Component {
               Applied for: {jobPosting}
             </div>}
           <ApplicantModalDropzone applicantId={id} />
+          <div className='applicant-modal__card__comments-title'>Comments ({applicationComments.length})</div>
+          {applicationComments.length && <div className='applicant-modal__card__comments'>
+            {applicationComments.map(comment =>
+              <ApplicationComment key={comment.id} comment={comment}/>
+            )}
+          </div>}
         </div>
       </Modal>
     )
