@@ -136,7 +136,7 @@ export const watchFetchJobPostingWithStages = takeLatest(actions.fetchJobPosting
 export const watchSubmitJobPosting = takeEvery(actions.submitJobPosting().type, submitJobPosting)
 export const watchNewStageToJobPosting = takeEvery(actions.addNewStageForJobPosting().type, addNewStageForJobPosting)
 export const watchRemoveStageInJobPosting = takeEvery(actions.removeStageInJobPosting().type, removeStageInJobPosting)
-export const watchFetchApplicants = takeLatest(
+export const watchFetchApplicants = takeEvery(
   actions.fetchApplicants().type,
   fetchJobPostingApplicants
 )

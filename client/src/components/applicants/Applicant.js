@@ -28,7 +28,7 @@ class Applicant extends Component {
       >
         {(provided, snapshot) => (
           <div
-            className='applicant'
+            className={snapshot.isDragging ? 'applicant drag' : 'applicant'}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}

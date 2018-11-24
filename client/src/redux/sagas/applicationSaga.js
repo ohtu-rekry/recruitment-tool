@@ -8,7 +8,7 @@ function* sendApplication({ payload }) {
       applicantName: payload.applicantName,
       applicantEmail: payload.applicantEmail,
       jobPostingId: payload.jobPostingId,
-      attachments: payload.attachments
+      //attachments: payload.attachments
     }
     const response = yield call(jobApplicationApi.add, application)
 
@@ -23,12 +23,40 @@ function* sendApplication({ payload }) {
 function* moveApplicant({ payload }) {
   try {
     const recruiter = yield select(getCurrentUser)
+    const stages = yield select(getStages)
     const token = recruiter.token
-    const { applicant, newStage } = payload
+    const { applicant, newStage, oldStage, oldIndex } = payload
     const data = {
       postingStageId: newStage,
       jobApplicationId: applicant
     }
+
+    const oStage = stages.find(stage => stage.id === oldStage)
+    const nStage = stages.find(stage => stage.id === newStage)
+
+    let oldApplicants = Array.from(oStage.applicants)
+    let newApplicants = Array.from(nStage.applicants)
+
+    const iterated = oldApplicants.map(a =>
+      (a.id === applicant) ?
+        { ...a, updatedAt: (new Date()).toJSON() }
+        : { ...a }
+    )
+
+    if (oldStage !== newStage) {
+      const movedApplicant = iterated.splice(oldIndex, 1)[0]
+      newApplicants.splice(0, 0, movedApplicant)
+    }
+
+    const reArrangedStages = stages.map(stage =>
+      (stage.id === oldStage) ?
+        { ...stage, applicants: iterated }
+        : (stage.id === newStage) ?
+          { ...stage, applicants: newApplicants }
+          : { ...stage }
+    )
+
+    yield put(actions.fetchApplicantsSuccess(reArrangedStages))
 
     const response = yield call(jobApplicationApi.moveApplicants, { token, data })
 
@@ -39,7 +67,6 @@ function* moveApplicant({ payload }) {
 
   } catch (e) {
     console.log(e)
-
   }
 }
 

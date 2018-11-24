@@ -59,7 +59,9 @@ export class Applicants extends Component {
 
     await this.props.moveApplicant(
       parseInt(draggableId, 10),
-      parseInt(destination.droppableId, 10)
+      parseInt(destination.droppableId, 10),
+      parseInt(source.droppableId, 10),
+      source.index
     )
   }
 
