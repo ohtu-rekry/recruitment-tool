@@ -73,10 +73,12 @@ class ApplicantModal extends React.Component {
             </div>}
           <ApplicantModalDropzone applicantId={id} />
           <div className='applicant-modal__card__comments-title'>Comments ({applicationComments.length})</div>
-          {applicationComments.length && <div className='applicant-modal__card__comments'>
-            {applicationComments.map(comment =>
-              <ApplicationComment key={comment.id} comment={comment}/>
-            )}
+          {applicationComments && <div className='applicant-modal__card__comments'>
+            {applicationComments
+              .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map(comment =>
+                <ApplicationComment key={comment.id} comment={comment}/>
+              )}
           </div>}
         </div>
       </Modal>

@@ -1,7 +1,7 @@
 .applicant-modal__card {
   font-family: 'Lato', sans-serif;
   font-size: 17px;
-  background-color: $gray-lighter;
+  background-color: $gray-dark;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   margin: 115px auto;
@@ -93,17 +93,41 @@
     overflow-x: hidden;
 
     .comment {
-      padding: 15px 15px 5px 0;
+      padding: 10px 15px 5px 10px;
+      margin: 0 5px 10px 0;
+      background-color: $gray-lightest;
+      border: none;
+      border-radius: 2px;
+      box-shadow: 0 1px 2px -1px rgba(0,0,0,0.2);
+
+      &__metadata {
+        display: flex;
+        justify-content: space-between;
+
+        &__recruiter {
+          font-weight: 700;
+        }
+
+        &__date {
+          font-size: 12px;
+          font-weight: 300px;
+          opacity: 0.5;
+        }
+      }
 
       &__content {
         padding: 5px 0 10px;
-      }
-
-      &__border {
-        opacity: 0.1;
-        border-bottom: 1.5px solid $emblica-blue;
+        word-break: break-all;
       }
     }
+  }
 
+  ::-webkit-scrollbar {
+    background: transparent;
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
   }
 }

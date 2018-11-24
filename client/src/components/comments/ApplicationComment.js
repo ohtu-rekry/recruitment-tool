@@ -6,12 +6,13 @@ class ApplicationComment extends React.Component {
 
 
   render() {
-    const { createdAt, recruiterId, comment } = this.props.comment
+    const { createdAt, recruiterUsername, comment } = this.props.comment
 
     const date = new Date(createdAt).toLocaleString([], {
-      day: '2-digit',
-      month: '2-digit',
-      year: '2-digit',
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
     })
@@ -19,8 +20,8 @@ class ApplicationComment extends React.Component {
     return (
       <div className='comment'>
         <div className='comment__metadata'>
-          <div className='comment__recruiter'>{recruiterId}</div>
-          <div className='comment__date'>{date}</div>
+          <div className='comment__metadata__recruiter'>{recruiterUsername}</div>
+          <div className='comment__metadata__date'>{date}</div>
         </div>
         <div className='comment__content'>{comment}</div>
         <div className='comment__border'></div>
@@ -30,8 +31,7 @@ class ApplicationComment extends React.Component {
 }
 
 ApplicationComment.propTypes = {
-  applicant: PropTypes.object.isRequired,
-  closeModal: PropTypes.func.isRequired
+  comment: PropTypes.object.isRequired
 }
 
 export default ApplicationComment
