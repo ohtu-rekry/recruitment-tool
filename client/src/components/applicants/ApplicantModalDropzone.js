@@ -18,6 +18,7 @@ class ApplicantModalDropzone extends React.Component {
   }
 
   handleSubmit = () => {
+<<<<<<< HEAD
     const { comment, attachments } = this.state
 
     if (!comment.trim() && attachments.length === 0) {
@@ -25,6 +26,13 @@ class ApplicantModalDropzone extends React.Component {
     } else {
       this.props.addComment(comment, this.props.applicantId, attachments)
       this.setState({ comment: '', attachments: [] })
+=======
+    if (!this.state.comment.trim()) {
+      this.setState({ inputError: 'Cannot send empty comment' })
+    } else {
+      this.props.addComment(this.state.comment, this.props.applicant.id, this.state.attachments)
+      this.setState({ comment: '', inputError: null, attachments: [] })
+>>>>>>> f95c364309cf3975c871e586e9281984f9cc918c
     }
   }
 
@@ -140,9 +148,14 @@ class ApplicantModalDropzone extends React.Component {
   }
 }
 
+<<<<<<< HEAD
 ApplicantModalDropzone.propTypes = {
   addComment: PropTypes.func.isRequired,
   applicationId: PropTypes.number.isRequired
+=======
+ApplicantModalDropzone.PropTypes = {
+  addComment: PropTypes.func.isRequired
+>>>>>>> f95c364309cf3975c871e586e9281984f9cc918c
 }
 
 const mapDispatchToProps = {
