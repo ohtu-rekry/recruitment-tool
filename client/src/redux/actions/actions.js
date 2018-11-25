@@ -12,6 +12,7 @@ export const submitJobPosting = createAction(
   'SUBMIT_JOB_POSTING', (title, content, recruiter, stages, showFrom, showTo, mode, id) => ({
     title, content, recruiter, stages, showFrom, showTo, mode, id
   }))
+
 export const addJobPostingSuccess = createAction('ADDED_JOB_POSTING')
 export const addJobPostingFailure = createAction('ADD_JOB_POSTING_FAILED')
 export const removeJobPostingStatus = createAction('REMOVE_JOB_POSTING_CREATION_STATUS')
@@ -32,12 +33,12 @@ export const sendApplication = createAction(
   }))
 
 export const fetchJobPosting = createAction(
-  'FETCH_JOBPOSTING', (postingId) => ({
-    postingId
+  'FETCH_JOBPOSTING', (postingId, recruiter) => ({
+    postingId, recruiter
   }))
 export const fetchJobPostingWithStages = createAction('FETCH_JOBPOSTING_WITH_STAGES', (id) => ({ id }))
 export const emptyJobPosting = createAction('EMPTY_JOBPOSTING')
-export const fetchJobPostings = createAction('FETCH_JOBPOSTINGS')
+export const fetchJobPostings = createAction('FETCH_JOBPOSTINGS', (recruiter) => ({ recruiter }))
 export const setJobPosting = createAction('SET_JOBPOSTING')
 export const setJobPostings = createAction('SET_JOBPOSTINGS')
 

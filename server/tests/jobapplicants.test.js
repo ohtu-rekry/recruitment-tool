@@ -1,6 +1,7 @@
 const supertest = require('supertest')
 const { app, server } = require('../src/server')
 const api = supertest(app)
+const moment = require('moment')
 const bcrypt = require('bcryptjs')
 const { JobPosting, sequelize, Recruiter, PostingStage, JobApplication } = require('../db/models')
 
@@ -18,10 +19,15 @@ describe('FETCH applicants for jobPosting', async () => {
     password: 'hunter2'
   }
 
+  const showFromDate = moment().subtract(5, 'days').format('YYYY/MM/DD')
+  const showToDate = moment().add(100, 'years').format('YYYY/MM/DD')
+
   const newPosting = {
     title: 'President',
     content: 'POTUS NEEDED',
-    stages: [{ stageName: 'Applied' }, { stageName: 'Interview' }]
+    stages: [{ stageName: 'Applied' }, { stageName: 'Interview' }, { stageName: 'Accepted' }],
+    showFrom: showFromDate,
+    showTo: showToDate
   }
 
   const newApplicant = {

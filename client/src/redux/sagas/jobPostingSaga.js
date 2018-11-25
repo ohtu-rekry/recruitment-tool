@@ -6,31 +6,26 @@ import jobPostingApi from '../apis/jobPostingApi'
 function* submitJobPosting({ payload }) {
 
   try {
-    /* const jobPosting = {
+    const jobPosting = {
       title: payload.title,
       content: payload.content,
       stages: payload.stages,
       showFrom: payload.showFrom,
       showTo: payload.showTo
-    } */
-    const jobPosting = {
-      title: payload.title,
-      content: payload.content,
-      stages: payload.stages
     }
     const recruiter = payload.recruiter
     const id = payload.id
 
     let response
     switch (payload.mode) {
-    case 'create':
-      response = yield call(jobPostingApi.add, { jobPosting, recruiter })
-      break
-    case 'edit':
-      response = yield call(jobPostingApi.edit, { jobPosting, recruiter, id })
-      break
-    default:
-      throw new Error('Job posting mode is neither create nor edit')
+      case 'create':
+        response = yield call(jobPostingApi.add, { jobPosting, recruiter })
+        break
+      case 'edit':
+        response = yield call(jobPostingApi.edit, { jobPosting, recruiter, id })
+        break
+      default:
+        throw new Error('Job posting mode is neither create nor edit')
     }
 
     if (response.status === 201 || response.status === 200) {
@@ -49,9 +44,11 @@ function* submitJobPosting({ payload }) {
   }
 }
 
-function* fetchJobPostings() {
+function* fetchJobPostings({ payload }) {
   try {
-    const response = yield call(jobPostingApi.get)
+    const recruiter = payload.recruiter
+
+    const response = yield call(jobPostingApi.get, { recruiter })
 
     if (response.status === 200) {
       yield put(actions.setJobPostings(response.data))
@@ -71,7 +68,8 @@ function* removeStageInJobPosting({ payload }) {
 
 function* fetchJobPosting({ payload }) {
   try {
-    const response = yield call(jobPostingApi.get)
+    const recruiter = payload.recruiter
+    const response = yield call(jobPostingApi.get, { recruiter })
 
     if (response.status === 200) {
       const postingId = parseInt(payload.postingId, 10)

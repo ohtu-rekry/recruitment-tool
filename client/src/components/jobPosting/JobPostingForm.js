@@ -12,6 +12,7 @@ import TimespanPicker from './TimespanPicker'
 import JobPostingStages from './JobPostingStages'
 import { submitJobPosting, fetchJobPostingWithStages, emptyJobPosting, setStages } from '../../redux/actions/actions'
 
+
 export class JobPostingForm extends Component {
 
   constructor(props) {
@@ -21,7 +22,8 @@ export class JobPostingForm extends Component {
       id: null,
       title: '',
       content: '',
-      error: false
+      error: false,
+      fireRedirect: false
     }
   }
 
@@ -75,6 +77,7 @@ export class JobPostingForm extends Component {
     this.props.submitJobPosting(title, content, recruiter, stages, showFrom, showTo, mode, id)
   }
 
+
   render() {
     const { title, content, error, mode } = this.state
     const helperText = error ? 'Required field cannot be empty' : '* is a required field'
@@ -87,6 +90,7 @@ export class JobPostingForm extends Component {
     if (creationRequestStatus && creationRequestStatus.type === 'success') fireRedirect = true
 
     let snackbarId
+
     if (creationRequestStatus) snackbarId = 'snackbar-' + creationRequestStatus.type
 
     return (
@@ -129,7 +133,7 @@ export class JobPostingForm extends Component {
               disabled={!loggedIn}
             />
             <br />
-            <TimespanPicker/>
+            <TimespanPicker />
           </form>
           <div className='job-posting-form__form'>
             <JobPostingStages helperText={stageHelperText} />
@@ -140,7 +144,6 @@ export class JobPostingForm extends Component {
               type='submit'
               form='job-posting-form'
               variant='contained'
-              disabled={!loggedIn}
             >{buttonText}</Button>
           </div>
         </Paper>
@@ -159,14 +162,14 @@ JobPostingForm.propTypes = {
   creationRequestStatus: PropTypes.object,
   loggedIn: PropTypes.object,
   jobPostingStages: PropTypes.array,
-  showFrom: PropTypes.object,
-  showTo: PropTypes.object,
+  showFrom: PropTypes.string,
+  showTo: PropTypes.string,
+  showFromIsAdded: PropTypes.func,
   jobPostingToEdit: PropTypes.object,
   submitJobPosting: PropTypes.func.isRequired,
   fetchJobPostingWithStages: PropTypes.func.isRequired,
   emptyJobPosting: PropTypes.func.isRequired,
   setStages: PropTypes.func.isRequired
-
 }
 
 const mapStateToProps = (state) => ({

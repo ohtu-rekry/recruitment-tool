@@ -10,9 +10,8 @@ const initialState = {
   jobPostingStages: defaultStages,
   creationRequestStatus: null,
   copiedStages: null,
-  showFrom: {},
-  showTo: {},
-  defaultStageNames: defaultStageNames
+  showFrom: null,
+  showTo: null
 }
 
 const reducer = handleActions(
@@ -67,11 +66,11 @@ const reducer = handleActions(
     }),
     [actions.addShowFrom]: (state, action) => ({
       ...state,
-      showFrom: action.payload
+      showFrom: action.payload.showFrom
     }),
     [actions.addShowTo]: (state, action) => ({
       ...state,
-      showTo: action.payload
+      showTo: action.payload.showTo
     })
   },
   initialState

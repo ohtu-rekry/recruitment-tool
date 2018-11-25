@@ -3,18 +3,36 @@ const { JobPosting, PostingStage, JobApplication, ApplicationComment } = require
 const { jwtMiddleware } = require('../../utils/middleware')
 const { jobPostingValidator, postingPutValidator } = require('../../utils/validators')
 const Sequelize = require('sequelize')
+const { validateDate, handleJobPostingsForAdmin, handleJobPostingsForGuest } = require('../../utils/jobPostingDateHandlers')
 
-jobPostingRouter.get('/', async (request, response) => {
-  return await JobPosting.findAll().then(jobpostings => response.json(jobpostings))
+
+jobPostingRouter.get('/', async (req, res) => {
+  let jobPostings
+  if (req.token !== null) {
+    jobPostings = await handleJobPostingsForAdmin()
+  } else {
+    jobPostings = await handleJobPostingsForGuest()
+  }
+  return res.status(200).json(jobPostings)
 })
 
-jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator, async (request, response) => {
-  const body = request.body
-  const decodedToken = request.user
+jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator, async (req, res) => {
+  const body = req.body
+  const decodedToken = req.user
+
+
+  const showFrom = validateDate(body.showFrom)
+  const showTo = validateDate(body.showTo)
+
+  if (showFrom === null && showTo !== null) {
+    return res.status(400).json({ error: 'If showFrom is null then showTo must be null as well' })
+  }
 
   const posting = await JobPosting.create({
     title: body.title,
     content: body.content,
+    showFrom: showFrom,
+    showTo: showTo,
     recruiterId: decodedToken.id
   })
 
@@ -29,11 +47,12 @@ jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator, async (request, r
             jobPostingId: posting.id
           })
         ))
-    response.status(201).json(posting)
+    res.status(201).json(posting)
   } catch (error) {
     await JobPosting.destroy({
       where: { id: posting.id }
     })
+    console.log(error)
     throw error
   }
 })

@@ -3,8 +3,15 @@ import axios from 'axios'
 export const root = '/api/jobposting'
 
 export default class jobPostingApi {
-  static get() {
-    return axios.get(root)
+  static get(payload) {
+    let config = null
+
+    if (payload.recruiter !== null) {
+      config = {
+        headers: { 'Authorization': 'bearer ' + payload.recruiter.token }
+      }
+    }
+    return axios.get(root, config)
   }
 
   static getOne(payload) {
