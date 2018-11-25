@@ -10,7 +10,9 @@ export class JobPostingStages extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      newStageName: ''
+      newStageName: '',
+      helperText: props.helperText,
+      error: false
     }
   }
 
@@ -26,7 +28,7 @@ export class JobPostingStages extends Component {
 
   async addCopiedStagesToNewJobPosting() {
     await this.props.stages.forEach((stage) => {
-      if (stage.stageName !== 'Applied' && stage.stageName !== 'Rejected' && stage.stageName !== 'Accepted') {
+      if (!this.props.defaultStageNames.includes(stage.stageName)) {
         this.props.addNewStageForJobPosting({ stageName: stage.stageName, canRemove: true })
       }
     })
@@ -34,11 +36,19 @@ export class JobPostingStages extends Component {
   }
 
   addNewStage = () => {
-    if (this.state.newStageName.length === 0 || !this.state.newStageName.trim() || this.state.newStageName.length > 255) {
+    const newName = this.state.newStageName
+
+    if (newName.length === 0
+      || !newName.trim()
+      || newName.length > 255
+      || this.props.defaultStageNames.map(name =>
+        name.toLowerCase()).includes(newName.trim().toLowerCase())
+    ) {
+      this.setState({ error: true })
       return
     }
 
-    this.props.addNewStageForJobPosting({ stageName: this.state.newStageName, canRemove: true })
+    this.props.addNewStageForJobPosting({ stageName: newName, canRemove: true })
     this.setState({
       newStageName: ''
     })
@@ -52,7 +62,8 @@ export class JobPostingStages extends Component {
 
   handleNameChange = (e) => {
     this.setState({
-      newStageName: e.target.value
+      newStageName: e.target.value,
+      error: false
     })
   }
 
@@ -61,6 +72,9 @@ export class JobPostingStages extends Component {
   }
 
   render() {
+    const error = this.state.error
+    const helperText = error ? 'Invalid stage name. Stage was not added' : this.state.helperText
+
     return (
       <div className='job-posting-form-stages' onKeyPress={this.handleKeyPress}>
         <h3>Define stages for this job posting</h3>
@@ -73,6 +87,8 @@ export class JobPostingStages extends Component {
             label={`Add ${this.props.jobPostingStages.length - 1}. stage (optional)`}
             onChange={this.handleNameChange}
             variant="outlined"
+            helperText={helperText}
+            error={error}
           />
         </div>
         <div className='job-posting-form-stages__new-stage-add-button'>
@@ -103,12 +119,14 @@ export class JobPostingStages extends Component {
 }
 
 JobPostingStages.propTypes = {
-  jobPostingStages: PropTypes.array
+  jobPostingStages: PropTypes.array,
+  defaultStageNames: PropTypes.array
 }
 
 const mapStateToProps = (state) => ({
   jobPostingStages: state.jobPostingReducer.jobPostingStages,
-  stages: state.jobPostingReducer.copiedStages
+  stages: state.jobPostingReducer.copiedStages,
+  defaultStageNames: state.jobPostingReducer.defaultStageNames
 })
 
 const mapDispatchToProps = {

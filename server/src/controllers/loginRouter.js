@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-const loginRouter = require('express').Router()
+const loginRouter = require('express-promise-router')()
 const { Recruiter } = require('../../db/models')
 const { loginValidator } = require('../../utils/validators')
 
@@ -9,7 +9,7 @@ loginRouter.post('/', loginValidator, async (req, res) => {
   const recruiter = await Recruiter.findOne({ where: { username: login.username } })
 
   if (!recruiter) {
-    return res.status(401).send({ error: 'Username does not exist.' })
+    return res.status(401).send({ error: 'Wrong username or password.' })
   }
 
   if (login) {
@@ -19,7 +19,7 @@ loginRouter.post('/', loginValidator, async (req, res) => {
 
   const userForToken = {
     username: recruiter.username,
-    id: recruiter._id
+    id: recruiter.id
   }
 
   const token = jwt.sign(userForToken, process.env.JWT_SECRET)

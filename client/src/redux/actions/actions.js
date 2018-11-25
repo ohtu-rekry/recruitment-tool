@@ -28,8 +28,8 @@ export const setStages = createAction('SET_STAGES', (stages) => ({ stages }))
 export const clearStages = createAction('CLEAR_STAGES')
 
 export const sendApplication = createAction(
-  'SEND_APPLICATION', (applicantName, applicantEmail, jobPostingId) => ({
-    applicantName, applicantEmail, jobPostingId
+  'SEND_APPLICATION', (applicantName, applicantEmail, jobPostingId, attachments) => ({
+    applicantName, applicantEmail, jobPostingId, attachments
   }))
 
 export const fetchJobPosting = createAction(
@@ -54,4 +54,6 @@ export const moveApplicantSuccess = createAction('MOVE_APPLICANT_SUCCESS')
 export const getApplicants = createAction('GET_APPLICANTS')
 export const getApplicantsSuccess = createAction('GET_APPLICANTS_SUCCESS')
 
+export const addComment = createAction('ADD_COMMENT', (comment, applicationId) => ({ comment, applicationId }))
+export const addCommentSuccess = createAction('ADD_COMMENT_SUCCESS')
 

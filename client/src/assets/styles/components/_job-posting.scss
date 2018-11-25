@@ -41,7 +41,7 @@ align-items: left;
   &__form-input {
     border: 2;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    width: 26vw;
+    width: 80vw;
     min-width: 100px;
     max-width: 540px;
     height: 40px;
@@ -54,23 +54,27 @@ align-items: left;
     @media screen and (min-width: 376px) {
       padding: 0px 0px 0px 10px;
     }
+    @media screen and (min-width: 760px) {
+      width: 30vw;
+    }
   }
 
   &__submit-button {
     cursor: pointer;
     border: none;
     outline: none;
+    float: right;
     background-color: #002234;
     color: white;
-    margin: 10px 0 0px;
+    margin: 10px 10px 0px 0px;
     height: 30px;
     transition: all 200ms linear;
     font-size: 16px;
     margin-left: 30%;
     width: 100px;
     @media screen and (min-width: 380px) {
-      margin: 10px 0 0px;
-      width: 60px;
+      margin: 10px 10px 0px 0px;
+      width: 100px;
       height: 42px;
     }
     @media screen and (min-width: 495px) {
@@ -104,21 +108,36 @@ align-items: left;
     font-size: 12px;
     color: red;
     padding: 10px;
-  }
-
-  &__character-limit {
-    display: inline-flex;
-    float: right;
-    font-size: 14px;
-    padding-bottom: 10px;
-    @media screen and (min-width: 410px) {
-      font-size: 18px;
-    }
+    margin-bottom: 10px;
   }
 
   &__hidden-notification {
     padding: 0px 20px;
     color: #8f0000;    
+  }
+
+  &__attachment-dropzone {
+    margin: 10px 10px 0px;
+    padding: 10px;
+    display: inline-flex;
+    font-size: 14px;
+    border-style: dotted;
+    border-color: $gandalf-the-gray;
+    min-height: 40px;
+    width: 80vw;
+    @media screen and (min-width: 410px) {
+      margin: 10px 0px 0px 10px;
+      width: calc(100% - 150px);
+    }
+
+    &__attachment {
+      margin: 1px;
+      padding: 5px;
+    }
+
+    &__list {
+      padding: 5px 0 5px 0;
+    }
   }
 
   input:required {

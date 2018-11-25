@@ -42,7 +42,7 @@ export class JobPostingForm extends Component {
         title: jobPosting.title,
         content: jobPosting.content
       })
-      const stages = jobPosting.postingStages
+      const stages = jobPosting.postingStages.sort((a, b) => a.orderNumber - b.orderNumber)
       this.props.setStages(stages)
     }
   }
@@ -66,8 +66,8 @@ export class JobPostingForm extends Component {
     const stages = this.props.jobPostingStages
     const showFrom = this.props.showFrom
     const showTo = this.props.showTo
-    const notOnlyWhitespaceRegex = /\S/
-    if (!(notOnlyWhitespaceRegex.test(title) && notOnlyWhitespaceRegex.test(content))) {
+
+    if (!title.trim() || !content.trim()) {
       this.setState({
         error: true
       })
@@ -81,6 +81,7 @@ export class JobPostingForm extends Component {
   render() {
     const { title, content, error, mode } = this.state
     const helperText = error ? 'Required field cannot be empty' : '* is a required field'
+    const stageHelperText = mode === 'edit' ? 'Default stages and stages with applicants cannot be removed' : 'Default stages cannot be removed'
     const headline = mode === 'edit' ? 'Edit job posting' : 'Add new job posting'
     const buttonText = mode === 'edit' ? 'Update job posting' : 'Create job posting'
     const { creationRequestStatus, loggedIn } = this.props
@@ -135,7 +136,7 @@ export class JobPostingForm extends Component {
             <TimespanPicker />
           </form>
           <div className='job-posting-form__form'>
-            <JobPostingStages />
+            <JobPostingStages helperText={stageHelperText} />
           </div>
           <div className='job-posting-form-submit-button'>
             <Button id='button-submit'
@@ -148,7 +149,7 @@ export class JobPostingForm extends Component {
         </Paper>
         <div>
           {fireRedirect && (
-            <Redirect to='/' />
+            <Redirect to='/positions' />
           )}
         </div>
       </div >

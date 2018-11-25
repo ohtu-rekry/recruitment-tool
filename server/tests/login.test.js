@@ -42,7 +42,7 @@ describe('LOGIN AS RECRUITER', async () => {
       .expect(401)
       .expect('Content-Type', /application\/json/)
 
-    expect(result.body).toEqual({ error: 'Username does not exist.' })
+    expect(result.body).toEqual({ error: 'Wrong username or password.' })
   })
 
   test('recruiter cannot login with wrong password', async () => {

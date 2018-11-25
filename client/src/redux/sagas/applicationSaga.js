@@ -7,7 +7,8 @@ function* sendApplication({ payload }) {
     const application = {
       applicantName: payload.applicantName,
       applicantEmail: payload.applicantEmail,
-      jobPostingId: payload.jobPostingId
+      jobPostingId: payload.jobPostingId,
+      attachments: payload.attachments
     }
     const response = yield call(jobApplicationApi.add, application)
 
@@ -120,6 +121,52 @@ function* getApplicants() {
   }
 }
 
+function* addComment({ payload }) {
+  try {
+    const recruiter = yield select(getCurrentUser)
+    const data = {
+      token: recruiter.token,
+      applicationId: payload.applicationId,
+      data: { comment: payload.comment }
+    }
+
+    const response = yield call(jobApplicationApi.addComment, data)
+
+    if (response.status === 201) {
+      const stages = yield select(getStages)
+
+      const newStages = stages.map(stage => {
+        const commentedApplicant
+          = stage.applicants
+            .find(applicant =>
+              applicant.id === payload.applicationId
+            )
+
+        let newStage = { ...stage }
+        if (commentedApplicant) {
+          const newApplicant = { ...commentedApplicant }
+          newApplicant.applicationComments = newApplicant.applicationComments
+            ? [ ...newApplicant.applicationComments, response.data ]
+            : [ response.data ]
+
+          const notCommentedApplicants = [
+            ...stage.applicants.filter(applicant =>
+              applicant.id !== payload.applicationId)
+          ]
+
+          newStage.applicants = [ ...notCommentedApplicants, newApplicant ]
+        }
+        return newStage
+      })
+
+      yield put(actions.addCommentSuccess(newStages))
+    }
+
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export const getCurrentUser = state => state.loginReducer.loggedIn
 export const getCurrentJobPosting = state => state.postingReducer.jobPosting
 export const getStages = state => state.postingReducer.stages
@@ -127,3 +174,4 @@ export const getStages = state => state.postingReducer.stages
 export const watchMoveApplicant = takeLatest(actions.moveApplicant().type, moveApplicant)
 export const watchSendApplication = takeLatest(actions.sendApplication().type, sendApplication)
 export const watchGetApplicants = takeLatest(actions.getApplicants().type, getApplicants)
+export const watchAddComment = takeLatest(actions.addComment().type, addComment)
