@@ -127,7 +127,10 @@ function* addComment({ payload }) {
     const data = {
       token: recruiter.token,
       applicationId: payload.applicationId,
-      data: { comment: payload.comment }
+      data: {
+        comment: payload.comment,
+        attachments: payload.attachments
+      }
     }
 
     const response = yield call(jobApplicationApi.addComment, data)

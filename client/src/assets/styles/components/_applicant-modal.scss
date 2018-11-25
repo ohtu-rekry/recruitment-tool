@@ -44,8 +44,43 @@
     width: 100%;
   }
 
+  &__comment-buttons {
+    display: block;
+    float: right;
+  }
+
   &__comment-button {
-    display: inline-flex;
-    align-self: flex-end;
+    text-decoration: none;
+    width: 70px;
+    height: 40px;
+  }
+
+  &__attachment-dropzone {
+    margin: 10px -10px 10px;
+    padding: 5px;
+    font-size: 14px;
+    border-style: dotted;
+    border-color: $gray-lighter;
+    min-height: 40px;
+    width: 100%;
+    overflow: auto;
+
+    &__visible {
+      border-color: $gandalf-the-gray;
+    }
+  }
+  
+  &__attachment-chip {
+    margin: 1px;
+    padding: 5px;
+  }
+
+  &__attachment-list {
+    display: inline-block;
+    padding: 5px 0 5px 0;
+    width: 100%;
+    @media screen and (min-width: 800px) {
+      width: calc(100% - 140px);
+    }
   }
 }
