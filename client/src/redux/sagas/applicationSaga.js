@@ -92,6 +92,7 @@ function* getApplicants() {
               postingStageId: applicant.postingStageId,
               applicantEmail: applicant.applicantEmail,
               applicantName: applicant.applicantName,
+              applicationComments: applicant.applicationComments,
               createdAt: applicant.createdAt,
               jobPosting: applicant.PostingStage.JobPosting.title
             }]

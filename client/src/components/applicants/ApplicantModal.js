@@ -38,7 +38,7 @@ class ApplicantModal extends React.Component {
         open={true}
         onClose={this.handleClose}
       >
-        <div className='applicant-modal__card' >
+        <div className='applicant-modal' >
           <Button
             style={buttonStyle}
             mini
@@ -50,25 +50,25 @@ class ApplicantModal extends React.Component {
             <Clear />
           </Button>
           <div>
-            <Person className='applicant-modal__card__icon' />
-            <div className='applicant-modal__card__name'>
+            <Person className='applicant-modal__icon' />
+            <div className='applicant-modal__name'>
               {applicantName}
             </div>
           </div>
           <div>
-            <Email className='applicant-modal__card__icon' />
-            <div className='applicant-modal__card__email'>
+            <Email className='applicant-modal__icon' />
+            <div className='applicant-modal__email'>
               {applicantEmail}
             </div>
           </div>
           <div>
-            <CalendarToday className='applicant-modal__card__icon' />
-            <div className='applicant-modal__card__date'>
+            <CalendarToday className='applicant-modal__icon' />
+            <div className='applicant-modal__date'>
               {dateTime}
             </div>
           </div>
           {jobPosting &&
-            <div className='applicant-modal__card__date'>
+            <div className='applicant-modal__date'>
               Applied for: {jobPosting}
             </div>}
           <ApplicantModalDropzone applicantId={id} />

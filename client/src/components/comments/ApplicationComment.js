@@ -1,10 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-
 class ApplicationComment extends React.Component {
-
-
   render() {
     const { createdAt, recruiterUsername, comment } = this.props.comment
 
@@ -20,11 +17,10 @@ class ApplicationComment extends React.Component {
     return (
       <div className='comment'>
         <div className='comment__metadata'>
-          <div className='comment__metadata__recruiter'>{recruiterUsername}</div>
-          <div className='comment__metadata__date'>{date}</div>
+          <div className='comment__recruiter'>{recruiterUsername}</div>
+          <div className='comment__date'>{date}</div>
         </div>
         <div className='comment__content'>{comment}</div>
-        <div className='comment__border'></div>
       </div>
     )
   }
