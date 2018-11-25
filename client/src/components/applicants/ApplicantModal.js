@@ -1,16 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-<<<<<<< HEAD
 import Button from '@material-ui/core/Button'
 import Modal from '@material-ui/core/Modal'
 import Clear from '@material-ui/icons/Clear'
 import Person from '@material-ui/icons/Person'
 import Email from '@material-ui/icons/Email'
 import CalendarToday from '@material-ui/icons/CalendarToday'
-=======
-import { Button, Modal } from '@material-ui/core'
-import { Clear, Person, Email, CalendarToday as Calendar } from '@material-ui/icons'
->>>>>>> f95c364309cf3975c871e586e9281984f9cc918c
 import ApplicantModalDropzone from './ApplicantModalDropzone'
 
 class ApplicantModal extends React.Component {
@@ -20,11 +15,7 @@ class ApplicantModal extends React.Component {
   }
 
   render() {
-<<<<<<< HEAD
     const { id, applicantName, applicantEmail, createdAt, jobPosting } = this.props.applicant
-=======
-    const { applicantName, applicantEmail, createdAt, jobPosting } = this.props.applicant
->>>>>>> f95c364309cf3975c871e586e9281984f9cc918c
 
     let dateTime = new Date(createdAt).toLocaleString([], {
       day: '2-digit',
@@ -76,11 +67,7 @@ class ApplicantModal extends React.Component {
             <div className='applicant-modal__card__date'>
               Applied for: {jobPosting}
             </div>}
-<<<<<<< HEAD
           <ApplicantModalDropzone applicantId={id} />
-=======
-          <ApplicantModalDropzone />
->>>>>>> f95c364309cf3975c871e586e9281984f9cc918c
         </div>
       </Modal>
     )
