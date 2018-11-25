@@ -39,8 +39,7 @@ export class JobPosting extends Component {
     e.preventDefault()
     const { applicantName, applicantEmail, attachments } = this.state
 
-    const notOnlyWhitespaceRegex = /\S/
-    if (!notOnlyWhitespaceRegex.test(applicantName)) {
+    if (!applicantName.trim()) {
       this.setState({ inputError: 'Please enter a name' })
       return
     }

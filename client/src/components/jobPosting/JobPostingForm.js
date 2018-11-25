@@ -65,8 +65,7 @@ export class JobPostingForm extends Component {
     const showFrom = this.props.showFrom
     const showTo = this.props.showTo
 
-    const notOnlyWhitespaceRegex = /\S/
-    if (!(notOnlyWhitespaceRegex.test(title) && notOnlyWhitespaceRegex.test(content))) {
+    if (!title.trim() || !content.trim()) {
       this.setState({
         error: true
       })

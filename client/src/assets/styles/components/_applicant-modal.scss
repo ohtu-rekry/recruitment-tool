@@ -5,9 +5,9 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   margin: 115px auto;
-  width: 35vw;
+  width: 50vw;
   min-width: 300px;
-  max-width: 650px;
+  max-width: 850px;
   min-height: 250px;
   max-height: 500px;
   overflow: hidden;
@@ -37,5 +37,15 @@
 
   &__date {
     font-size: 15px;
+  }
+
+  &__comment-input {
+    display: inline-flex;
+    width: 100%;
+  }
+
+  &__comment-button {
+    display: inline-flex;
+    align-self: flex-end;
   }
 }
