@@ -8,7 +8,7 @@ function* sendApplication({ payload }) {
       applicantName: payload.applicantName,
       applicantEmail: payload.applicantEmail,
       jobPostingId: payload.jobPostingId,
-      //attachments: payload.attachments
+      attachments: payload.attachments
     }
     const response = yield call(jobApplicationApi.add, application)
 
@@ -67,6 +67,7 @@ function* moveApplicant({ payload }) {
 
   } catch (e) {
     console.log(e)
+    yield put(actions.fetchApplicantsSuccess(payload.oldStages))
   }
 }
 

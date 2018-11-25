@@ -36,7 +36,7 @@ class Routes extends Component {
 
     return (
       <Router>
-        <div className='asd'>
+        <div>
           <Header />
           <Switch>
             <Route path="/admin/login" render={() =>

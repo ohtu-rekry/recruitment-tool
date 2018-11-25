@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 import { mock, getApp, setWindowLocation, store } from '../../setupTests'
 
 import Applicants from '../../components/applicants/Applicants'
-import ApplicationStages from '../../components/applicants/ApplicationStages'
+import ApplicationStage from '../../components/applicants/ApplicationStage'
 import Applicant from '../../components/applicants/Applicant'
 
 import { root as postingRoot } from '../../redux/apis/jobPostingApi'
@@ -71,7 +71,7 @@ it('Application view does not render applications or stages when user is not log
   store.getState().loginReducer.loggedIn = null
   const app = mount(getApp(<Applicants />))
 
-  expect(app.find(ApplicationStages)).toHaveLength(0)
+  expect(app.find(ApplicationStage)).toHaveLength(0)
   expect(app.find(Applicant)).toHaveLength(0)
 })
 
@@ -89,8 +89,8 @@ describe('Application view for one posting when user is logged in', () => {
   it('renders all stages returned from backend', () => {
     app.update()
 
-    expect(app.find(ApplicationStages)).toHaveLength(stages.length)
-    expect(app.find(ApplicationStages)
+    expect(app.find(ApplicationStage)).toHaveLength(stages.length)
+    expect(app.find(ApplicationStage)
       .map(element => element.props().stage.id)
       .sort((a, b) => a - b))
       .toEqual(stages.map(stage => stage.id).sort((a, b) => a - b))
@@ -111,7 +111,7 @@ describe('Application view for one posting when user is logged in', () => {
   it('shows each applicant under correct stage', () => {
     app.update()
 
-    expect(app.find(ApplicationStages)
+    expect(app.find(ApplicationStage)
       .map(element => element.find(Applicant)
         .map(applicant => applicant.props().applicant.id))
     ).toEqual([
@@ -125,8 +125,8 @@ describe('Application view for one posting when user is logged in', () => {
   it('renders stages in order based on their orderNumber', () => {
     app.update()
 
-    expect(app.find(ApplicationStages).map(element => element.props().stage))
-      .toEqual(app.find(ApplicationStages)
+    expect(app.find(ApplicationStage).map(element => element.props().stage))
+      .toEqual(app.find(ApplicationStage)
         .map(element => element.props().stage)
         .sort((a, b) => a.orderNumber - b.orderNumber))
   })

@@ -6,10 +6,10 @@ import { Droppable } from 'react-beautiful-dnd'
 
 import * as actions from '../../redux/actions/actions'
 
-export class ApplicationStages extends Component {
+export class ApplicationStage extends Component {
 
-  componentDidUpdate(nProps) {
-    if (nProps.stage.applicants !== this.props.stage.applicants) {
+  componentDidUpdate(pProps) {
+    if (pProps.stage.applicants !== this.props.stage.applicants) {
       const contentDiv = document.getElementById('application-stage__content')
       contentDiv.scrollTop = 0
     }
@@ -58,7 +58,7 @@ export class ApplicationStages extends Component {
   }
 }
 
-ApplicationStages.propTypes = {
+ApplicationStage.propTypes = {
   stage: PropTypes.object.isRequired,
   toggleShowModal: PropTypes.func.isRequired
 }
@@ -70,4 +70,4 @@ const mapDispatchToProps = {
 export default connect(
   null,
   mapDispatchToProps
-)(ApplicationStages)
+)(ApplicationStage)

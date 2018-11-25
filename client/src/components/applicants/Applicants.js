@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import * as actions from '../../redux/actions/actions'
 import { Link } from 'react-router-dom'
 
-import ApplicationStages from './ApplicationStages'
+import ApplicationStage from './ApplicationStage'
 import ApplicantModal from './ApplicantModal'
 
 export class Applicants extends Component {
@@ -45,7 +45,7 @@ export class Applicants extends Component {
     copyStages(stages)
   }
 
-  onDrop = async (result) => {
+  onDrop = (result) => {
     const { destination, source, draggableId } = result
 
     if (!destination) { return }
@@ -57,11 +57,12 @@ export class Applicants extends Component {
       return
     }
 
-    await this.props.moveApplicant(
+    this.props.moveApplicant(
       parseInt(draggableId, 10),
       parseInt(destination.droppableId, 10),
       parseInt(source.droppableId, 10),
-      source.index
+      source.index,
+      this.props.stages
     )
   }
 
@@ -94,7 +95,7 @@ export class Applicants extends Component {
             {stages
               .sort((a, b) => a.orderNumber - b.orderNumber)
               .map(stage =>
-                <ApplicationStages
+                <ApplicationStage
                   stage={stage}
                   key={stage.id}
                   adminView={adminView}
