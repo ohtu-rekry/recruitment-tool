@@ -142,7 +142,7 @@ class ApplicantModalDropzone extends React.Component {
 
 ApplicantModalDropzone.propTypes = {
   addComment: PropTypes.func.isRequired,
-  applicationId: PropTypes.number.isRequired
+  applicantId: PropTypes.number.isRequired
 }
 
 const mapDispatchToProps = {

@@ -28,4 +28,12 @@ export default class jobApplicationApi {
     }
     return axios.post(`${root}/${payload.applicationId}/comment`, payload.data, config)
   }
+
+  static getComments(payload) {
+    const config = {
+      headers: { 'Authorization': 'bearer ' + payload.token }
+    }
+    return axios.get(`${root}/${payload.id}/comment`, config)
+  }
+
 }

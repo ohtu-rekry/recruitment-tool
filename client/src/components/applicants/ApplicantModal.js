@@ -1,11 +1,23 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Modal, Button } from '@material-ui/core'
 import { Clear, Person, Email, CalendarToday } from '@material-ui/icons'
+
 import ApplicantModalDropzone from './ApplicantModalDropzone'
 import ApplicationComment from '../comments/ApplicationComment'
+import * as actions from '../../redux/actions/actions'
 
 class ApplicantModal extends React.Component {
+
+  componentDidMount() {
+    const { getComments, applicant } = this.props
+    getComments(applicant.id)
+  }
+
+  componentWillUnmount() {
+    this.props.emptyComments()
+  }
 
   handleClose = () => {
     this.props.closeModal(null)
@@ -17,8 +29,7 @@ class ApplicantModal extends React.Component {
       applicantName,
       applicantEmail,
       createdAt,
-      jobPosting,
-      applicationComments
+      jobPosting
     } = this.props.applicant
 
     let dateTime = new Date(createdAt).toLocaleString([], {
@@ -72,9 +83,9 @@ class ApplicantModal extends React.Component {
               Applied for: {jobPosting}
             </div>}
           <ApplicantModalDropzone applicantId={id} />
-          <div className='applicant-modal__card__comments-title'>Comments ({applicationComments.length})</div>
-          {applicationComments && <div className='applicant-modal__card__comments'>
-            {applicationComments
+          <div className='applicant-modal__comments-title'>Comments ({this.props.comments.length})</div>
+          {this.props.comments && <div className='applicant-modal__comments'>
+            {this.props.comments
               .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map(comment =>
                 <ApplicationComment key={comment.id} comment={comment}/>
@@ -88,7 +99,19 @@ class ApplicantModal extends React.Component {
 
 ApplicantModal.propTypes = {
   applicant: PropTypes.object.isRequired,
-  closeModal: PropTypes.func.isRequired
+  closeModal: PropTypes.func.isRequired,
+  comments: PropTypes.array.isRequired
 }
 
-export default ApplicantModal
+const mapStateToProps = (state) => ({
+  comments: state.postingReducer.comments
+})
+
+const mapDispatchToProps = {
+  ...actions
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ApplicantModal)

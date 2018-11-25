@@ -94,4 +94,19 @@ jobApplicationRouter.post('/:id/comment', jwtMiddleware, applicationCommentValid
 
 })
 
+jobApplicationRouter.get('/:id/comment', jwtMiddleware, async (request, response) => {
+  try {
+    const id = request.params.id
+
+    const comments = await ApplicationComment.findAll({
+      where: {
+        jobApplicationId: id
+      }
+    })
+    response.json(comments)
+  } catch (error) {
+    throw error
+  }
+})
+
 module.exports = jobApplicationRouter
