@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import ReactMarkdown from 'react-markdown'
 
 class ApplicationComment extends React.Component {
   render() {
@@ -20,7 +21,9 @@ class ApplicationComment extends React.Component {
           <div className='comment__recruiter'>{recruiterUsername}</div>
           <div className='comment__date'>{date}</div>
         </div>
-        <div className='comment__content'>{comment}</div>
+        <div className='comment__content'>
+          <ReactMarkdown source={comment}/>
+        </div>
       </div>
     )
   }

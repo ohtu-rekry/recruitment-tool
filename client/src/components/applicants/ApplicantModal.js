@@ -24,13 +24,14 @@ class ApplicantModal extends React.Component {
   }
 
   render() {
+    const { applicant, comments } = this.props
     const {
       id,
       applicantName,
       applicantEmail,
       createdAt,
       jobPosting
-    } = this.props.applicant
+    } = applicant
 
     let dateTime = new Date(createdAt).toLocaleString([], {
       day: '2-digit',
@@ -83,9 +84,9 @@ class ApplicantModal extends React.Component {
               Applied for: {jobPosting}
             </div>}
           <ApplicantModalDropzone applicantId={id} />
-          <div className='applicant-modal__comments-title'>Comments ({this.props.comments.length})</div>
-          {this.props.comments && <div className='applicant-modal__comments'>
-            {this.props.comments
+          <div className='applicant-modal__comments-title'>Comments ({comments.length})</div>
+          {comments && <div className='applicant-modal__comments'>
+            {comments
               .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map(comment =>
                 <ApplicationComment key={comment.id} comment={comment}/>
