@@ -52,7 +52,8 @@ const postingPutValidator = celebrate({
 
 const applicationCommentValidator = celebrate({
   body: Joi.object().keys({
-    comment: Joi.string().trim().required()
+    comment: Joi.string().trim(),
+    attachments: Joi.array()
   })
 })
 
