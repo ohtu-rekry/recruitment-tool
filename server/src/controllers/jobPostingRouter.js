@@ -6,13 +6,19 @@ const Sequelize = require('sequelize')
 const { validateDate, handleJobPostingsForAdmin, handleJobPostingsForGuest } = require('../../utils/jobPostingDateHandlers')
 
 
-jobPostingRouter.get('/', async (request, response) => {
-  return await JobPosting.findAll().then(jobpostings => response.json(jobpostings))
+jobPostingRouter.get('/', async (req, res) => {
+  let jobPostings
+  if (req.token !== null) {
+    jobPostings = await handleJobPostingsForAdmin()
+  } else {
+    jobPostings = await handleJobPostingsForGuest()
+  }
+  return res.status(200).json(jobPostings)
 })
 
-jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator, async (request, response) => {
-  const body = request.body
-  const decodedToken = request.user
+jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator, async (req, res) => {
+  const body = req.body
+  const decodedToken = req.user
 
 
   const showFrom = validateDate(body.showFrom)
@@ -25,7 +31,6 @@ jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator, async (request, r
   const posting = await JobPosting.create({
     title: body.title,
     content: body.content,
-    recruiterId: recruiter.id,
     showFrom: showFrom,
     showTo: showTo,
     recruiterId: decodedToken.id
@@ -42,7 +47,7 @@ jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator, async (request, r
             jobPostingId: posting.id
           })
         ))
-    response.status(201).json(posting)
+    res.status(201).json(posting)
   } catch (error) {
     await JobPosting.destroy({
       where: { id: posting.id }
