@@ -76,7 +76,14 @@ jobPostingRouter.get('/:id', jwtMiddleware, async (request, response) => {
 
   const jobPostingWithStages = await JobPosting.findOne({
     where: { id: jobPostingId },
-    include: ['postingStages']
+    include: [{
+      model: PostingStage,
+      as: 'postingStages',
+      include: [{
+        model: JobApplication,
+        as: 'jobApplications'
+      }]
+    }]
   })
 
   if (!jobPostingWithStages) {

@@ -11,7 +11,7 @@ export class JobPostingStages extends Component {
     super(props)
     this.state = {
       newStageName: '',
-      helperText: '',
+      helperText: props.helperText,
       error: false
     }
   }
@@ -28,7 +28,7 @@ export class JobPostingStages extends Component {
 
   async addCopiedStagesToNewJobPosting() {
     await this.props.stages.forEach((stage) => {
-      if (stage.stageName !== 'Applied' && stage.stageName !== 'Rejected' && stage.stageName !== 'Accepted') {
+      if (!this.props.defaultStageNames.includes(stage.stageName)) {
         this.props.addNewStageForJobPosting({ stageName: stage.stageName, canRemove: true })
       }
     })
@@ -36,12 +36,19 @@ export class JobPostingStages extends Component {
   }
 
   addNewStage = () => {
-    if (this.state.newStageName.length === 0 || !this.state.newStageName.trim() || this.state.newStageName.length > 255) {
+    const newName = this.state.newStageName
+
+    if (newName.length === 0
+      || !newName.trim()
+      || newName.length > 255
+      || this.props.defaultStageNames.map(name =>
+        name.toLowerCase()).includes(newName.trim().toLowerCase())
+    ) {
       this.setState({ error: true })
       return
     }
 
-    this.props.addNewStageForJobPosting({ stageName: this.state.newStageName, canRemove: true })
+    this.props.addNewStageForJobPosting({ stageName: newName, canRemove: true })
     this.setState({
       newStageName: ''
     })
@@ -112,12 +119,14 @@ export class JobPostingStages extends Component {
 }
 
 JobPostingStages.propTypes = {
-  jobPostingStages: PropTypes.array
+  jobPostingStages: PropTypes.array,
+  defaultStageNames: PropTypes.array
 }
 
 const mapStateToProps = (state) => ({
   jobPostingStages: state.jobPostingReducer.jobPostingStages,
-  stages: state.jobPostingReducer.copiedStages
+  stages: state.jobPostingReducer.copiedStages,
+  defaultStageNames: state.jobPostingReducer.defaultStageNames
 })
 
 const mapDispatchToProps = {
