@@ -35,7 +35,7 @@ describe('<Header />', () => {
 
     it('does not render button for adding postings ', () => {
       app.update()
-      expect(app.find(LinkButton).find('[text="Add new posting"]')).toHaveLength(0)
+      expect(app.find(LinkButton).find('[text="New posting"]')).toHaveLength(0)
     })
   })
 
@@ -61,7 +61,7 @@ describe('<Header />', () => {
 
     it('renders button for adding postings ', () => {
       app.update()
-      expect(app.find(LinkButton).find('[text="Add new posting"]')).toHaveLength(1)
+      expect(app.find(LinkButton).find('[text="New posting"]')).toHaveLength(1)
     })
 
     afterAll(() => {

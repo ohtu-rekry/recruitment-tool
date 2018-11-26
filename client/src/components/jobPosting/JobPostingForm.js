@@ -12,6 +12,7 @@ import TimespanPicker from './TimespanPicker'
 import JobPostingStages from './JobPostingStages'
 import { submitJobPosting, fetchJobPostingWithStages, emptyJobPosting, setStages } from '../../redux/actions/actions'
 
+
 export class JobPostingForm extends Component {
 
   constructor(props) {
@@ -21,7 +22,8 @@ export class JobPostingForm extends Component {
       id: null,
       title: '',
       content: '',
-      error: false
+      error: false,
+      fireRedirect: false
     }
   }
 
@@ -40,7 +42,7 @@ export class JobPostingForm extends Component {
         title: jobPosting.title,
         content: jobPosting.content
       })
-      const stages = jobPosting.postingStages
+      const stages = jobPosting.postingStages.sort((a, b) => a.orderNumber - b.orderNumber)
       this.props.setStages(stages)
     }
   }
@@ -65,8 +67,7 @@ export class JobPostingForm extends Component {
     const showFrom = this.props.showFrom
     const showTo = this.props.showTo
 
-    const notOnlyWhitespaceRegex = /\S/
-    if (!(notOnlyWhitespaceRegex.test(title) && notOnlyWhitespaceRegex.test(content))) {
+    if (!title.trim() || !content.trim()) {
       this.setState({
         error: true
       })
@@ -76,9 +77,11 @@ export class JobPostingForm extends Component {
     this.props.submitJobPosting(title, content, recruiter, stages, showFrom, showTo, mode, id)
   }
 
+
   render() {
     const { title, content, error, mode } = this.state
     const helperText = error ? 'Required field cannot be empty' : '* is a required field'
+    const stageHelperText = mode === 'edit' ? 'Default stages and stages with applicants cannot be removed' : 'Default stages cannot be removed'
     const headline = mode === 'edit' ? 'Edit job posting' : 'Add new job posting'
     const buttonText = mode === 'edit' ? 'Update job posting' : 'Create job posting'
     const { creationRequestStatus, loggedIn } = this.props
@@ -87,6 +90,7 @@ export class JobPostingForm extends Component {
     if (creationRequestStatus && creationRequestStatus.type === 'success') fireRedirect = true
 
     let snackbarId
+
     if (creationRequestStatus) snackbarId = 'snackbar-' + creationRequestStatus.type
 
     return (
@@ -129,10 +133,10 @@ export class JobPostingForm extends Component {
               disabled={!loggedIn}
             />
             <br />
-            <TimespanPicker/>
+            <TimespanPicker />
           </form>
           <div className='job-posting-form__form'>
-            <JobPostingStages />
+            <JobPostingStages helperText={stageHelperText} />
           </div>
           <div className='job-posting-form-submit-button'>
             <Button id='button-submit'
@@ -140,13 +144,12 @@ export class JobPostingForm extends Component {
               type='submit'
               form='job-posting-form'
               variant='contained'
-              disabled={!loggedIn}
             >{buttonText}</Button>
           </div>
         </Paper>
         <div>
           {fireRedirect && (
-            <Redirect to='/' />
+            <Redirect to='/positions' />
           )}
         </div>
       </div >
@@ -159,8 +162,9 @@ JobPostingForm.propTypes = {
   creationRequestStatus: PropTypes.object,
   loggedIn: PropTypes.object,
   jobPostingStages: PropTypes.array,
-  showFrom: PropTypes.object,
-  showTo: PropTypes.object,
+  showFrom: PropTypes.string,
+  showTo: PropTypes.string,
+  showFromIsAdded: PropTypes.func,
   jobPostingToEdit: PropTypes.object,
   submitJobPosting: PropTypes.func.isRequired,
   fetchJobPostingWithStages: PropTypes.func.isRequired,

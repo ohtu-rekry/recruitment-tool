@@ -1,7 +1,8 @@
 import { handleActions } from 'redux-actions'
 import * as actions from '../actions/actions'
 
-const defaultStages = [{ stageName: 'Applied', canRemove: false }, { stageName: 'Accepted', canRemove: false }, { stageName: 'Rejected', canRemove: false }]
+const defaultStageNames = ['Applied', 'Accepted', 'Rejected']
+const defaultStages = defaultStageNames.map((name) => ({ stageName: name, canRemove: false }))
 const creationSuccessMessage = 'Job posting successfully added'
 
 const initialState = {
@@ -9,8 +10,9 @@ const initialState = {
   jobPostingStages: defaultStages,
   creationRequestStatus: null,
   copiedStages: null,
-  showFrom: {},
-  showTo: {}
+  showFrom: null,
+  showTo: null,
+  defaultStageNames
 }
 
 const reducer = handleActions(
@@ -53,11 +55,10 @@ const reducer = handleActions(
     [actions.setStages]: (state, action) => ({
       ...state,
       jobPostingStages: action.payload.stages
-        .sort((a, b) => a.orderNumber - b.orderNumber)
         .map((stage) => {
-          const defaultStageNames = defaultStages.map(stage => stage.stageName)
-          const isNotDefaultStage = !defaultStageNames.includes(stage.stageName)
-          return ({ ...stage, canRemove: isNotDefaultStage })
+          const isRemovable = !defaultStageNames.includes(stage.stageName)
+                              && stage.jobApplications.length === 0
+          return ({ ...stage, canRemove: isRemovable })
         }),
     }),
     [actions.clearStages]: (state, action) => ({
@@ -75,11 +76,11 @@ const reducer = handleActions(
     }),
     [actions.addShowFrom]: (state, action) => ({
       ...state,
-      showFrom: action.payload
+      showFrom: action.payload.showFrom
     }),
     [actions.addShowTo]: (state, action) => ({
       ...state,
-      showTo: action.payload
+      showTo: action.payload.showTo
     })
   },
   initialState

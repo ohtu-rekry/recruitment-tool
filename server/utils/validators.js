@@ -4,7 +4,9 @@ const jobPostingValidator = celebrate({
   body: Joi.object().keys({
     title: Joi.string().required().max(255),
     content: Joi.string().required(),
-    stages: Joi.array().min(1).required(),
+    stages: Joi.array().min(3).required(),
+    showFrom: Joi.date().allow(null),
+    showTo: Joi.date().allow(null)
   }),
 })
 
@@ -12,7 +14,8 @@ const jobApplicationValidator = celebrate({
   body: Joi.object().keys({
     applicantName: Joi.string().required(),
     applicantEmail: Joi.string().email().required(),
-    jobPostingId: Joi.number().integer().required()
+    jobPostingId: Joi.number().integer().required(),
+    attachments: Joi.array()
   })
 })
 
@@ -45,13 +48,16 @@ const postingPutValidator = celebrate({
     stages: Joi.array().min(1).required(),
     recruiterId: Joi.number().integer(),
     createdAt: Joi.date(),
-    updatedAt: Joi.date()
+    updatedAt: Joi.date(),
+    showFrom: Joi.date().allow(null),
+    showTo: Joi.date().allow(null)
   }),
 })
 
 const applicationCommentValidator = celebrate({
   body: Joi.object().keys({
-    comment: Joi.string().trim().required()
+    comment: Joi.string().trim(),
+    attachments: Joi.array()
   })
 })
 

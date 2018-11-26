@@ -1,30 +1,17 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Draggable } from 'react-beautiful-dnd'
 
 class Applicant extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isDragged: false
-    }
-  }
-
-  handleDrag = (event) => {
-    this.props.onDrag(event, this.props.applicant)
-    this.setState({ isDragged: true })
-  }
-
-  handleDragEnd = (event) => {
-    event.preventDefault()
-    this.setState({ isDragged: false })
-  }
 
   handleOpenModal = () => {
     this.props.toggleShowModal(this.props.applicant)
   }
 
   render() {
-    const { applicantName, applicantEmail, createdAt, jobPosting } = this.props.applicant
+    const { adminView, applicant } = this.props
+    const { applicantName, applicantEmail, createdAt, jobPosting } = applicant
+    const applicantIdString = '' + this.props.applicant.id
     let dateTime = new Date(createdAt).toLocaleString([], {
       day: '2-digit',
       month: '2-digit',
@@ -33,26 +20,32 @@ class Applicant extends Component {
       minute:'2-digit'
     })
     return (
-      <div
-        className='applicant'
-        draggable
-        onDragStart={this.handleDrag}
-        onDragEnd={this.handleDragEnd}
-        onClick={this.handleOpenModal}
-        style={{
-          opacity: this.state.isDragged && '0.3',
-          cursor: this.state.isDragged && 'grab'
-        }}
+      <Draggable
+        draggableId={applicantIdString}
+        index={this.props.index}
+        id={this.props.applicant.id}
+        isDragDisabled={adminView}
       >
-        <div className='applicant__name'>
-          {applicantName}
-        </div>
-        <div className='applicant__email'>
-          {applicantEmail}
-        </div>
-        <div className='applicant__date'>Application sent: {dateTime}</div>
-        {jobPosting && <div className='applicant__date'>Applied for: {jobPosting}</div>}
-      </div>
+        {(provided, snapshot) => (
+          <div
+            className={snapshot.isDragging ? 'applicant drag' : 'applicant'}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+            onClick={this.handleOpenModal}
+          >
+            <div className='applicant__name'>
+              {applicantName}
+            </div>
+            <div className='applicant__email'>
+              {applicantEmail}
+            </div>
+            <div className='applicant__date'>Application sent: {dateTime}</div>
+            {jobPosting && <div className='applicant__date'>Applied for: {jobPosting}</div>}
+          </div>
+        )}
+      </Draggable>
+
     )
   }
 }

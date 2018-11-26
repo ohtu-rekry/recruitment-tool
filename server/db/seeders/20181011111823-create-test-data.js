@@ -18,15 +18,19 @@ module.exports = {
       content: 'We are looking for Node and React talent!',
       recruiterId: admin.id,
       createdAt: '2018-09-12 21:57:29.176+03',
-      updatedAt: '2018-09-12 21:57:29.176+03'
+      updatedAt: '2018-09-12 21:57:29.176+03',
+      showFrom: '2018-09-12 21:00:00.100+03',
+      showTo: '2018-12-24 23:59:59.999+03'
     },
     {
       title: 'Data scientist',
       content: 'Are you a bit hungrier than the average coder? We offer you a unique chance to grow as a top-tier professional instead of doing the basic nine-to-five programming job. If you are looking for something different, hear us out!',
       recruiterId: admin.id,
       createdAt: '2018-09-12 21:57:29.176+03',
-      updatedAt: '2018-09-12 21:57:29.176+03'
-    }], {})
+      updatedAt: '2018-09-12 21:57:29.176+03',
+      showFrom: '2018-11-12 21:00:00.100+03',
+      showTo: '2019-01-24 23:59:59.999+03'
+    },], {})
 
     const fullStackPosting = await JobPosting.findOne({ where: { title: 'Full-Stack Developer' } })
     const dataScientistPosting = await JobPosting.findOne({ where: { title: 'Data scientist' } })

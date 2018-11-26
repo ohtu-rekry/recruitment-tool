@@ -10,7 +10,7 @@ export class TimespanPicker extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      showFrom: moment(),
+      showFrom: null,
       showTo: null,
       error: ''
     }
@@ -19,25 +19,25 @@ export class TimespanPicker extends Component {
   }
 
   componentDidMount() {
-    this.props.addShowFrom(this.state.showFrom)
+    this.props.addShowTo(null)
+    this.props.addShowFrom(null)
   }
 
-  handleShowFromChange(date) {
+  async handleShowFromChange(date) {
     if (date !== undefined && (date === null || !this.state.showTo || date.isBefore(this.state.showTo))) {
       if (date === null) {
-        this.setState({
+        await this.setState({
           showFrom: null,
-          showTo: null,
-          error: ''
+          showTo: null
         })
-        this.props.addShowFrom({ date })
-        this.props.addShowTo({ date })
+        this.props.addShowFrom(null)
       } else {
-        this.setState({
+        await this.setState({
           showFrom: date,
           error: ''
         })
-        this.props.addShowFrom({ date })
+        const formattedDate = date.toLocaleString()
+        this.props.addShowFrom(formattedDate)
       }
     } else {
       this.setState({
@@ -46,13 +46,18 @@ export class TimespanPicker extends Component {
     }
   }
 
-  handleShowToChange(date) {
+  async handleShowToChange(date) {
     if (date !== undefined && (date === null || date.isAfter(this.state.showFrom))) {
-      this.setState({
+      await this.setState({
         showTo: date,
         error: ''
       })
-      this.props.addShowTo({ date })
+      let formattedDate = date.toLocaleString()
+      this.props.addShowTo(formattedDate)
+
+      formattedDate = this.state.showFrom.toLocaleString()
+      this.props.addShowFrom(formattedDate)
+
     } else if (date) {
       this.setState({
         error: 'Selected date needs to be after start date'
@@ -92,8 +97,8 @@ export class TimespanPicker extends Component {
 }
 
 TimespanPicker.propTypes = {
-  showFrom: PropTypes.object,
-  showTo: PropTypes.object
+  showFrom: PropTypes.string,
+  showTo: PropTypes.string
 }
 
 const mapStateToProps = (state) => ({

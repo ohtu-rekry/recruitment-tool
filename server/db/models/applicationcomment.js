@@ -2,7 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
 
   const ApplicationComment = sequelize.define('ApplicationComment', {
-    comment: { type: DataTypes.TEXT, allowNull: false }
+    comment: { type: DataTypes.TEXT, allowNull: false },
+    recruiterUsername: { type: DataTypes.STRING, allowNull: false },
   }, {})
 
   ApplicationComment.associate = function(models) {

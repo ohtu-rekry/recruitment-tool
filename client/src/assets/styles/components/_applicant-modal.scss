@@ -1,16 +1,13 @@
-.applicant-modal__card {
+.applicant-modal {
   font-family: 'Lato', sans-serif;
   font-size: 17px;
-  background-color: $gray-lighter;
+  background-color: $gray-lightest;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   margin: 115px auto;
-  width: 35vw;
-  min-width: 300px;
-  max-width: 650px;
+  width: 60vw;
   min-height: 250px;
-  max-height: 500px;
-  overflow: hidden;
+  max-height: 70vh;
   padding: 15px 15px 20px 20px;
   display: flex;
   flex-direction: column;
@@ -37,5 +34,70 @@
 
   &__date {
     font-size: 15px;
+  }
+
+  &__comment-input {
+    width: 100%;
+  }
+
+  &__comment-buttons {
+    display: block;
+    float: right;
+  }
+
+  &__comment-button {
+    text-decoration: none;
+    width: 70px;
+    height: 40px;
+  }
+
+  &__attachment-dropzone {
+    margin: 10px -10px 10px;
+    padding: 5px;
+    font-size: 14px;
+    border-style: dotted;
+    border-color: $gray-lighter;
+    min-height: 40px;
+    width: 100%;
+    overflow: auto;
+
+    &__visible {
+      border-color: $gandalf-the-gray;
+    }
+  }
+  
+  &__attachment-chip {
+    margin: 1px;
+    padding: 5px;
+  }
+
+  &__attachment-list {
+    display: inline-block;
+    padding: 5px 0 5px 0;
+    width: 100%;
+    @media screen and (min-width: 800px) {
+      width: calc(100% - 140px);
+    }
+  }
+  
+  &__comments-title {
+    margin: 20px 0 10px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  &__comments {
+    max-height: 40vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar {
+    background: transparent;
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
   }
 }

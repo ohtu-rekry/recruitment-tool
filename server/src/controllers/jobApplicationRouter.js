@@ -86,11 +86,27 @@ jobApplicationRouter.post('/:id/comment', jwtMiddleware, applicationCommentValid
   const newComment = await ApplicationComment.create({
     comment: request.body.comment,
     jobApplicationId: request.params.id,
-    recruiterId: decodedToken.id
+    recruiterId: decodedToken.id,
+    recruiterUsername: decodedToken.username
   })
 
   response.status(201).json(newComment)
 
+})
+
+jobApplicationRouter.get('/:id/comment', jwtMiddleware, async (request, response) => {
+  try {
+    const id = request.params.id
+
+    const comments = await ApplicationComment.findAll({
+      where: {
+        jobApplicationId: id
+      }
+    })
+    response.json(comments)
+  } catch (error) {
+    throw error
+  }
 })
 
 module.exports = jobApplicationRouter

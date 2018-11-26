@@ -48,7 +48,7 @@ AdminFrontPage.propTypes = {
 
 
 const mapStateToProps = (state) => ({
-  applicants: state.postingReducer.applicants,
+  applicants: state.postingReducer.stages,
   loggedIn: state.loginReducer.loggedIn
 })
 

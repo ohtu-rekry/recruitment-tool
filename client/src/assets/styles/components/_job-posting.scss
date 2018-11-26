@@ -3,19 +3,23 @@ body {
 }
 
 .job-posting {
-margin: 10% auto;
-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-background-color: white;
-max-width: 95%;
-min-height: 20%;
-font-family: 'Roboto', sans-serif;
-display: flex;
-flex-direction: column;
-align-items: left;
+  margin: 10% auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background-color: white;
+  max-width: 95%;
+  min-height: 20%;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
 
-@media screen and (min-width: 750px){
-  max-width: 80%
-}
+  @media screen and (min-width: 750px){
+    max-width: 80%;
+  }
+
+  @media screen and (max-width: 750px){
+    margin-top: 20%;
+  }
 
   &__link {
     text-decoration: none;

@@ -10,7 +10,7 @@ class FrontPage extends Component {
 
   componentDidMount() {
     const { fetchJobPostings } = this.props
-    fetchJobPostings()
+    fetchJobPostings(this.props.loggedIn)
   }
 
   render() {
@@ -39,7 +39,8 @@ FrontPage.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  jobPostings: state.jobPostingReducer.jobPostings
+  jobPostings: state.jobPostingReducer.jobPostings,
+  loggedIn: state.loginReducer.loggedIn
 })
 
 const mapDispatchToProps = {

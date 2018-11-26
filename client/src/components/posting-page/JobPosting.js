@@ -8,6 +8,7 @@ import EmailValidator from 'email-validator'
 import ReactMarkdown from 'react-markdown'
 import Dropzone from 'react-dropzone'
 
+
 export class JobPosting extends Component {
   constructor(props) {
     super(props)
@@ -21,7 +22,7 @@ export class JobPosting extends Component {
 
   componentDidMount() {
     const jobPostingId = window.location.href.split('/')[4]
-    this.props.fetchJobPosting(jobPostingId)
+    this.props.fetchJobPosting(jobPostingId, this.props.loggedIn)
   }
 
   componentWillUnmount() {
@@ -39,8 +40,7 @@ export class JobPosting extends Component {
     e.preventDefault()
     const { applicantName, applicantEmail, attachments } = this.state
 
-    const notOnlyWhitespaceRegex = /\S/
-    if (!notOnlyWhitespaceRegex.test(applicantName)) {
+    if (!applicantName.trim()) {
       this.setState({ inputError: 'Please enter a name' })
       return
     }
@@ -183,12 +183,9 @@ const ErrorMessage = ({ errorMessage }) => {
 }
 
 const HiddenNotification = ({ jobPosting }) => {
-  const showFrom = jobPosting.showFrom.format('DD.MM.YYYY').toString()
-  const showTo = jobPosting.showTo.format('DD.MM.YYYY').toString()
-
   return (
     <div className='job-posting__hidden-notification'>
-      Visible from {showFrom} to {showTo}
+      Visible from {jobPosting.showFrom} to {jobPosting.showTo}
     </div>
   )
 }

@@ -12,6 +12,7 @@ export const submitJobPosting = createAction(
   'SUBMIT_JOB_POSTING', (title, content, recruiter, stages, showFrom, showTo, mode, id) => ({
     title, content, recruiter, stages, showFrom, showTo, mode, id
   }))
+
 export const addJobPostingSuccess = createAction('ADDED_JOB_POSTING')
 export const addJobPostingFailure = createAction('ADD_JOB_POSTING_FAILED')
 export const removeJobPostingStatus = createAction('REMOVE_JOB_POSTING_CREATION_STATUS')
@@ -33,12 +34,12 @@ export const sendApplication = createAction(
   }))
 
 export const fetchJobPosting = createAction(
-  'FETCH_JOBPOSTING', (postingId) => ({
-    postingId
+  'FETCH_JOBPOSTING', (postingId, recruiter) => ({
+    postingId, recruiter
   }))
 export const fetchJobPostingWithStages = createAction('FETCH_JOBPOSTING_WITH_STAGES', (id) => ({ id }))
 export const emptyJobPosting = createAction('EMPTY_JOBPOSTING')
-export const fetchJobPostings = createAction('FETCH_JOBPOSTINGS')
+export const fetchJobPostings = createAction('FETCH_JOBPOSTINGS', (recruiter) => ({ recruiter }))
 export const setJobPosting = createAction('SET_JOBPOSTING')
 export const setJobPostings = createAction('SET_JOBPOSTINGS')
 
@@ -48,8 +49,15 @@ export const applyFailure = createAction('APPLY_FAIL')
 export const fetchApplicants = createAction('FETCH_APPLICANTS')
 export const fetchApplicantsSuccess = createAction('FETCH_APPLICANTS_SUCCESS')
 
-export const moveApplicant = createAction('MOVE_APPLICANT', (applicant, newStage) => ({ applicant, newStage }))
-export const moveApplicantSuccess = createAction('MOVE_APPLICANT_SUCCESS')
+export const moveApplicant = createAction('MOVE_APPLICANT', (applicant, newStage, oldStage, oldIndex, oldStages) => ({ applicant, newStage, oldStage, oldIndex, oldStages }))
 
 export const getApplicants = createAction('GET_APPLICANTS')
 export const getApplicantsSuccess = createAction('GET_APPLICANTS_SUCCESS')
+
+export const addComment = createAction('ADD_COMMENT', (comment, applicationId, attachments) => ({ comment, applicationId, attachments }))
+export const addCommentSuccess = createAction('ADD_COMMENT_SUCCESS')
+
+export const getComments = createAction('GET_COMMENTS')
+export const getCommentsSuccess = createAction('GET_COMMENTS_SUCCESS')
+export const emptyComments = createAction('EMPTY_COMMENTS')
+
