@@ -8,7 +8,7 @@ const { validateDate, handleJobPostingsForAdmin, handleJobPostingsForGuest } = r
 
 jobPostingRouter.get('/', async (req, res) => {
   let jobPostings
-  if (req.token !== null) {
+  if (!req.token) {
     jobPostings = await handleJobPostingsForAdmin()
   } else {
     jobPostings = await handleJobPostingsForGuest()
