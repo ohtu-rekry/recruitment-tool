@@ -68,7 +68,7 @@ function* removeStageInJobPosting({ payload }) {
 
 function* fetchJobPosting({ payload }) {
   try {
-    const recruiter = payload.recruiter
+    const recruiter = yield select(getCurrentUser)
     const response = yield call(jobPostingApi.get, { recruiter })
 
     if (response.status === 200) {

@@ -83,7 +83,7 @@ class ApplicantModal extends React.Component {
             <div className='applicant-modal__date'>
               Applied for: {jobPosting}
             </div>}
-          <ApplicantModalDropzone applicantId={id} />
+          <ApplicantModalDropzone applicationId={id} />
           <div className='applicant-modal__comments-title'>Comments ({comments.length})</div>
           {comments && <div className='applicant-modal__comments'>
             {comments
