@@ -1,14 +1,14 @@
 const jobPostingRouter = require('express-promise-router')()
 const { JobPosting, PostingStage, JobApplication, ApplicationComment } = require('../../db/models')
-const { jwtMiddleware } = require('../../utils/middleware')
+const { jwtMiddleware, jwtNotRequired } = require('../../utils/middleware')
 const { jobPostingValidator, postingPutValidator } = require('../../utils/validators')
 const Sequelize = require('sequelize')
 const { validateDate, handleJobPostingsForAdmin, handleJobPostingsForGuest } = require('../../utils/jobPostingDateHandlers')
 
 
-jobPostingRouter.get('/', async (req, res) => {
+jobPostingRouter.get('/', jwtNotRequired, async (req, res) => {
   let jobPostings
-  if (!req.token) {
+  if (req.user) {
     jobPostings = await handleJobPostingsForAdmin()
   } else {
     jobPostings = await handleJobPostingsForGuest()

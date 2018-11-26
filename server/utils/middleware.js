@@ -2,4 +2,9 @@ const expressJwt = require('express-jwt')
 
 const jwtMiddleware = expressJwt({ secret: process.env.JWT_SECRET })
 
-module.exports = { jwtMiddleware }
+const jwtNotRequired = expressJwt({
+  secret: process.env.JWT_SECRET,
+  credentialsRequired: false
+})
+
+module.exports = { jwtMiddleware, jwtNotRequired }
