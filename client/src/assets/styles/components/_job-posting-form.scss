@@ -74,15 +74,14 @@
       display:inline-flex;
     }
     &__stage-name-edit {
-      position: absolute;
-      padding: 5px;
       display: none;
 
       &__input {
-        padding: 5px 0px;
-        width: 80px;
+        padding: 8px 10px;
         background-color: #e0e0e0;
         border: 0px;
+        border-radius: 20px;
+        outline: none;
       }
     }
   }

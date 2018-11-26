@@ -63,6 +63,14 @@ export class JobPostingStages extends Component {
 
   handleStageClick = (jobPostingStage) => {
     document.getElementById(jobPostingStage.stageName).style.display = 'block'
+    document.getElementById(jobPostingStage.stageName + '_chip').style.display = 'none'
+    document.getElementById(jobPostingStage.stageName + '_input').focus()
+  }
+
+  handleStageHide = (jobPostingStage) => {
+    document.getElementById(jobPostingStage.stageName).style.display = 'none'
+    document.getElementById(jobPostingStage.stageName + '_chip').style.display = 'inline-flex'
+    document.getElementById(jobPostingStage.stageName + '_input').blur()
   }
 
   handleStageRenameChange = (e) => {
@@ -123,11 +131,12 @@ export class JobPostingStages extends Component {
               {jobPostingStage.canRemove === true &&
                 <div className={classNames + '__single-stage-editable'}>
                   <Chip
+                    id={jobPostingStage.stageName + '_chip'}
                     label={index + 1 + '. ' + jobPostingStage.stageName}
                     onClick={() => this.handleStageClick(jobPostingStage)}
                     onDelete={() => this.handleStageDelete(jobPostingStage)} />
                   <form id={jobPostingStage.stageName} onChange={this.handleStageRenameChange} onSubmit={(e) => this.handleStageRename(e, jobPostingStage)} className={classNames + '__stage-name-edit'}>
-                    <input className={classNames + '__stage-name-edit__input'} type="text"></input>
+                    <input id={`${jobPostingStage.stageName}_input`} onBlur={() => this.handleStageHide(jobPostingStage)} className={classNames + '__stage-name-edit__input'} type="text"></input>
                   </form>
                 </div>
               }
