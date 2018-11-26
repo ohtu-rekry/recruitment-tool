@@ -11,7 +11,8 @@ const initialState = {
   creationRequestStatus: null,
   copiedStages: null,
   showFrom: null,
-  showTo: null
+  showTo: null,
+  defaultStageNames
 }
 
 const reducer = handleActions(

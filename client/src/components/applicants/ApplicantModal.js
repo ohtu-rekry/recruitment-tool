@@ -67,7 +67,7 @@ class ApplicantModal extends React.Component {
             <div className='applicant-modal__card__date'>
               Applied for: {jobPosting}
             </div>}
-          <ApplicantModalDropzone applicantId={id} />
+          <ApplicantModalDropzone applicationId={id} />
         </div>
       </Modal>
     )

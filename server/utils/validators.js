@@ -48,7 +48,9 @@ const postingPutValidator = celebrate({
     stages: Joi.array().min(1).required(),
     recruiterId: Joi.number().integer(),
     createdAt: Joi.date(),
-    updatedAt: Joi.date()
+    updatedAt: Joi.date(),
+    showFrom: Joi.date().allow(null),
+    showTo: Joi.date().allow(null)
   }),
 })
 
