@@ -5,7 +5,8 @@ const initialState = {
   errorMessage: null,
   jobPosting: {},
   stages: [],
-  applicants: []
+  applicants: [],
+  comments: []
 }
 
 const reducer = handleActions(
@@ -42,6 +43,14 @@ const reducer = handleActions(
     [actions.addCommentSuccess]: (state, action) => ({
       ...state,
       stages: action.payload
+    }),
+    [actions.getCommentsSuccess]: (state, action) => ({
+      ...state,
+      comments: action.payload
+    }),
+    [actions.emptyComments]: (state, action) => ({
+      ...state,
+      comments: []
     })
   },
   initialState

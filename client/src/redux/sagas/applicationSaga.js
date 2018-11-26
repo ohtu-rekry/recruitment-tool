@@ -92,6 +92,7 @@ function* getApplicants() {
               postingStageId: applicant.postingStageId,
               applicantEmail: applicant.applicantEmail,
               applicantName: applicant.applicantName,
+              applicationComments: applicant.applicationComments,
               createdAt: applicant.createdAt,
               jobPosting: applicant.PostingStage.JobPosting.title
             }]
@@ -184,6 +185,26 @@ function* addComment({ payload }) {
       })
 
       yield put(actions.addCommentSuccess(newStages))
+      yield put(actions.getComments(payload.applicationId))
+    }
+
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+function* getComments({ payload }) {
+  try {
+    const recruiter = yield select(getCurrentUser)
+    const data = {
+      token: recruiter.token,
+      id: payload
+    }
+
+    const response = yield call(jobApplicationApi.getComments, data)
+
+    if (response.status === 200) {
+      yield put(actions.getCommentsSuccess(response.data))
     }
 
   } catch (e) {
@@ -199,3 +220,4 @@ export const watchMoveApplicant = takeLatest(actions.moveApplicant().type, moveA
 export const watchSendApplication = takeLatest(actions.sendApplication().type, sendApplication)
 export const watchGetApplicants = takeLatest(actions.getApplicants().type, getApplicants)
 export const watchAddComment = takeLatest(actions.addComment().type, addComment)
+export const watchGetComments = takeLatest(actions.getComments().type, getComments)

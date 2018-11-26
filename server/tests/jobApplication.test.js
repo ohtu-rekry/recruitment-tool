@@ -240,90 +240,67 @@ describe('GET all applications', async () => {
       password: passwordHash
     })
 
-    const createdPostings = await JobPosting.bulkCreate([{
-      id: 9879879,
+    jobPostings = await JobPosting.bulkCreate([{
       title: 'jobposting-test-example-title1',
       content: 'jobposting-test-example-content1',
       recruiterId: recruiter.id
     }, {
-      id: 678698,
       title: 'jobposting-test-example-title2',
       content: 'jobposting-test-example-content2',
       recruiterId: recruiter.id
-    }])
+    }], { returning: true })
+      .map(posting => posting.dataValues)
 
-    jobPostings = createdPostings.map(posting => ({
-      id: posting.id,
-      title: posting.title,
-      content: posting.content,
-      recruiterId: posting.recruiterId,
-      createdAt: posting.createdAt,
-      updatedAt: posting.updatedAt
-    }))
-
-    const createdStages = await PostingStage.bulkCreate([{
-      id: 3749821,
+    postingStages = await PostingStage.bulkCreate([{
       stageName: 'posting-test-example-stage1',
       orderNumber: 0,
       jobPostingId: jobPostings[0].id
     },
     {
-      id: 1436872,
       stageName: 'posting-test-example-stage2',
       orderNumber: 1,
       jobPostingId: jobPostings[0].id
     },
     {
-      id: 78953203,
       stageName: 'posting-test-example-stage3',
       orderNumber: 2,
       jobPostingId: jobPostings[0].id
     },
     {
-      id: 9032075,
       stageName: 'posting-test-example-stage4',
       orderNumber: 0,
       jobPostingId: jobPostings[1].id
-    }])
-
-    postingStages = createdStages.map(stage => ({
-      id: stage.id,
-      stageName: stage.stageName,
-      orderNumber: stage.orderNumber,
-      jobPostingId: stage.jobPostingId,
-      createdAt: stage.createdAt,
-      updatedAt: stage.updatedAt
-    }))
+    }], { returning: true })
+      .map(stage => stage.dataValues)
 
     applications = await JobApplication.bulkCreate([{
-      id: 6239856,
       applicantName: 'jobposting-test-example-applicant1',
       applicantEmail: 'jobposting-test@example.email1',
       postingStageId: postingStages[0].id
     }, {
-      id: 90379275,
       applicantName: 'jobposting-test-example-applicant2',
       applicantEmail: 'jobposting-test@example.email2',
       postingStageId: postingStages[0].id
     }, {
-      id: 98237743,
       applicantName: 'jobposting-test-example-applicant3',
       applicantEmail: 'jobposting-test@example.email3',
       postingStageId: postingStages[1].id
     }, {
-      id: 32482436,
       applicantName: 'jobposting-test-example-applicant4',
       applicantEmail: 'jobposting-test@example.email4',
       postingStageId: postingStages[1].id
     }], { returning: true })
+      .map(application => application.dataValues)
 
     comments = await ApplicationComment.bulkCreate([{
       comment: 'jobapplication-test-example-comment1',
       recruiterId: recruiter.id,
+      recruiterUsername: recruiter.username,
       jobApplicationId: applications[0].id
     }, {
       comment: 'jobapplication-test-example-comment2',
       recruiterId: recruiter.id,
+      recruiterUsername: recruiter.username,
       jobApplicationId: applications[0].id
     }], { returning: true })
       .map(c => c.dataValues)

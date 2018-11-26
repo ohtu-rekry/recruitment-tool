@@ -23,7 +23,7 @@ class ApplicantModalDropzone extends React.Component {
     if (!comment.trim() && attachments.length === 0) {
       this.setState({ inputError: 'Cannot send empty comment' })
     } else {
-      this.props.addComment(comment, this.props.applicantId, attachments)
+      this.props.addComment(comment, this.props.applicationId, attachments)
       this.setState({ comment: '', attachments: [] })
     }
   }
@@ -88,14 +88,15 @@ class ApplicantModalDropzone extends React.Component {
         onDropAccepted={this.handleDropAttachment}
         onDropRejected={this.handleAttachmentReject}
         accept='.pdf, .zip'
-        className='applicant-modal__card__attachment-dropzone'
-        acceptClassName='applicant-modal__card__attachment-dropzone__visible'
+        className='applicant-modal__attachment-dropzone'
+        acceptClassName='applicant-modal__attachment-dropzone__visible'
         onClick={this.handleDropzoneClick}
       >
-        <div className='applicant-modal__card__comment-input'>
+        <div className='applicant-modal__comment-input'>
           <TextField
             multiline
             required
+            rowsMax='10'
             fullWidth
             id='comment'
             type='text'
@@ -108,9 +109,9 @@ class ApplicantModalDropzone extends React.Component {
             onKeyPress={this.handleCommentKeyPress}
           />
         </div>
-        <div className='applicant-modal__card__comment-buttons'>
+        <div className='applicant-modal__comment-buttons'>
           <Button
-            className='applicant-modal__card__comment-button'
+            className='applicant-modal__comment-button'
             aria-label='Add attachment'
             id='attachment-button'
             onClick={this.handleAttachmentButtonClick}
@@ -118,18 +119,18 @@ class ApplicantModalDropzone extends React.Component {
             <AttachFile id='attachment-icon' />
           </Button>
           <Button
-            className='applicant-modal__card__comment-button'
+            className='applicant-modal__comment-button'
             aria-label='Send comment'
             onClick={this.handleSubmit}
           >
             Send
           </Button>
         </div>
-        <div className='applicant-modal__card__attachment-list'>
+        <div className='applicant-modal__attachment-list'>
           {attachments.map((attachment, index) =>
             <Chip
               key={index}
-              className='applicant-modal__card__attachment-chip'
+              className='applicant-modal__attachment-chip'
               label={attachment.name}
               onDelete={() => this.handleAttachmentDelete(index)}
             />
