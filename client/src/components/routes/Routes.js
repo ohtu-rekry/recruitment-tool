@@ -37,7 +37,7 @@ class Routes extends Component {
     return (
       <Router>
         <div>
-          <Header />
+          <Header currentLocation={this.props.location}/>
           <Switch>
             <Route path="/admin/login" render={() =>
               loggedIn

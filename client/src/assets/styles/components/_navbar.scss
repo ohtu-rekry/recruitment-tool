@@ -10,6 +10,7 @@
   padding: 5px;
   top: 0;
   box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.3);
+  z-index: 9;
 
   &__title {
     display: inline-block;
@@ -35,4 +36,64 @@
     margin-left: auto;
     margin-right: -12;
   }
+
+  &__hamburger-menu {
+    background-color: $emblica-blue;
+    border: none;
+    outline: none;
+    color: white;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  &__drop-down-menu {
+    position: absolute;
+    top: 63px;
+    right: 15px;
+    width: 250px;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    border: 1px solid $gray-dark;
+    background-color: $gray-lighter;
+    box-shadow: 0 2px 3px -1px rgba(0,0,0,0.2);
+    outline: none;
+  }
+
+  &__drop-down-menu:after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+	  left: 86%;
+    border: solid transparent;
+    pointer-events: none;
+    border-bottom-color: $gray-lighter;
+    border-width: 12px;
+    margin-left: -12px;
+  }
+  
+  &__drop-down-menu-item {
+    background-color: $gray-lighter;
+    height: 40px;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+    color: black;
+  }
+
+  &__drop-down-menu-item:hover:not(.active) {
+    background-color: $gray-darker;
+  }
+}
+
+.active {
+  background-color: $emblica-blue;
+  color: white;
 }
