@@ -81,7 +81,8 @@ export class Applicants extends Component {
     return (
       <div className='applicants'>
         <div className='applicants__title'>
-          {applicants ? 'All applicants' : jobPosting.title}
+          {applicants ? 'All applicants' :
+            <Link to={`/position/${jobPosting.id}`} className='applicants__titlelink' style={{ textDecoration: 'none' }}>{jobPosting.title}</Link>}
         </div>
         {!adminView &&
           <Link to='/position/new' style={{ textDecoration: 'none' }}>

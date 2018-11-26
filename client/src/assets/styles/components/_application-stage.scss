@@ -9,6 +9,16 @@
     font-weight: 700;
   }
 
+  &__titlelink {
+    color: #002234;
+    text-decoration: none;
+
+    &:visited {
+      text-decoration: none;
+      color: #002234;
+    }
+  }
+
   &__button {
     background-color: #002234;
     border: none;
