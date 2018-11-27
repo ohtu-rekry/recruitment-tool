@@ -37,7 +37,7 @@ export class JobPostingStages extends Component {
   }
 
   addNewStage = () => {
-    if (!verifyStageName(this.state.newStageName)) {
+    if (!this.verifyStageName(this.state.newStageName)) {
       this.setState({ error: true })
       return
     }
@@ -81,7 +81,7 @@ export class JobPostingStages extends Component {
 
   handleStageRename = (e, jobPostingStage) => {
     e.preventDefault()
-    if (verifyStageName(this.state.stageUnderEdit)) {
+    if (this.verifyStageName(this.state.stageUnderEdit)) {
       this.props.renamePostingStage(jobPostingStage, this.state.stageUnderEdit)
       document.getElementById(jobPostingStage.stageName).style.display = 'none'
       this.setState({
@@ -92,6 +92,15 @@ export class JobPostingStages extends Component {
         error: true
       })
     }
+  }
+
+  verifyStageName = (stageName) => {
+    const stageNames = this.props.jobPostingStages.map((stage) => { return stage.stageName })
+    if (!stageName.trim() || stageName.length === 0 || stageName.length > 255
+      || stageNames.includes(stageName)) {
+      return false
+    }
+    return true
   }
 
   handleStageDelete = (stage) => {
@@ -140,25 +149,32 @@ export class JobPostingStages extends Component {
                   </form>
                 </div>
               }
-              {jobPostingStage.canRemove === false &&
-                <Chip
-                  label={index + 1 + '. ' + jobPostingStage.stageName}
-                />
+              {(jobPostingStage.canRemove === false
+                && !this.props.defaultStageNames.includes(jobPostingStage.stageName)) &&
+                <div>
+                  <Chip
+                    id={jobPostingStage.stageName + '_chip'}
+                    label={index + 1 + '. ' + jobPostingStage.stageName}
+                    onClick={() => this.handleStageClick(jobPostingStage)}
+                  />
+                  <form id={jobPostingStage.stageName} onChange={this.handleStageRenameChange} onSubmit={(e) => this.handleStageRename(e, jobPostingStage)} className={classNames + '__stage-name-edit'}>
+                    <input id={`${jobPostingStage.stageName}_input`} onBlur={() => this.handleStageHide(jobPostingStage)} className={classNames + '__stage-name-edit__input'} type="text"></input>
+                  </form>
+                </div>
               }
+              {(jobPostingStage.canRemove === false
+                && this.props.defaultStageNames.includes(jobPostingStage.stageName)) &&
+                <div>
+                  <Chip
+                    label={index + 1 + '. ' + jobPostingStage.stageName}
+                  />
+                </div>}
             </div>
           ))}
         </div>
       </div>
     )
   }
-}
-
-const verifyStageName = (stageName) => {
-  if (!stageName.trim() || stageName.length === 0 || stageName.length > 255
-    || this.props.defaultStageNames.includes(stageName)) {
-    return false
-  }
-  return true
 }
 
 JobPostingStages.propTypes = {
