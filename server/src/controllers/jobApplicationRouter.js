@@ -7,8 +7,6 @@ const {
   applicationCommentValidator } = require('../../utils/validators')
 const { handleAttachmentSending } = require('../../utils/attachmentHandler')
 
-
-
 jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
   const jobApplications = await JobApplication.findAll({
     include: [
@@ -29,7 +27,6 @@ jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
   })
   response.json(jobApplications)
 })
-
 
 jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
   try {
@@ -163,6 +160,23 @@ jobApplicationRouter.get('/upload', async (req, res) => {
   return lol
 })*/
 
+
+
+/*jobApplicationRouter.get('/upload', async (req, res) => {
+  //http 302
+  const bucket = storage.bucket('rekrysofta')
+  const file = bucket.file('kannu.jpg')
+
+  const lol = file.createReadStream()
+    .on('error', (err) => {
+      console.log('err ' + err)
+    })
+    .on('end', () => {
+      console.log('success')
+    })
+    .pipe(res)
+  return lol
+})*/
 
 
 module.exports = jobApplicationRouter

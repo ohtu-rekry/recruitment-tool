@@ -37,6 +37,9 @@ app.use((error, req, res, next) => {
     })
   }
 })
+/*const storage = new Storage({
+  projectId: 'emblica-212815'
+})*/
 
 const server = http.createServer(app)
 
