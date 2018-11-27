@@ -62,7 +62,6 @@ export class JobPostingForm extends Component {
     event.preventDefault()
 
     const { title, content, mode, id } = this.state
-    const recruiter = this.props.loggedIn
     const stages = this.props.jobPostingStages
     const showFrom = this.props.showFrom
     const showTo = this.props.showTo
@@ -74,7 +73,7 @@ export class JobPostingForm extends Component {
       return
     }
 
-    this.props.submitJobPosting(title, content, recruiter, stages, showFrom, showTo, mode, id)
+    this.props.submitJobPosting(title, content, stages, showFrom, showTo, mode, id)
   }
 
 

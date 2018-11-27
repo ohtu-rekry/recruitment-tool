@@ -13,7 +13,12 @@ function* submitJobPosting({ payload }) {
       showFrom: payload.showFrom,
       showTo: payload.showTo
     }
-    const recruiter = payload.recruiter
+    const recruiter = yield select(getCurrentUser)
+
+    if (!recruiter) {
+      return
+    }
+
     const id = payload.id
 
     let response
@@ -88,6 +93,11 @@ function* fetchJobPosting({ payload }) {
 function* fetchJobPostingWithStages({ payload }) {
   try {
     const recruiter = yield select(getCurrentUser)
+
+    if (!recruiter) {
+      return
+    }
+
     const token = recruiter.token
     const id = payload.id
 
@@ -112,6 +122,11 @@ function* fetchJobPostingWithStages({ payload }) {
 function* fetchJobPostingApplicants({ payload }) {
   try {
     const recruiter = yield select(getCurrentUser)
+
+    if (!recruiter) {
+      return
+    }
+
     const token = recruiter.token
     const id = payload
     const response = yield call(jobPostingApi.getApplicants, { token, id })

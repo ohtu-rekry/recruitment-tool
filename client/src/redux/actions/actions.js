@@ -9,8 +9,8 @@ export const logoutSuccess = createAction('LOGOUT_SUCCESS')
 export const logoutFailure = createAction('LOGOUT_FAILURE')
 
 export const submitJobPosting = createAction(
-  'SUBMIT_JOB_POSTING', (title, content, recruiter, stages, showFrom, showTo, mode, id) => ({
-    title, content, recruiter, stages, showFrom, showTo, mode, id
+  'SUBMIT_JOB_POSTING', (title, content, stages, showFrom, showTo, mode, id) => ({
+    title, content, stages, showFrom, showTo, mode, id
   }))
 
 export const addJobPostingSuccess = createAction('ADDED_JOB_POSTING')
