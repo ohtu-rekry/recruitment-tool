@@ -10,6 +10,7 @@ export class JobPostingStages extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      currentStages: [],
       newStageName: '',
       error: false,
       stageUnderEdit: '',
@@ -21,6 +22,10 @@ export class JobPostingStages extends Component {
     if (this.props.stages !== null) {
       this.addCopiedStagesToNewJobPosting()
     }
+    const stageNames = this.props.jobPostingStages.map((stage) => { return stage.stageName })
+    this.setState({
+      currentStages: stageNames
+    })
   }
 
   componentWillUnmount() {
@@ -44,6 +49,7 @@ export class JobPostingStages extends Component {
 
     this.props.addNewStageForJobPosting({ stageName: this.state.newStageName, canRemove: true })
     this.setState({
+      currentStages: [...this.state.currentStages, this.state.newStageName],
       newStageName: ''
     })
   }
@@ -65,6 +71,9 @@ export class JobPostingStages extends Component {
     document.getElementById(jobPostingStage.stageName).style.display = 'block'
     document.getElementById(jobPostingStage.stageName + '_chip').style.display = 'none'
     document.getElementById(jobPostingStage.stageName + '_input').focus()
+    this.setState({
+      stageUnderEdit: jobPostingStage.stageName
+    })
   }
 
   handleStageHide = (jobPostingStage) => {
@@ -84,7 +93,10 @@ export class JobPostingStages extends Component {
     if (this.verifyStageName(this.state.stageUnderEdit)) {
       this.props.renamePostingStage(jobPostingStage, this.state.stageUnderEdit)
       document.getElementById(jobPostingStage.stageName).style.display = 'none'
+      const updatedCurrentStages = this.state.currentStages.map((stage) =>
+        stage === jobPostingStage.stageName ? this.state.stageUnderEdit : jobPostingStage.stageName)
       this.setState({
+        currentStages: updatedCurrentStages,
         stageUnderEdit: ''
       })
     } else {
@@ -95,9 +107,8 @@ export class JobPostingStages extends Component {
   }
 
   verifyStageName = (stageName) => {
-    const stageNames = this.props.jobPostingStages.map((stage) => { return stage.stageName })
     if (!stageName.trim() || stageName.length === 0 || stageName.length > 255
-      || stageNames.includes(stageName)) {
+      || this.state.currentStages.includes(stageName) || this.props.defaultStageNames.includes(stageName)) {
       return false
     }
     return true
