@@ -10,17 +10,11 @@ export default class jobApplicationApi {
     }
     return axios.get(root, config)
   }
-<<<<<<< HEAD
 
   static add(payload) {
     return axios.post(root, payload)
   }
 
-=======
-  static add(payload) {
-    return axios.post(root, payload)
-  }
->>>>>>> Front-end send uploaded files as base64 to back-end
   static moveApplicants(payload) {
     const config = {
       headers: { 'Authorization': 'bearer ' + payload.token }

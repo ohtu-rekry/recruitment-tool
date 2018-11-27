@@ -39,7 +39,8 @@ export class JobPosting extends Component {
   handleSubmit = async (e) => {
     e.preventDefault()
     const { applicantName, applicantEmail, attachments } = this.state
-    let promiseAttachments
+    let promiseAttachments = []
+    let attachmentObjectArray = []
 
     if (!applicantName.trim()) {
       this.setState({ inputError: 'Please enter a name' })
@@ -51,17 +52,24 @@ export class JobPosting extends Component {
       return
     }
 
-
     if (attachments.length > 0) {
-      promiseAttachments = attachments.map((attachment) => {
+      promiseAttachments = await attachments.map((attachment) => {
         return this.readFile(attachment)
+      })
+      let base64typeAttachments = await Promise.all(promiseAttachments)
+
+      attachmentObjectArray = attachments.map((attachment, index) => {
+        return {
+          fileName: attachment.name,
+          base64: base64typeAttachments[index]
+        }
       })
     }
 
-    let base64typeAttachments = await Promise.all(promiseAttachments)
+
 
     const jobPostingId = window.location.href.split('/')[4]
-    this.props.sendApplication(applicantName, applicantEmail, jobPostingId, base64typeAttachments)
+    this.props.sendApplication(applicantName, applicantEmail, jobPostingId, attachmentObjectArray)
 
     this.setState({
       applicantName: '',
@@ -89,6 +97,7 @@ export class JobPosting extends Component {
     this.setState({ attachments, inputError: null })
   }
 
+  //Reads the attachment and converts it to base64
   readFile(attachment) {
     let reader = new FileReader()
     let file = attachment

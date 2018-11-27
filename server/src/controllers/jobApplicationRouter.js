@@ -1,21 +1,12 @@
 const jobApplicationRouter = require('express-promise-router')()
 const { jwtMiddleware } = require('../../utils/middleware')
-const { Storage } = require('@google-cloud/storage')
-const Multer = require('multer')
-const format = require('util').format
-const { JobApplication, PostingStage, JobPosting, Recruiter, ApplicationComment, Attachment } = require('../../db/models')
+const { JobApplication, PostingStage, JobPosting, ApplicationComment, Attachment } = require('../../db/models')
 const {
   jobApplicationValidator,
   applicationPatchValidator,
   applicationCommentValidator } = require('../../utils/validators')
-const handleAttachmentSending = require('../../utils/attachmentHandler')
+const { handleAttachmentSending } = require('../../utils/attachmentHandler')
 
-const multer = Multer({
-  storage: Multer.MemoryStorage,
-  limits: {
-    fileSize: 10 * 1024 * 1024
-  },
-})
 
 
 jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
@@ -30,35 +21,52 @@ jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
       {
         model: ApplicationComment,
         as: 'applicationComments'
+      },
+      {
+        model: Attachment,
+        as: 'attachments'
       }]
   })
   response.json(jobApplications)
 })
 
 
-jobApplicationRouter.post('/', multer.array('Shape'), jobApplicationValidator, async (req, res) => {
-  console.log(req.body)
-  const body = req.body
+jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
+  try {
+    const body = req.body
+    let attachments = []
 
-  const firstPostingStage = await PostingStage.findOne({
-    where: {
-      jobPostingId: body.jobPostingId,
-      orderNumber: 0
+    const firstPostingStage = await PostingStage.findOne({
+      where: {
+        jobPostingId: body.jobPostingId,
+        orderNumber: 0
+      }
+    })
+
+    if (!firstPostingStage) {
+      return res.status(400).json({ error: 'Could not find posting stage' })
     }
-  })
 
-  if (!firstPostingStage) {
-    return res.status(400).json({ error: 'Could not find posting stage' })
+    const jobApplication = await JobApplication.create({
+      applicantName: body.applicantName,
+      applicantEmail: body.applicantEmail,
+      postingStageId: firstPostingStage.id
+    })
+
+    if (body.attachments.length > 0) {
+      attachments = await handleAttachmentSending(body.attachments)
+      await attachments.forEach(attachment => {
+        Attachment.create({
+          path: attachment,
+          jobApplicationId: jobApplication.id
+        })
+      })
+    }
+
+    res.status(201).json(jobApplication)
+  } catch (error) {
+    throw error
   }
-  console.log(body.attachments)
-
-  const jobApplication = await JobApplication.create({
-    applicantName: body.applicantName,
-    applicantEmail: body.applicantEmail,
-    postingStageId: firstPostingStage.id
-  })
-
-  res.status(201).json(jobApplication)
 
 })
 
@@ -125,13 +133,13 @@ jobApplicationRouter.get('/:id/comment', jwtMiddleware, async (request, response
 })
 
 
-jobApplicationRouter.get('/upload', multer.single('file'), async (req, res, next) => {
+/*jobApplicationRouter.get('/upload', multer.single('file'), async (req, res, next) => {
   const myBucket = storage.bucket('rekrysofta')
   let file = myBucket.file('testi3.txt')
   console.log(file)
-})
+})*/
 
-jobApplicationRouter.get('/upload', async (req, res) => {
+/*jobApplicationRouter.get('/upload', async (req, res) => {
   //http 302
   const bucket = storage.bucket('rekrysofta')
   const file = bucket.file('kannu.jpg')
@@ -153,7 +161,7 @@ jobApplicationRouter.get('/upload', async (req, res) => {
     })
     .pipe(res)
   return lol
-})
+})*/
 
 
 

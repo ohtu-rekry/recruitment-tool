@@ -1,9 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Modal, Button } from '@material-ui/core'
+import { Modal, Button, Chip } from '@material-ui/core'
 import { Clear, Person, Email, CalendarToday } from '@material-ui/icons'
-
 import ApplicantModalDropzone from './ApplicantModalDropzone'
 import ApplicationComment from '../comments/ApplicationComment'
 import * as actions from '../../redux/actions/actions'
@@ -23,6 +22,11 @@ class ApplicantModal extends React.Component {
     this.props.closeModal(null)
   }
 
+  truncateString(str, length) {
+    const dots = str.length > length ? '...' : ''
+    return str.substring(0, length) + dots
+  }
+
   render() {
     const { applicant, comments } = this.props
     const {
@@ -30,8 +34,9 @@ class ApplicantModal extends React.Component {
       applicantName,
       applicantEmail,
       createdAt,
-      jobPosting
+      jobPosting,
     } = applicant
+
 
     let dateTime = new Date(createdAt).toLocaleString([], {
       day: '2-digit',
@@ -80,16 +85,26 @@ class ApplicantModal extends React.Component {
             </div>
           </div>
           {jobPosting &&
-            <div className='applicant-modal__date'>
-              Applied for: {jobPosting}
+            <div>
+              <h5>Applied for: {jobPosting}</h5>
             </div>}
+          <div>
+            <h5>Application's attachments</h5>
+            {applicant.attachments.map((attachment, index) => {
+              return <Chip
+                key={index}
+                label={this.truncateString(attachment.path.substring(44), 10)}
+                clickable={true}
+                onClick={() => window.open(attachment.path)} />
+            })}
+          </div>
           <ApplicantModalDropzone applicationId={id} />
           <div className='applicant-modal__comments-title'>Comments ({comments.length})</div>
           {comments && <div className='applicant-modal__comments'>
             {comments
-              .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map(comment =>
-                <ApplicationComment key={comment.id} comment={comment}/>
+                <ApplicationComment key={comment.id} comment={comment} />
               )}
           </div>}
         </div>

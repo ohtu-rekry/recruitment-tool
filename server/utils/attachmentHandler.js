@@ -1,41 +1,35 @@
+const mime = require('mime-types')
 const { Storage } = require('@google-cloud/storage')
-const Multer = require('multer')
-const format = require('util').format
 
-const handleAttachmentSending = (attachments) => {
-
-  if (attachments === null) {
-    return null
-  }
-
+const handleAttachmentSending = async (base64array) => {
   const storage = new Storage({
     projectId: 'emblica-212815'
   })
-  const multer = Multer({
-    storage: Multer.MemoryStorage,
-    limits: {
-      attachmentsize: 10 * 1024 * 1024
-    },
-  })
-
   const bucket = storage.bucket('rekrysofta')
-  attachments.map(attachment => {
-    console.log(attachment)
+  let attachmentLinks = []
+
+  await base64array.forEach(base64object => {
+    let file = base64object.base64,
+      fileName = base64object.fileName.replace(/ /g, '') + Date.now(),
+      mimeType = mime.contentType(base64object.fileName),
+      base64EncodedFileString = file.replace(/^data:[a-zA-Z0-9]+\/\w+;base64,/, ''),
+      fileBuffer = new Buffer(base64EncodedFileString, 'base64')
+
+    const fileToGCS = bucket.file(fileName)
+
+    fileToGCS.save(fileBuffer, {
+      metadata: { contentType: mimeType },
+      public: false,
+      validation: 'md5'
+    }, function (error) {
+      if (error) {
+        console.log('Unable to upload the file')
+      }
+      console.log('Uploaded file to gcloud')
+    })
+    attachmentLinks.push(`https://storage.cloud.google.com/rekrysofta/${fileName}`)
   })
-
-
-  /*const blob = bucket.file(req.file.originalname)
-  const blobStream = blob.createWriteStream()
-
-  blobStream.on('error', (err) => {
-    next(err)
-  })
-
-  blobStream.on('finish', () => {
-    const publicUrl = format(`gs://${bucket.name}/${blob.name}`)
-    res.status(200).send(publicUrl)
-  })
-  blobStream.end(req.file.buffer)*/
+  return attachmentLinks
 }
 
 module.exports = { handleAttachmentSending }
