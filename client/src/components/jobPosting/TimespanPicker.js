@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import DatePicker from 'react-datepicker'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { addShowFrom, addShowTo } from '../../redux/actions/actions'
+import { addShowFrom, addShowTo, clearShowFromAndShowTo, timespanHasBeenSet } from '../../redux/actions/actions'
 import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -19,8 +19,29 @@ export class TimespanPicker extends Component {
   }
 
   componentDidMount() {
-    this.props.addShowTo(null)
-    this.props.addShowFrom(null)
+    if (this.props.setTimespan && this.props.showFrom) {
+      const now = moment()
+      const copiedShowFrom = moment(this.props.showFrom)
+
+      if (now.isBefore(copiedShowFrom)) this.setState({ showFrom: copiedShowFrom })
+      else this.setState({ showFrom: now })
+
+      if (this.props.showTo) this.setState({ showTo: moment(this.props.showTo) })
+
+      this.props.timespanHasBeenSet()
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.setTimespan && this.props.showFrom) {
+      this.setState({ showFrom: moment(this.props.showFrom) })
+      if (this.props.showTo) this.setState({ showTo: moment(this.props.showTo) })
+      this.props.timespanHasBeenSet()
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.clearShowFromAndShowTo()
   }
 
   async handleShowFromChange(date) {
@@ -66,6 +87,11 @@ export class TimespanPicker extends Component {
   }
 
   render() {
+    const { showFrom } = this.state
+    const now = moment()
+    const laterDateOfShowFromAndNow = showFrom && now.isBefore(showFrom) ? showFrom : now
+    const showToMinDate = moment(laterDateOfShowFromAndNow).add(1, 'd')
+
     return (
       <div>
         <div className='timespan-picker'>
@@ -77,7 +103,7 @@ export class TimespanPicker extends Component {
             timeFormat='timeFormat="HH:mm'
             placeholderText='Select start date'
             isClearable={true}
-            minDate={moment()}
+            minDate={now}
             onChange={this.handleShowFromChange} />
           to
           <DatePicker
@@ -87,7 +113,7 @@ export class TimespanPicker extends Component {
             timeFormat='timeFormat="HH:mm'
             placeholderText='Select end date'
             isClearable={true}
-            minDate={moment()}
+            minDate={showToMinDate}
             onChange={this.handleShowToChange} />
         </div>
         {this.state.error && <p className='timespan-picker__error'>{this.state.error}</p>}
@@ -98,17 +124,21 @@ export class TimespanPicker extends Component {
 
 TimespanPicker.propTypes = {
   showFrom: PropTypes.string,
-  showTo: PropTypes.string
+  showTo: PropTypes.string,
+  setTimespan: PropTypes.bool
 }
 
 const mapStateToProps = (state) => ({
   showFrom: state.jobPostingReducer.showFrom,
-  showTo: state.jobPostingReducer.showTo
+  showTo: state.jobPostingReducer.showTo,
+  setTimespan: state.jobPostingReducer.setTimespan
 })
 
 const mapDispatchToProps = {
   addShowFrom,
-  addShowTo
+  addShowTo,
+  clearShowFromAndShowTo,
+  timespanHasBeenSet
 }
 
 export default connect(

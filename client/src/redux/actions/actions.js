@@ -13,6 +13,8 @@ export const submitJobPosting = createAction(
     title, content, recruiter, stages, showFrom, showTo, mode, id
   }))
 
+export const copyJobPosting = createAction('COPY_JOB_POSTING', (jobPosting, stages) => ({ jobPosting, stages }))
+
 export const addJobPostingSuccess = createAction('ADDED_JOB_POSTING')
 export const addJobPostingFailure = createAction('ADD_JOB_POSTING_FAILED')
 export const removeJobPostingStatus = createAction('REMOVE_JOB_POSTING_CREATION_STATUS')
@@ -21,9 +23,10 @@ export const removeStageInJobPosting = createAction('REMOVE_STAGE_IN_JOB_POSTING
 
 export const addShowFrom = createAction('ADD_SHOW_FROM', (showFrom) => ({ showFrom }))
 export const addShowTo = createAction('ADD_SHOW_TO', (showTo) => ({ showTo }))
+export const clearShowFromAndShowTo = createAction('CLEAR_SHOW_FROM_AND_SHOW_TO')
+export const setTimeSpan = createAction('SET_TIMESPAN', (showFrom, showTo) => ({ showFrom, showTo }))
+export const timespanHasBeenSet = createAction('TIMESPAN_HAS_BEEN_SET')
 
-export const copyStages = createAction('COPY_STAGES', (stages) => ({ stages }))
-export const clearCopiedStages = createAction('CLEAR_COPIED_STAGES')
 export const setStages = createAction('SET_STAGES', (stages) => ({ stages }))
 export const clearStages = createAction('CLEAR_STAGES')
 

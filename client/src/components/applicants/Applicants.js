@@ -41,9 +41,16 @@ export class Applicants extends Component {
     this.props.emptyJobPosting()
   }
 
-  handleCopyStages = () => {
-    const { stages, copyStages } = this.props
-    copyStages(stages)
+  handleCopyJobPosting = () => {
+    const { jobPosting, stages, copyJobPosting } = this.props
+
+    const copiedJobPosting = {
+      title: jobPosting.title,
+      content: jobPosting.content,
+      showFrom: jobPosting.showFrom,
+      showTo: jobPosting.showTo
+    }
+    copyJobPosting(copiedJobPosting, stages)
   }
 
   onDrop = (result) => {
@@ -86,9 +93,12 @@ export class Applicants extends Component {
             <LinkButton link={`/position/${jobPosting.id}`} text={jobPosting.title}/>}
         </div>
         {!adminView &&
-          <Link to='/position/new' style={{ textDecoration: 'none' }}>
-            <button className='applicants__button' onClick={this.handleCopyStages}>
-              Copy Templates
+          <Link
+            to={{ pathname: '/position/new', state: { mode: 'copy' } }}
+            style={{ textDecoration: 'none' }}
+          >
+            <button className='applicants__button' onClick={this.handleCopyJobPosting}>
+              Copy as template
             </button>
           </Link>
         }
