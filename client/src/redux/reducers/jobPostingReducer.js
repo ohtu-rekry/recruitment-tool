@@ -81,7 +81,7 @@ const reducer = handleActions(
       showTo: action.payload.showTo,
       setTimespan: true
     }),
-    [actions.timespanSet]: (state) => ({
+    [actions.timespanHasBeenSet]: (state) => ({
       ...state,
       setTimespan: false
     }),

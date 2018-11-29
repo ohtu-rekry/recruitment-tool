@@ -30,7 +30,7 @@ export class Applicants extends Component {
     const { fetchApplicants, fetchJobPosting, adminView } = this.props
     const postingId = window.location.href.split('/')[4]
     if (nProps.loggedIn && !this.state.isLoaded && !adminView) {
-      fetchJobPosting(postingId, nProps.loggedIn)
+      fetchJobPosting(postingId)
       fetchApplicants(postingId)
       this.setState({ isLoaded: true })
     }
@@ -96,7 +96,7 @@ export class Applicants extends Component {
             style={{ textDecoration: 'none' }}
           >
             <button className='applicants__button' onClick={this.handleCopyJobPosting}>
-              Copy Position
+              Copy as template
             </button>
           </Link>
         }

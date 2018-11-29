@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import DatePicker from 'react-datepicker'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { addShowFrom, addShowTo, clearShowFromAndShowTo, timespanSet } from '../../redux/actions/actions'
+import { addShowFrom, addShowTo, clearShowFromAndShowTo, timespanHasBeenSet } from '../../redux/actions/actions'
 import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -19,7 +19,7 @@ export class TimespanPicker extends Component {
   }
 
   componentDidMount() {
-    if (this.props.setTimespan) {
+    if (this.props.setTimespan && this.props.showFrom) {
       const now = moment()
       const copiedShowFrom = moment(this.props.showFrom)
 
@@ -28,15 +28,15 @@ export class TimespanPicker extends Component {
 
       if (this.props.showTo) this.setState({ showTo: moment(this.props.showTo) })
 
-      this.props.timespanSet()
+      this.props.timespanHasBeenSet()
     }
   }
 
   componentDidUpdate() {
-    if (this.props.setTimespan) {
+    if (this.props.setTimespan && this.props.showFrom) {
       this.setState({ showFrom: moment(this.props.showFrom) })
       if (this.props.showTo) this.setState({ showTo: moment(this.props.showTo) })
-      this.props.timespanSet()
+      this.props.timespanHasBeenSet()
     }
   }
 
@@ -138,7 +138,7 @@ const mapDispatchToProps = {
   addShowFrom,
   addShowTo,
   clearShowFromAndShowTo,
-  timespanSet
+  timespanHasBeenSet
 }
 
 export default connect(

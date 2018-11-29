@@ -43,6 +43,7 @@ export class JobPostingForm extends Component {
           content: jobPosting.content
         })
       } else {
+        //if the copied job posting for some reason is not in store yet
         this.setState({
           mode: 'copy'
         })

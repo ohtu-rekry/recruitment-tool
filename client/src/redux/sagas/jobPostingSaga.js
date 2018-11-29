@@ -102,7 +102,8 @@ function* fetchJobPostingWithStages({ payload }) {
       }
       yield put(actions.setJobPosting(newJobPosting))
 
-      const stages = jobPosting.postingStages.slice().sort((a, b) => a.orderNumber - b.orderNumber)
+      const stages = [...jobPosting.postingStages]
+      stages.sort((a, b) => a.orderNumber - b.orderNumber)
       yield put(actions.setStages(stages))
 
       yield put(actions.setTimeSpan(jobPosting.showFrom, jobPosting.showTo))

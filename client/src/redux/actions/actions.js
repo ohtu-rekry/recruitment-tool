@@ -25,7 +25,7 @@ export const addShowFrom = createAction('ADD_SHOW_FROM', (showFrom) => ({ showFr
 export const addShowTo = createAction('ADD_SHOW_TO', (showTo) => ({ showTo }))
 export const clearShowFromAndShowTo = createAction('CLEAR_SHOW_FROM_AND_SHOW_TO')
 export const setTimeSpan = createAction('SET_TIMESPAN', (showFrom, showTo) => ({ showFrom, showTo }))
-export const timespanSet = createAction('TIMESPAN_SET')
+export const timespanHasBeenSet = createAction('TIMESPAN_HAS_BEEN_SET')
 
 export const setStages = createAction('SET_STAGES', (stages) => ({ stages }))
 export const clearStages = createAction('CLEAR_STAGES')
