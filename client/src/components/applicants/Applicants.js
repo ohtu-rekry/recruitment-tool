@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import * as actions from '../../redux/actions/actions'
 import { Link } from 'react-router-dom'
+import { LinkButton } from '../Buttons'
 
 import ApplicationStage from './ApplicationStage'
 import ApplicantModal from './ApplicantModal'
@@ -81,7 +82,8 @@ export class Applicants extends Component {
     return (
       <div className='applicants'>
         <div className='applicants__title'>
-          {applicants ? 'All applicants' : jobPosting.title}
+          {applicants ? 'All applicants' :
+            <LinkButton link={`/position/${jobPosting.id}`} text={jobPosting.title}/>}
         </div>
         {!adminView &&
           <Link to='/position/new' style={{ textDecoration: 'none' }}>
