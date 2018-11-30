@@ -23,7 +23,8 @@ const checkTokenExpirationMiddleware = store => next => action => {
 
     if (token && jwt.decode(token).exp < Date.now() / 1000) {
       store.dispatch({
-        type: 'LOGOUT'
+        type: 'LOGOUT',
+        payload: true
       })
     }
   }

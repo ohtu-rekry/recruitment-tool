@@ -24,11 +24,11 @@ function* requestLogin({ payload }) {
   }
 }
 
-function* requestLogout() {
+function* requestLogout({ payload }) {
   try {
     window.localStorage.clear()
 
-    yield put(actions.logoutSuccess())
+    yield put(actions.logoutSuccess(payload === true))
     yield put(push('/'))
 
     const oldPostings = yield select(getCurrentPostings)

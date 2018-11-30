@@ -3,8 +3,9 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Typography from '@material-ui/core/Typography'
 
-import { fetchJobPostings } from '../../redux/actions/actions'
+import { fetchJobPostings, emptyTokenExpired } from '../../redux/actions/actions'
 import JobPostingListing from './JobPostingListing'
+import LogoutSnackbar from './LogoutSnackbar'
 
 class FrontPage extends Component {
 
@@ -13,12 +14,19 @@ class FrontPage extends Component {
     fetchJobPostings(this.props.loggedIn)
   }
 
+  handleCloseSnackbar = () => {
+    this.props.emptyTokenExpired()
+  }
+
   render() {
     const titleStyle = {
       color: '#002234'
     }
     return (
       <div className='frontpage'>
+        {this.props.tokenExpired &&
+          <LogoutSnackbar handleCloseSnackbar={this.handleCloseSnackbar} />
+        }
         <Typography variant='display1' align='center' className='job-postings__title' style={titleStyle}>
           Open positions
         </Typography>
@@ -35,16 +43,20 @@ class FrontPage extends Component {
 }
 
 FrontPage.propTypes = {
-  jobPostings: PropTypes.array.isRequired
+  jobPostings: PropTypes.array.isRequired,
+  tokenExpired: PropTypes.bool,
+  emptyTokenExpired: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
   jobPostings: state.jobPostingReducer.jobPostings,
-  loggedIn: state.loginReducer.loggedIn
+  loggedIn: state.loginReducer.loggedIn,
+  tokenExpired: state.loginReducer.tokenExpired
 })
 
 const mapDispatchToProps = {
-  fetchJobPostings
+  fetchJobPostings,
+  emptyTokenExpired
 }
 
 export default connect(
