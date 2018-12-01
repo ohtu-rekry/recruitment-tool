@@ -4,6 +4,7 @@ import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
+import { ExitToApp } from '@material-ui/icons'
 import { ActionButton, LinkButton } from './Buttons'
 import MobileMenu from './MobileMenu'
 
@@ -30,7 +31,7 @@ export class Header extends Component {
   render() {
     const { onMobile } = this.state
     const { loggedIn } = this.props
-    
+
     return (
       <div className='navigation-bar'>
         <Link to='/' className='navigation-bar__title'>
@@ -40,11 +41,16 @@ export class Header extends Component {
         <div className='navigation-bar__middle'></div>
         {!onMobile ?
           <React.Fragment>
-            <LinkButton link='/positions' text='All postings' className='navigation-bar__button' />
+            <LinkButton link='/positions' text='All postings'/>
             {loggedIn &&
             <React.Fragment>
-              <LinkButton link='/position/new' text='New posting' className='navigation-bar__button' />
-              <ActionButton actionHandler={this.props.logout} text='Log out' className='navigation-bar__button' />
+              <LinkButton link='/position/new' text='New posting'/>
+              <button
+                onClick={this.props.logout}
+                className='navigation-bar__button'
+              >
+                Log out <ExitToApp style={{ fontSize: 20, marginLeft: 5 }}/>
+              </button>
             </React.Fragment>
             }
           </React.Fragment>

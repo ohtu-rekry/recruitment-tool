@@ -32,9 +32,19 @@
   }
 
   &__button {
-    display: inline;
-    margin-left: auto;
-    margin-right: -12;
+    cursor: pointer;
+    border: none;
+    background-color: $emblica-blue;
+    outline: none;
+    color: $gray-lightest;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    margin-right: 10px;
+    font-family: inherit;
   }
 
   &__hamburger-menu {
@@ -56,7 +66,7 @@
     flex-direction: column;
     border-radius: 5px;
     border: 1px solid $gray-dark;
-    background-color: $gray-lighter;
+    background-color: $gray-lightest;
     box-shadow: 0 2px 3px -1px rgba(0,0,0,0.2);
     outline: none;
   }
@@ -65,16 +75,16 @@
     content: "";
     position: absolute;
     bottom: 100%;
-	  left: 86%;
+    left: 86%;
     border: solid transparent;
     pointer-events: none;
-    border-bottom-color: $gray-lighter;
+    border-bottom-color: $gray-lightest;
     border-width: 12px;
     margin-left: -12px;
   }
   
   &__drop-down-menu-item {
-    background-color: $gray-lighter;
+    background-color: $gray-lightest;
     height: 40px;
     border: none;
     outline: none;
