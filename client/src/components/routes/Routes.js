@@ -68,7 +68,7 @@ class Routes extends Component {
             <Route exact path="/applications" render={() =>
               willBeLoggedIn || loggedIn
                 ? <AdminFrontPage />
-                : <Redirect to='/' />
+                : <Redirect to='/positions' />
             } />
             <Route exact path="/positions" render={() => <App />} />
             <Route exact path="/success" render={() => <ApplicationSuccess />} />
