@@ -84,6 +84,22 @@
         outline: none;
         margin-right: 4px;
       }
+      &__hidden {
+        display: none;
+      }
+      &__visible {
+        display: block;
+      }
+    }
+
+    &__chip {
+      
+      &__hidden {
+        display: none;
+      }
+      &__visible {
+        display: inline-flex;
+      }
     }
   }
 
