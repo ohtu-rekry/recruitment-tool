@@ -84,9 +84,8 @@ describe('FETCH applicants for jobPosting', async () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body.length === 2)
-    expect(response.body[0].length === 1)
-    expect(response.body[1].length === 0)
+    expect(response.body.length === 3)
+
   })
 
   test('applicants cannot be fetched when not logged in', async () => {
