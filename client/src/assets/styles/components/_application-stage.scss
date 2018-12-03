@@ -5,6 +5,7 @@
   &__title {
     display: inline-block;
     margin: 10px 15px 0 10px;
+    padding: 15px 0 5px;
     font-size: 20px;
     font-weight: 700;
   }
@@ -47,7 +48,6 @@
   padding: 5px 3px 10px;
   border-radius: 12px;
   align-content: center;
-  text-align: center;
   background-color: $gray-darker;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
 
@@ -70,6 +70,7 @@
     white-space: nowrap;
     overflow-y: hidden;
     overflow-x: auto;
+    text-align: center;
   }
 
   &__placeholder {

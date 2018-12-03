@@ -46,8 +46,8 @@ class Routes extends Component {
             } />
             <Route exact path="/" render={() =>
               willBeLoggedIn || loggedIn
-                ? <AdminFrontPage />
-                : <App />
+                ? <Redirect to='/applications' />
+                : <Redirect to='/positions' />
             } />
             <Route path="/position/new" render={() =>
               willBeLoggedIn || loggedIn
@@ -65,6 +65,11 @@ class Routes extends Component {
                 : <Redirect to='/positions' />
             } />
             <Route exact path="/position/:id" render={() => <JobPosting />} />
+            <Route exact path="/applications" render={() =>
+              willBeLoggedIn || loggedIn
+                ? <AdminFrontPage />
+                : <Redirect to='/positions' />
+            } />
             <Route exact path="/positions" render={() => <App />} />
             <Route exact path="/success" render={() => <ApplicationSuccess />} />
           </Switch>

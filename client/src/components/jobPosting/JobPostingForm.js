@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 
 import TimespanPicker from './TimespanPicker'
 import JobPostingStages from './JobPostingStages'
-import { submitJobPosting, fetchJobPostingWithStages, emptyJobPosting, setStages } from '../../redux/actions/actions'
+import { submitJobPosting, fetchJobPostingWithStages, emptyJobPosting } from '../../redux/actions/actions'
 
 
 export class JobPostingForm extends Component {
@@ -33,17 +33,40 @@ export class JobPostingForm extends Component {
       this.setState({ id: jobPostingId })
       this.props.fetchJobPostingWithStages(jobPostingId)
     }
+
+    if (this.props.location.state && this.props.location.state.mode === 'copy') {
+
+      if (this.props.jobPosting.title) {
+        const jobPosting = this.props.jobPosting
+        this.setState({
+          title: jobPosting.title,
+          content: jobPosting.content
+        })
+      } else {
+        //if the copied job posting for some reason is not in store yet
+        this.setState({
+          mode: 'copy'
+        })
+      }
+    }
   }
 
   componentDidUpdate(prevProps) {
-    if (this.state.mode === 'edit' && this.props.jobPostingToEdit.id && this.props.jobPostingToEdit !== prevProps.jobPostingToEdit) {
-      const jobPosting = this.props.jobPostingToEdit
+    if (this.state.mode === 'edit' && this.props.jobPosting.id && this.props.jobPosting !== prevProps.jobPosting) {
+      const jobPosting = this.props.jobPosting
       this.setState({
         title: jobPosting.title,
         content: jobPosting.content
       })
-      const stages = jobPosting.postingStages.sort((a, b) => a.orderNumber - b.orderNumber)
-      this.props.setStages(stages)
+    }
+
+    if (this.state.mode === 'copy' && this.props.jobPosting.title) {
+      const jobPosting = this.props.jobPosting
+      this.setState({
+        title: jobPosting.title,
+        content: jobPosting.content,
+        mode: 'create'
+      })
     }
   }
 
@@ -163,12 +186,10 @@ JobPostingForm.propTypes = {
   jobPostingStages: PropTypes.array,
   showFrom: PropTypes.string,
   showTo: PropTypes.string,
-  showFromIsAdded: PropTypes.func,
-  jobPostingToEdit: PropTypes.object,
+  jobPosting: PropTypes.object,
   submitJobPosting: PropTypes.func.isRequired,
   fetchJobPostingWithStages: PropTypes.func.isRequired,
-  emptyJobPosting: PropTypes.func.isRequired,
-  setStages: PropTypes.func.isRequired
+  emptyJobPosting: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -177,17 +198,16 @@ const mapStateToProps = (state) => ({
   jobPostingStages: state.jobPostingReducer.jobPostingStages,
   showFrom: state.jobPostingReducer.showFrom,
   showTo: state.jobPostingReducer.showTo,
-  jobPostingToEdit: state.postingReducer.jobPosting
+  jobPosting: state.postingReducer.jobPosting
 })
 
 const mapDispatchToProps = {
   submitJobPosting,
   fetchJobPostingWithStages,
-  emptyJobPosting,
-  setStages
+  emptyJobPosting
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(JobPostingForm)
+)(JobPostingForm))
