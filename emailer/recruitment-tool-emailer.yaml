@@ -22,9 +22,13 @@ spec:
             env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /etc/gcloud-service-account/emblica-212815-8c1abce476a1.json
+            - name: SITE_URL
+              value: "https://rekrysofta-staging.apps.emblica.com"
             envFrom:
             - secretRef:
                 name: database-staging
+            - secretRef:
+                name: smtp
             volumeMounts:
             - name: gcloud-service-account
               mountPath: /etc/gcloud-service-account
