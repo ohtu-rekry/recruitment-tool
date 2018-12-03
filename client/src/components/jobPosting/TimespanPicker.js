@@ -29,6 +29,14 @@ export class TimespanPicker extends Component {
       if (this.props.showTo) this.setState({ showTo: moment(this.props.showTo) })
 
       this.props.timespanHasBeenSet()
+    } else if (!this.props.setTimespan) {
+
+      const now = moment().startOf('day')
+      this.setState({ showFrom: now })
+
+      const formattedDate = now.toLocaleString()
+      this.props.addShowFrom(formattedDate)
+
     }
   }
 
@@ -45,7 +53,7 @@ export class TimespanPicker extends Component {
   }
 
   async handleShowFromChange(date) {
-    if (date !== undefined && (date === null || !this.state.showTo || date.isBefore(this.state.showTo))) {
+    if (date !== undefined && (date === null || !this.state.showTo || date.isSameOrBefore(this.state.showTo))) {
       if (date === null) {
         await this.setState({
           showFrom: null,
@@ -68,7 +76,7 @@ export class TimespanPicker extends Component {
   }
 
   async handleShowToChange(date) {
-    if (date !== undefined && (date === null || date.isAfter(this.state.showFrom))) {
+    if (date !== undefined && (date === null || date.isSameOrAfter(this.state.showFrom))) {
       await this.setState({
         showTo: date,
         error: ''
@@ -81,7 +89,7 @@ export class TimespanPicker extends Component {
 
     } else if (date) {
       this.setState({
-        error: 'Selected date needs to be after start date'
+        error: 'Selected date needs to be same or after start date'
       })
     }
   }
@@ -90,7 +98,7 @@ export class TimespanPicker extends Component {
     const { showFrom } = this.state
     const now = moment()
     const laterDateOfShowFromAndNow = showFrom && now.isBefore(showFrom) ? showFrom : now
-    const showToMinDate = moment(laterDateOfShowFromAndNow).add(1, 'd')
+    const showToMinDate = moment(laterDateOfShowFromAndNow)
 
     return (
       <div>
