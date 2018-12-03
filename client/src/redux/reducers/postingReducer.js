@@ -24,6 +24,10 @@ const reducer = handleActions(
       ...state,
       jobPosting: action.payload
     }),
+    [actions.copyJobPosting]: (state, action) => ({
+      ...state,
+      jobPosting: action.payload.jobPosting
+    }),
     [actions.emptyJobPosting]: (state) => ({
       ...state,
       jobPosting: {},

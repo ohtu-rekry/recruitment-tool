@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import { JobPostingForm } from '../../../components/jobPosting/JobPostingForm'
 
 describe('JobPostingForm', () => {
-  let shallow, emptyJobPostings, emptyFunction,
+  let shallow, emptyJobPostings, emptyObject, emptyFunction,
     exampleSuccessMessage, exampleErrorMessage, exampleTitle, exampleContent, exampleRecruiter
 
   beforeEach( () => {
@@ -13,6 +13,7 @@ describe('JobPostingForm', () => {
       jobPostings: [],
       creationRequestStatus: null
     }
+    emptyObject = {}
     emptyFunction = () => {}
     exampleSuccessMessage = 'Job posting created'
     exampleErrorMessage = 'An error occurred'
@@ -25,7 +26,7 @@ describe('JobPostingForm', () => {
   })
 
   it('renders one job posting form if recruiter is logged in', () => {
-    const component = shallow(<JobPostingForm jobPostings={emptyJobPostings} loggedIn={exampleRecruiter} submitJobPosting={emptyFunction} fetchJobPostingWithStages={emptyFunction} emptyJobPosting={emptyFunction} setStages={emptyFunction} />)
+    const component = shallow(<JobPostingForm jobPostings={emptyJobPostings} loggedIn={exampleRecruiter} submitJobPosting={emptyFunction} fetchJobPostingWithStages={emptyFunction} emptyJobPosting={emptyFunction} location={emptyObject} />)
     expect(component.find('#job-posting-form')).to.have.lengthOf(1)
   })
 
@@ -34,7 +35,7 @@ describe('JobPostingForm', () => {
     describe('snackbar works when', () => {
 
       it('creationRequestStatus is null', () => {
-        const component = shallow(<JobPostingForm jobPostings={emptyJobPostings} loggedIn={exampleRecruiter} submitJobPosting={emptyFunction} fetchJobPostingWithStages={emptyFunction} emptyJobPosting={emptyFunction} setStages={emptyFunction} />)
+        const component = shallow(<JobPostingForm jobPostings={emptyJobPostings} loggedIn={exampleRecruiter} submitJobPosting={emptyFunction} fetchJobPostingWithStages={emptyFunction} emptyJobPosting={emptyFunction} location= {emptyObject} />)
         expect(component.find('#snackbar-error')).to.be.empty
         expect(component.find('#snackbar-success')).to.be.empty
       })
@@ -45,7 +46,7 @@ describe('JobPostingForm', () => {
           type: 'error'
         }
 
-        const component = shallow(<JobPostingForm creationRequestStatus={errorStatus} loggedIn={exampleRecruiter} submitJobPosting={emptyFunction} fetchJobPostingWithStages={emptyFunction} emptyJobPosting={emptyFunction} setStages={emptyFunction} />)
+        const component = shallow(<JobPostingForm creationRequestStatus={errorStatus} loggedIn={exampleRecruiter} submitJobPosting={emptyFunction} fetchJobPostingWithStages={emptyFunction} emptyJobPosting={emptyFunction} location= {emptyObject} />)
         expect(component.exists('#snackbar-error')).to.equal(true)
         expect(component.find('#snackbar-error').html()).to.include(exampleErrorMessage)
         expect(component.find('#snackbar-success')).to.be.empty
@@ -57,7 +58,7 @@ describe('JobPostingForm', () => {
           type: 'success'
         }
 
-        const component = shallow(<JobPostingForm creationRequestStatus={successStatus} loggedIn={exampleRecruiter} submitJobPosting={emptyFunction} fetchJobPostingWithStages={emptyFunction} emptyJobPosting={emptyFunction} setStages={emptyFunction} />)
+        const component = shallow(<JobPostingForm creationRequestStatus={successStatus} loggedIn={exampleRecruiter} submitJobPosting={emptyFunction} fetchJobPostingWithStages={emptyFunction} emptyJobPosting={emptyFunction} location= {emptyObject} />)
         expect(component.exists('#snackbar-success')).to.equal(true)
         expect(component.find('#snackbar-success').html()).to.include(exampleSuccessMessage)
         expect(component.find('#snackbar-error')).to.be.empty
@@ -68,7 +69,7 @@ describe('JobPostingForm', () => {
       let component, titleField, contentField
 
       beforeEach( () => {
-        component = shallow(<JobPostingForm jobPostings={emptyJobPostings} loggedIn={exampleRecruiter} submitJobPosting={emptyFunction} fetchJobPostingWithStages={emptyFunction} emptyJobPosting={emptyFunction} setStages={emptyFunction} />)
+        component = shallow(<JobPostingForm jobPostings={emptyJobPostings} loggedIn={exampleRecruiter} submitJobPosting={emptyFunction} fetchJobPostingWithStages={emptyFunction} emptyJobPosting={emptyFunction} location= {emptyObject} />)
         titleField = component.find('#title')
         contentField = component.find('#content')
       })
@@ -109,7 +110,7 @@ describe('JobPostingForm', () => {
 
       beforeEach( () => {
         mockSubmitJobPostingDispatched = jest.fn((title, content) => ([title, content]))
-        component = shallow(<JobPostingForm jobPostings={emptyJobPostings} submitJobPosting={mockSubmitJobPostingDispatched} fetchJobPostingWithStages={emptyFunction} emptyJobPosting={emptyFunction} setStages={emptyFunction} loggedIn={exampleRecruiter} />)
+        component = shallow(<JobPostingForm jobPostings={emptyJobPostings} submitJobPosting={mockSubmitJobPostingDispatched} fetchJobPostingWithStages={emptyFunction} emptyJobPosting={emptyFunction} loggedIn={exampleRecruiter} location= {emptyObject} />)
       })
 
       it('title and content have values', () => {

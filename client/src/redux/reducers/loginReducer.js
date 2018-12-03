@@ -4,7 +4,8 @@ import * as actions from '../actions/actions'
 const initialState = {
   loggedIn: null,
   loginError: null,
-  logoutError: null
+  logoutError: null,
+  tokenExpired: false
 }
 
 const reducer = handleActions(
@@ -16,7 +17,8 @@ const reducer = handleActions(
     }),
     [actions.logoutSuccess]: (state, action) => ({
       ...state,
-      loggedIn: null
+      loggedIn: null,
+      tokenExpired: action.payload
     }),
     [actions.loginFailure]: (state, action) => ({
       ...state,
@@ -26,6 +28,10 @@ const reducer = handleActions(
       ...state,
       logoutError: action.payload
     }),
+    [actions.emptyTokenExpired]: (state) => ({
+      ...state,
+      tokenExpired: false
+    })
   },
   initialState
 )
