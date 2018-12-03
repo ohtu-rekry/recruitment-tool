@@ -22,7 +22,7 @@ loginRouter.post('/', loginValidator, async (req, res) => {
     id: recruiter.id
   }
 
-  const token = jwt.sign(userForToken, process.env.JWT_SECRET)
+  const token = jwt.sign(userForToken, process.env.JWT_SECRET, { expiresIn: '1d' })
   res.status(200).send({ token, username: recruiter.username })
 })
 

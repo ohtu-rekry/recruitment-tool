@@ -52,17 +52,17 @@ class Routes extends Component {
             <Route path="/position/new" render={() =>
               willBeLoggedIn || loggedIn
                 ? <JobPostingForm mode='create' />
-                : <Redirect to='/admin/login' />
+                : <Redirect to='/positions' />
             } />
             <Route exact path="/position/:id/applicants" render={() =>
               willBeLoggedIn || loggedIn
                 ? <Applicants adminView={false} />
-                : <Redirect to="/admin/login" />
+                : <Redirect to="/positions" />
             } />
             <Route exact path="/position/:id/edit" render={() =>
               willBeLoggedIn || loggedIn
                 ? <JobPostingForm mode='edit' />
-                : <Redirect to='/admin/login' />
+                : <Redirect to='/positions' />
             } />
             <Route exact path="/position/:id" render={() => <JobPosting />} />
             <Route exact path="/applications" render={() =>

@@ -7,10 +7,11 @@ export const loginFailure = createAction('LOGIN_FAILURE')
 export const logout = createAction('LOGOUT')
 export const logoutSuccess = createAction('LOGOUT_SUCCESS')
 export const logoutFailure = createAction('LOGOUT_FAILURE')
+export const emptyTokenExpired = createAction('EMPTY_TOKEN_EXPIRED')
 
 export const submitJobPosting = createAction(
-  'SUBMIT_JOB_POSTING', (title, content, recruiter, stages, showFrom, showTo, mode, id) => ({
-    title, content, recruiter, stages, showFrom, showTo, mode, id
+  'SUBMIT_JOB_POSTING', (title, content, stages, showFrom, showTo, mode, id) => ({
+    title, content, stages, showFrom, showTo, mode, id
   }))
 
 export const copyJobPosting = createAction('COPY_JOB_POSTING', (jobPosting, stages) => ({ jobPosting, stages }))

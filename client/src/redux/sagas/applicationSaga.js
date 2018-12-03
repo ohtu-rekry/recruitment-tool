@@ -23,6 +23,11 @@ function* sendApplication({ payload }) {
 function* moveApplicant({ payload }) {
   try {
     const recruiter = yield select(getCurrentUser)
+
+    if (!recruiter) {
+      return
+    }
+
     const stages = yield select(getStages)
     const token = recruiter.token
     const { applicant, newStage, oldStage, oldIndex } = payload
@@ -74,6 +79,11 @@ function* moveApplicant({ payload }) {
 function* getApplicants() {
   try {
     const recruiter = yield select(getCurrentUser)
+
+    if (!recruiter) {
+      return
+    }
+
     const token = recruiter.token
 
     const response = yield call(jobApplicationApi.get, { token })
@@ -146,6 +156,11 @@ function* getApplicants() {
 function* addComment({ payload }) {
   try {
     const recruiter = yield select(getCurrentUser)
+
+    if (!recruiter) {
+      return
+    }
+
     const data = {
       token: recruiter.token,
       applicationId: payload.applicationId,
@@ -196,6 +211,11 @@ function* addComment({ payload }) {
 function* getComments({ payload }) {
   try {
     const recruiter = yield select(getCurrentUser)
+
+    if (!recruiter) {
+      return
+    }
+
     const data = {
       token: recruiter.token,
       id: payload
