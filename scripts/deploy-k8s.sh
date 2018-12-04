@@ -26,3 +26,5 @@ gcloud config set compute/region europe-north1
 gcloud container clusters get-credentials emblica-cluster-1 --region europe-north1
 
 kubectl set image deployment/${K8S_DEPLOYMENT_NAME} ${K8S_DEPLOYMENT_NAME}=${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER} -n rekrysofta
+
+kubectl exec -it -n rekrysofta $(kubectl get pods -n rekrysofta | grep server | awk '{ print $1 }') -- bash -c 'npm run migrate:production'
