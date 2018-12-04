@@ -53,21 +53,21 @@ export class TimespanPicker extends Component {
   }
 
   async handleShowFromChange(date) {
-    if (date !== undefined && (date === null || !this.state.showTo || date.isSameOrBefore(this.state.showTo))) {
-      if (date === null) {
-        await this.setState({
-          showFrom: null,
-          showTo: null
-        })
-        this.props.addShowFrom(null)
-      } else {
-        await this.setState({
-          showFrom: date,
-          error: ''
-        })
-        const formattedDate = date.toLocaleString()
-        this.props.addShowFrom(formattedDate)
-      }
+    if (!date) {
+      await this.setState({
+        showFrom: null,
+        showTo: null
+      })
+      this.props.addShowFrom(null)
+    }
+
+    if (!this.state.showTo || date.isSameOrBefore(this.state.showTo)) {
+      await this.setState({
+        showFrom: date,
+        error: ''
+      })
+      const formattedDate = date.toLocaleString()
+      this.props.addShowFrom(formattedDate)
     } else {
       this.setState({
         error: 'Selected date needs to be before end date'
@@ -107,7 +107,7 @@ export class TimespanPicker extends Component {
           <DatePicker
             className='timespan-picker__datepicker'
             selected={this.state.showFrom}
-            dateFormat='DD-MM-YYYY'
+            dateFormat='DD.MM.YYYY'
             timeFormat='timeFormat="HH:mm'
             placeholderText='Select start date'
             isClearable={true}
@@ -117,7 +117,7 @@ export class TimespanPicker extends Component {
           <DatePicker
             className='timespan-picker__datepicker'
             selected={this.state.showTo}
-            dateFormat='DD-MM-YYYY'
+            dateFormat='DD.MM.YYYY'
             timeFormat='timeFormat="HH:mm'
             placeholderText='Select end date'
             isClearable={true}

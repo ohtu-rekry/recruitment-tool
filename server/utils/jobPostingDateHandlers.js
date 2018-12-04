@@ -4,7 +4,6 @@ const momentTz = require('moment-timezone')
 const { JobPosting } = require('../db/models')
 
 const nowIsAfterFrom = (showFrom, showTo, now) => {
-  console.log(`From: ${showFrom}, To: ${showTo}, Now: ${now}`)
   return showFrom && !showTo && moment(now).isSameOrAfter(showFrom)
 }
 
@@ -17,15 +16,15 @@ function validateDate(date) {
     return null
   }
   const timeZone = 'Europe/Helsinki'
-  return momentTz.tz(date, 'YYYY-MM-DD', timeZone)
+  return momentTz.tz(date, 'DD.MM.YYYY', timeZone)
 }
 
 function formatDate(date) {
   if (date === null) {
     return null
   }
-  let momentObj = moment(date, 'YYYY-MM-DD')
-  return momentObj.format('YYYY-MM-DD')
+  let momentObj = moment(date, 'DD.MM.YYYY')
+  return momentObj.format('DD.MM.YYYY')
 }
 
 async function handleJobPostingsForAdmin() {
@@ -37,7 +36,6 @@ async function handleJobPostingsForAdmin() {
     const from = validateDate(jobposting.showFrom)
     const to = validateDate(jobposting.showTo)
 
-    console.log(jobposting.title)
     jobposting.isHidden =
       !(nowIsBetweenFromTo(from, to, now)
       || nowIsAfterFrom(from, to, now))

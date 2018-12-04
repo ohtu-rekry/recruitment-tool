@@ -187,12 +187,14 @@ const ErrorMessage = ({ errorMessage }) => {
 const HiddenNotification = ({ showFrom, showTo }) => {
   let visibilityMessage = 'Permanently hidden'
 
-  if (showFrom) {
+  if (showFrom && !showTo) {
+
     visibilityMessage = `Visible from ${showFrom}`
 
-    if (showTo) {
-      visibilityMessage = `Visible from ${showFrom} to ${showTo}`
-    }
+  } else if (showFrom && showTo) {
+
+    visibilityMessage = `Visible from ${showFrom} to ${showTo}`
+
   }
 
   return (
