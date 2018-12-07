@@ -12,7 +12,8 @@ const initialState = {
   copiedStages: null,
   showFrom: null,
   showTo: null,
-  defaultStageNames
+  defaultStageNames,
+  stageError: ''
 }
 
 const reducer = handleActions(
@@ -73,6 +74,10 @@ const reducer = handleActions(
         }
         return stage
       })]
+    }),
+    [actions.setStageError]: (state, action) => ({
+      ...state,
+      stageError: action.payload.errorMessage
     }),
     [actions.addShowFrom]: (state, action) => ({
       ...state,

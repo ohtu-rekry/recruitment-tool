@@ -2,24 +2,39 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Chip } from '@material-ui/core'
 
+import { renamePostingStage, setStageError, removeStageInJobPosting } from '../../redux/actions/actions'
+
 export class JobPostingStage extends Component {
   constructor(props) {
     super(props)
     this.state = {
       stageUnderEdit: '',
       chipHidden: false,
-      inputClassName: '__hidden'
+      inputClassName: '__hidden',
+      currentStages: []
     }
     this.textInput = React.createRef()
   }
 
-  handleStageClick = (jobPostingStage) => {
+  componentDidMount() {
+    const currentStageNames = this.props.jobPostingStages.map((stage) =>
+      stage.stageName)
     this.setState({
-      stageUnderEdit: jobPostingStage.stageName,
+      currentStages: currentStageNames
+    })
+  }
+
+  handleStageDelete = (stage) => {
+    this.props.removeStageInJobPosting(stage)
+  }
+
+  handleStageClick = async () => {
+    await this.setState({
+      stageUnderEdit: '',
       chipHidden: true,
       inputClassName: '__visible'
     })
-    this.textInput.current.focus()
+    await this.textInput.current.focus()
   }
 
   handleStageHide = () => {
@@ -40,17 +55,17 @@ export class JobPostingStage extends Component {
     e.preventDefault()
     if (this.verifyStageName(this.state.stageUnderEdit)) {
       this.props.renamePostingStage(jobPostingStage, this.state.stageUnderEdit)
-      document.getElementById(jobPostingStage.stageName).style.display = 'none'
+      this.props.setStageError({ errorMessage: '' })
       const updatedCurrentStages = this.state.currentStages.map((stage) =>
         stage === jobPostingStage.stageName ? this.state.stageUnderEdit : jobPostingStage.stageName)
       this.setState({
+        chipHidden: false,
+        inputClassName: '__hidden',
         currentStages: updatedCurrentStages,
         stageUnderEdit: ''
       })
     } else {
-      this.setState({
-        error: true
-      })
+      this.props.setStageError({ errorMessage: 'Invalid stage name. Stage was not renamed' })
     }
   }
 
@@ -67,7 +82,6 @@ export class JobPostingStage extends Component {
   render() {
     const { jobPostingStage, className } = this.props
     const chipClassName = this.state.chipHidden ? 'none' : 'inline-flex'
-    console.log(this.props)
     return (
       <div>
         {
@@ -77,7 +91,7 @@ export class JobPostingStage extends Component {
               style={{ display: chipClassName }}
               className={className + '__chip'}
               label={(this.props.index + 1) + '. ' + jobPostingStage.stageName}
-              onClick={() => this.handleStageClick(jobPostingStage)}
+              onClick={() => this.handleStageClick()}
               onDelete={() => this.handleStageDelete(jobPostingStage)} />
             <form className={className + '__stage-name-edit' + this.state.inputClassName} onChange={this.handleStageRenameChange} onSubmit={(e) => this.handleStageRename(e, jobPostingStage)}>
               <input ref={this.textInput} onBlur={() => this.handleStageHide(jobPostingStage)} className={className + '__stage-name-edit__input'} type="text"></input>
@@ -93,8 +107,8 @@ export class JobPostingStage extends Component {
               label={(this.props.index + 1) + '. ' + jobPostingStage.stageName}
               onClick={() => this.handleStageClick(jobPostingStage)}
             />
-            <form id={jobPostingStage.stageName} onChange={this.handleStageRenameChange} onSubmit={(e) => this.handleStageRename(e, jobPostingStage)} className={className + '__stage-name-edit'}>
-              <input id={`${jobPostingStage.stageName}_input`} onBlur={() => this.handleStageHide(jobPostingStage)} className={className + '__stage-name-edit__input'} type="text"></input>
+            <form className={className + '__stage-name-edit' + this.state.inputClassName} onChange={this.handleStageRenameChange} onSubmit={(e) => this.handleStageRename(e, jobPostingStage)}>
+              <input ref={this.textInput} onBlur={() => this.handleStageHide(jobPostingStage)} className={className + '__stage-name-edit__input'} type="text"></input>
             </form>
           </div>
         }
@@ -114,11 +128,13 @@ export class JobPostingStage extends Component {
 
 const mapStateToProps = (state) => ({
   jobPostingStages: state.jobPostingReducer.jobPostingStages,
-  stages: state.jobPostingReducer.copiedStages,
   defaultStageNames: state.jobPostingReducer.defaultStageNames
 })
 
 const mapDispatchToProps = {
+  renamePostingStage,
+  setStageError,
+  removeStageInJobPosting
 }
 
 export default connect(

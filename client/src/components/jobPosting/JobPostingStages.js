@@ -5,17 +5,14 @@ import AddIcon from '@material-ui/icons/Add'
 import PropTypes from 'prop-types'
 import JobPostingStage from './JobPostingStage'
 
-import { addNewStageForJobPosting, removeStageInJobPosting, clearCopiedStages, clearStages, renamePostingStage } from '../../redux/actions/actions'
+import { addNewStageForJobPosting, removeStageInJobPosting, clearCopiedStages, clearStages, setStageError } from '../../redux/actions/actions'
 
 export class JobPostingStages extends Component {
   constructor(props) {
     super(props)
     this.state = {
       currentStages: [],
-      newStageName: '',
-      error: false,
-      stageUnderEdit: '',
-      helperText: props.helperText
+      newStageName: ''
     }
   }
 
@@ -44,11 +41,12 @@ export class JobPostingStages extends Component {
 
   addNewStage = () => {
     if (!this.verifyStageName(this.state.newStageName)) {
-      this.setState({ error: true })
+      this.props.setStageError({ errorMessage: 'Invalid stage name. Stage was not added' })
       return
     }
 
     this.props.addNewStageForJobPosting({ stageName: this.state.newStageName, canRemove: true })
+    this.props.setStageError({ errorMessage: '' })
     this.setState({
       currentStages: [...this.state.currentStages, this.state.newStageName],
       newStageName: ''
@@ -83,8 +81,7 @@ export class JobPostingStages extends Component {
   }
 
   render() {
-    const error = this.state.error
-    const helperText = error ? 'Invalid stage name. Stage was not added' : this.state.helperText
+    const error = this.props.stageError ? this.props.stageError : ''
 
     const classNames = 'job-posting-form-stages'
     return (
@@ -100,8 +97,8 @@ export class JobPostingStages extends Component {
             onChange={this.handleNameChange}
             onKeyPress={this.handleKeyPress}
             variant="outlined"
-            helperText={helperText}
-            error={error}
+            helperText={error}
+            error={!!error}
           />
         </div>
         <div className={classNames + '__new-stage-add-button'}>
@@ -129,7 +126,8 @@ JobPostingStages.propTypes = {
 const mapStateToProps = (state) => ({
   jobPostingStages: state.jobPostingReducer.jobPostingStages,
   stages: state.jobPostingReducer.copiedStages,
-  defaultStageNames: state.jobPostingReducer.defaultStageNames
+  defaultStageNames: state.jobPostingReducer.defaultStageNames,
+  stageError: state.jobPostingReducer.stageError
 })
 
 const mapDispatchToProps = {
@@ -137,7 +135,7 @@ const mapDispatchToProps = {
   removeStageInJobPosting,
   clearCopiedStages,
   clearStages,
-  renamePostingStage
+  setStageError
 }
 
 export default connect(
