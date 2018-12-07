@@ -1,10 +1,13 @@
 'use strict'
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: async (queryInterface, Sequelize) => {
+    const applicationsComments = 'ApplicationComments'
+    const recruiterUsername = 'recruiterUsername'
+
     return queryInterface.addColumn(
-      'ApplicationComments',
-      'recruiterUsername',
+      applicationsComments,
+      recruiterUsername,
       {
         type: Sequelize.STRING,
         allowNull: false
@@ -12,6 +15,8 @@ module.exports = {
     )
   },
   down: (queryInterface) => {
-    return queryInterface.removeColumn('ApplicationComments', 'recruiterUsername')
+    return queryInterface.removeColumn(
+      'ApplicationComments', 'recruiterUsername'
+    )
   }
 }

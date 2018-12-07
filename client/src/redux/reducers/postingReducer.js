@@ -3,6 +3,7 @@ import * as actions from '../actions/actions'
 
 const initialState = {
   errorMessage: null,
+  applicationSuccessful: false,
   jobPosting: {},
   stages: [],
   applicants: [],
@@ -13,11 +14,12 @@ const reducer = handleActions(
   {
     [actions.applySuccess]: (state, action) => ({
       ...state,
-      errorMessage: action.payload
+      applicationSuccessful: true
     }),
     [actions.applyFailure]: (state, action) => ({
       ...state,
-      errorMessage: action.payload
+      errorMessage: action.payload,
+      applicationSuccessful: false
     }),
     [actions.setJobPosting]: (state, action) => ({
       ...state,
@@ -55,6 +57,11 @@ const reducer = handleActions(
     [actions.emptyComments]: (state, action) => ({
       ...state,
       comments: []
+    }),
+    [actions.clearErrorMessage]: (state, action) => ({
+      ...state,
+      errorMessage: null,
+      applicationSuccessful: false
     })
   },
   initialState

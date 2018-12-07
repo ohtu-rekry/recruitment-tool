@@ -2,28 +2,31 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    const jobPostings = 'JobPostings'
+    const showFrom = 'showFrom'
+    const showTo = 'showTo'
+
     await queryInterface.addColumn(
-      'JobPostings',
-      'showFrom',
+      jobPostings,
+      showFrom,
       Sequelize.DATE,
     )
+
     return queryInterface.addColumn(
-      'JobPostings',
-      'showTo',
+      jobPostings,
+      showTo,
       Sequelize.DATE,
     )
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.removeColumn(
       'JobPostings',
-      'showFrom',
-      Sequelize.DATE
+      'showFrom'
     )
     return queryInterface.removeColumn(
       'JobPostings',
       'showTo',
-      Sequelize.DATE,
     )
   }
 }

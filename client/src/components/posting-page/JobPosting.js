@@ -3,7 +3,11 @@ import { connect } from 'react-redux'
 import * as actions from '../../redux/actions/actions'
 import PropTypes from 'prop-types'
 import { Link, withRouter } from 'react-router-dom'
-import { Button, Chip } from '@material-ui/core/'
+
+import Button from '@material-ui/core/Button'
+import Chip from '@material-ui/core/Chip'
+import Snackbar from '@material-ui/core/Snackbar'
+
 import EmailValidator from 'email-validator'
 import ReactMarkdown from 'react-markdown'
 import Dropzone from 'react-dropzone'
@@ -16,7 +20,8 @@ export class JobPosting extends Component {
       applicantName: '',
       applicantEmail: '',
       inputError: null,
-      attachments: []
+      attachments: [],
+      showError: false
     }
   }
 
@@ -25,8 +30,25 @@ export class JobPosting extends Component {
     this.props.fetchJobPosting(jobPostingId, this.props.loggedIn)
   }
 
+  componentDidUpdate(pProps) {
+    const { errorMessage, applicationSuccessful } = this.props
+    if (pProps.errorMessage === null && errorMessage !== null) {
+      this.setState({ showError: true })
+    }
+
+    if (applicationSuccessful) {
+      this.setState({
+        applicantName: '',
+        applicantEmail: ''
+      })
+
+      this.props.history.push('/success')
+    }
+  }
+
   componentWillUnmount() {
     this.props.emptyJobPosting()
+    this.props.clearErrorMessage()
   }
 
   handleChange = (e) => {
@@ -36,9 +58,15 @@ export class JobPosting extends Component {
     })
   }
 
+  handleClose = () => {
+    this.setState({ showError: false })
+    this.props.clearErrorMessage()
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
     const { applicantName, applicantEmail, attachments } = this.state
+    const { sendApplication } = this.props
 
     if (!applicantName.trim()) {
       this.setState({ inputError: 'Please enter a name' })
@@ -51,14 +79,7 @@ export class JobPosting extends Component {
     }
 
     const jobPostingId = window.location.href.split('/')[4]
-    this.props.sendApplication(applicantName, applicantEmail, jobPostingId, attachments)
-
-    this.setState({
-      applicantName: '',
-      applicantEmail: ''
-    })
-
-    this.props.history.push('/success')
+    sendApplication(applicantName, applicantEmail, jobPostingId, attachments)
   }
 
   handleDropAttachment = (e) => {
@@ -80,7 +101,7 @@ export class JobPosting extends Component {
   }
 
   render() {
-    const { applicantName, applicantEmail, inputError, attachments } = this.state
+    const { applicantName, applicantEmail, inputError, attachments, showError } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
 
     return (
@@ -151,6 +172,13 @@ export class JobPosting extends Component {
             {inputError && <InputErrorMessage errorMessage={inputError} />}
           </div>
         </form>
+        {errorMessage &&
+        <Snackbar
+          onClose={this.handleClose}
+          open={showError}
+          message={<span>{errorMessage}</span>}
+        />
+        }
       </div>
     )
   }
@@ -172,14 +200,6 @@ const AdminButtons = ({ id }) => {
         component={LinkToEditPage}>
         Edit
       </Button>
-    </div>
-  )
-}
-
-const ErrorMessage = ({ errorMessage }) => {
-  return (
-    <div className='job-posting__error-message'>
-      {errorMessage}
     </div>
   )
 }
@@ -232,7 +252,8 @@ HiddenNotification.propTypes = {
 const mapStateToProps = (state) => ({
   errorMessage: state.postingReducer.errorMessage,
   jobPosting: state.postingReducer.jobPosting,
-  loggedIn: state.loginReducer.loggedIn
+  loggedIn: state.loginReducer.loggedIn,
+  applicationSuccessful: state.postingReducer.applicationSuccessful
 })
 
 const mapDispatchToProps = {
