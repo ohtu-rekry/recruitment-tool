@@ -32,6 +32,9 @@ env:
     - PROJECT_DIR=client
       DOCKER_IMAGE=rekrysofta/recruitmenttool_client
       K8S_DEPLOYMENT_NAME=recruitment-tool-client
+    - PROJECT_DIR=emailer
+      DOCKER_IMAGE=rekrysofta/recruitmenttool_emailer
+      K8S_DEPLOYMENT_NAME=recruitment-tool-emailer
 
 stages:
   - name: script
