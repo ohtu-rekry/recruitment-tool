@@ -30,15 +30,6 @@ export class JobPostingStages extends Component {
     this.props.clearStages()
   }
 
-  async addCopiedStagesToNewJobPosting() {
-    await this.props.stages.forEach((stage) => {
-      if (!this.props.defaultStageNames.includes(stage.stageName)) {
-        this.props.addNewStageForJobPosting({ stageName: stage.stageName, canRemove: true })
-      }
-    })
-    await this.props.clearCopiedStages()
-  }
-
   addNewStage = () => {
     if (!this.verifyStageName(this.state.newStageName)) {
       this.props.setStageError({ errorMessage: 'Invalid stage name. Stage was not added' })

@@ -13,7 +13,12 @@ function* submitJobPosting({ payload }) {
       showFrom: payload.showFrom,
       showTo: payload.showTo
     }
-    const recruiter = payload.recruiter
+    const recruiter = yield select(getCurrentUser)
+
+    if (!recruiter) {
+      return
+    }
+
     const id = payload.id
 
     let response
@@ -88,6 +93,11 @@ function* fetchJobPosting({ payload }) {
 function* fetchJobPostingWithStages({ payload }) {
   try {
     const recruiter = yield select(getCurrentUser)
+
+    if (!recruiter) {
+      return
+    }
+
     const token = recruiter.token
     const id = payload.id
 
@@ -95,7 +105,18 @@ function* fetchJobPostingWithStages({ payload }) {
 
     if (response.status === 200) {
       const jobPosting = response.data
-      yield put(actions.setJobPosting(jobPosting))
+
+      const newJobPosting = {
+        ...jobPosting,
+        postingStages: null
+      }
+      yield put(actions.setJobPosting(newJobPosting))
+
+      const stages = [...jobPosting.postingStages]
+      stages.sort((a, b) => a.orderNumber - b.orderNumber)
+      yield put(actions.setStages(stages))
+
+      yield put(actions.setTimeSpan(jobPosting.showFrom, jobPosting.showTo))
     }
 
   } catch (error) {
@@ -112,6 +133,11 @@ function* fetchJobPostingWithStages({ payload }) {
 function* fetchJobPostingApplicants({ payload }) {
   try {
     const recruiter = yield select(getCurrentUser)
+
+    if (!recruiter) {
+      return
+    }
+
     const token = recruiter.token
     const id = payload
     const response = yield call(jobPostingApi.getApplicants, { token, id })

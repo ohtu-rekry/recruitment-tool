@@ -9,7 +9,7 @@ export const LinkButton = ({ link, text }) => {
     <div>
       <Button
         style={{ marginLeft: 5 }}
-        variant='contained'
+        variant = {'contained'}
         component={routerLink}
         size='small'
       >

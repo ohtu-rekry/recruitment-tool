@@ -1,4 +1,5 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { call, put, takeLatest, select } from 'redux-saga/effects'
+import { push } from 'react-router-redux'
 import * as actions from '../actions/actions'
 import LoginAPI from '../apis/loginApi'
 
@@ -23,15 +24,26 @@ function* requestLogin({ payload }) {
   }
 }
 
-function* requestLogout() {
+function* requestLogout({ payload }) {
   try {
     window.localStorage.clear()
-    yield put(actions.logoutSuccess())
+
+    yield put(actions.logoutSuccess(payload === true))
+    yield put(push('/'))
+
+    const oldPostings = yield select(getCurrentPostings)
+    const filteredPostings
+      = oldPostings.filter(posting => !posting.isHidden)
+
+    yield put(actions.setJobPostings(filteredPostings))
+
   } catch (e) {
     yield put(actions.logoutFailure('Could not logout'))
 
   }
 }
+
+export const getCurrentPostings = state => state.jobPostingReducer.jobPostings
 
 export const watchRequestLogin = takeLatest(actions.login().type, requestLogin)
 export const watchRequestLogout = takeLatest(actions.logout().type, requestLogout)

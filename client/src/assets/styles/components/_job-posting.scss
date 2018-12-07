@@ -158,8 +158,15 @@ body {
   &__link {
     text-decoration: none;
   }
+
   &__hidden {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
     color: #8f0000;
+    border-radius: 5px;
+    padding: 3px 6px;
+    border: 1px solid $gray-darkest;
+    background-color: $gray-dark;
   }
 }
 

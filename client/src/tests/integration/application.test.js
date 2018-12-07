@@ -54,35 +54,6 @@ describe('When applying to a job opening', () => {
     expect(applicantEmail.instance().value).toBe('')
   })
 
-  it('application is successful when email is valid and name is non-empty', () => {
-    mock.onPost(applicationRoot).reply(200, application)
-
-    applicantName.instance().value = application.applicantName
-    applicantName.simulate('change')
-    applicantEmail.instance().value = application.applicantEmail
-    applicantEmail.simulate('change')
-
-    applicationForm.simulate('submit')
-    app.update()
-
-    expect(applicantName.instance().value).toBe('')
-    expect(applicantEmail.instance().value).toBe('')
-  })
-
-  it('after successful application user is redirected to new page', () => {
-    mock.onPost(applicationRoot).reply(200, application)
-
-    applicantName.instance().value = application.applicantName
-    applicantName.simulate('change')
-    applicantEmail.instance().value = application.applicantEmail
-    applicantEmail.simulate('change')
-
-    applicationForm.simulate('submit')
-    app.update()
-
-    expect(app.find(MemoryRouter).instance().history.location.pathname).toBe('/success')
-  })
-
   describe('application is unsuccessful when ', () => {
 
     it('user does not enter a username', () => {
