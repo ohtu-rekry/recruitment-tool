@@ -3,7 +3,11 @@ import { connect } from 'react-redux'
 import * as actions from '../../redux/actions/actions'
 import PropTypes from 'prop-types'
 import { Link, withRouter } from 'react-router-dom'
-import { Button, Chip, Snackbar } from '@material-ui/core/'
+
+import Button from '@material-ui/core/Button'
+import Chip from '@material-ui/core/Chip'
+import Snackbar from '@material-ui/core/Snackbar'
+
 import EmailValidator from 'email-validator'
 import ReactMarkdown from 'react-markdown'
 import Dropzone from 'react-dropzone'
@@ -27,12 +31,12 @@ export class JobPosting extends Component {
   }
 
   componentDidUpdate(pProps) {
-    const { errorMessage, applicationStatus } = this.props
+    const { errorMessage, applicationSuccessful } = this.props
     if (pProps.errorMessage === null && errorMessage !== null) {
       this.setState({ showError: true })
     }
 
-    if (applicationStatus === 'success') {
+    if (applicationSuccessful) {
       this.setState({
         applicantName: '',
         applicantEmail: ''
@@ -229,7 +233,7 @@ const mapStateToProps = (state) => ({
   errorMessage: state.postingReducer.errorMessage,
   jobPosting: state.postingReducer.jobPosting,
   loggedIn: state.loginReducer.loggedIn,
-  applicationStatus: state.postingReducer.applicationStatus
+  applicationSuccessful: state.postingReducer.applicationSuccessful
 })
 
 const mapDispatchToProps = {
