@@ -21,4 +21,4 @@ FROM development as production
 
 ENV NODE_ENV production
 
-CMD [ "npm", "start:production" ]
+CMD [ "npm", "run", "start:production" ]
