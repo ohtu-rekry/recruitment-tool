@@ -1,22 +1,29 @@
-const { Recruiter, JobPosting, PostingStage } = require('../models')
+const { Recruiter, JobPosting, PostingStage, JobApplication } = require('../models')
 const bcrypt = require('bcryptjs')
 
 module.exports = {
   up: async (queryInterface) => {
-    const hashedPassword = await bcrypt.hash('test', 10)
+    const hashedPasswordTest = await bcrypt.hash('test', 10)
+    const hashedPasswordRoslin = await bcrypt.hash('roslin', 10)
     await queryInterface.bulkInsert('Recruiters', [{
       username: 'test',
-      password: hashedPassword,
+      password: hashedPasswordTest,
       createdAt: '2018-09-12 21:57:29.176+03',
       updatedAt: '2018-09-12 21:57:29.176+03'
+    },{
+      username: 'roslin',
+      password: hashedPasswordRoslin,
+      createdAt: '2018-10-02 15:34:13.125+03',
+      updatedAt: '2018-10-02 15:34:13.125+03'
     }], {})
 
-    const admin = await Recruiter.findOne({ where: { username: 'test' } })
+    const test = await Recruiter.findOne({ where: { username: 'test' } })
+    const roslin = await Recruiter.findOne({ where: { username: 'roslin' } })
 
     await queryInterface.bulkInsert('JobPostings', [{
       title: 'Full-Stack Developer',
       content: 'We are looking for Node and React talent!',
-      recruiterId: admin.id,
+      recruiterId: test.id,
       createdAt: '2018-09-12 21:57:29.176+03',
       updatedAt: '2018-09-12 21:57:29.176+03',
       showFrom: '2018-09-12 21:00:00.100+03',
@@ -25,7 +32,7 @@ module.exports = {
     {
       title: 'Data scientist',
       content: 'Are you a bit hungrier than the average coder? We offer you a unique chance to grow as a top-tier professional instead of doing the basic nine-to-five programming job. If you are looking for something different, hear us out!',
-      recruiterId: admin.id,
+      recruiterId: test.id,
       createdAt: '2018-09-12 21:57:29.176+03',
       updatedAt: '2018-09-12 21:57:29.176+03',
       showFrom: '2018-11-12 21:00:00.100+03',
@@ -101,7 +108,7 @@ module.exports = {
       }
     })
 
-    return queryInterface.bulkInsert('JobApplications', [{
+    await queryInterface.bulkInsert('JobApplications', [{
       applicantName: 'Donald Trump',
       applicantEmail: 'president@whitehouse.com',
       postingStageId: interview.id,
@@ -122,14 +129,47 @@ module.exports = {
       createdAt: '2018-11-02 08:23:29.176+03',
       updatedAt: '2018-11-05 11:47:38.085+03'
     }], {})
+
+    const trump = await JobApplication.findOne({
+      where: { applicantName: 'Donald Trump' }
+    })
+    const pocahontas = await JobApplication.findOne({
+      where: { applicantName: 'Pocahontas' }
+    })
+
+    return queryInterface.bulkInsert('ApplicationComments', [
+      {
+        comment: 'Has loads of experience',
+        recruiterId: test.id,
+        recruiterUsername: test.username,
+        jobApplicationId: pocahontas.id,
+        createdAt: '2018-12-02 08:23:29.176+03',
+        updatedAt: '2018-12-02 08:23:29.176+03'
+      },{
+        comment: 'Prefers working in frontend development',
+        recruiterId: roslin.id,
+        recruiterUsername: roslin.username,
+        jobApplicationId: pocahontas.id,
+        createdAt: '2018-12-05 08:23:29.176+03',
+        updatedAt: '2018-12-05 08:23:29.176+03'
+      },{
+        comment: 'English skills are lacking',
+        recruiterId: roslin.id,
+        recruiterUsername: roslin.username,
+        jobApplicationId: trump.id,
+        createdAt: '2018-12-04 13:48:29.176+03',
+        updatedAt: '2018-12-04 13:48:29.176+03'
+      }
+    ], {})
   },
 
-  down: async (queryInterface) => {
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkDelete('ApplicationComments', null, {})
     await queryInterface.bulkDelete('JobApplications', null, {})
     await queryInterface.bulkDelete('PostingStages', null, {})
     await queryInterface.bulkDelete('JobPostings', null, {})
     return queryInterface.bulkDelete('Recruiters', null, {
-      where: { username: 'test' }
+      where: { username: { [Sequelize.Op.in]: ['test', 'roslin'] } }
     })
   }
 }
