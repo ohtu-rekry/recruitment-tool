@@ -30,4 +30,4 @@ const getInactiveApplications = async () => {
   return result
 }
 
-getInactiveApplications().then(applc => console.log(applc))
+module.exports = { getInactiveApplications, client }
