@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add'
 import PropTypes from 'prop-types'
 import JobPostingStage from './JobPostingStage'
 
-import { addNewStageForJobPosting, removeStageInJobPosting, clearCopiedStages, clearStages, setStageError } from '../../redux/actions/actions'
+import { addNewStageForJobPosting, removeStageInJobPosting, clearStages, setStageError } from '../../redux/actions/actions'
 
 export class JobPostingStages extends Component {
   constructor(props) {
@@ -17,10 +17,7 @@ export class JobPostingStages extends Component {
   }
 
   componentDidMount() {
-    if (this.props.stages !== null) {
-      this.addCopiedStagesToNewJobPosting()
-    }
-    const stageNames = this.props.jobPostingStages.map((stage) => { return stage.stageName })
+    const stageNames = this.props.jobPostingStages.map((stage) => stage.stageName)
     this.setState({
       currentStages: stageNames
     })
@@ -124,7 +121,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   addNewStageForJobPosting,
   removeStageInJobPosting,
-  clearCopiedStages,
   clearStages,
   setStageError
 }
