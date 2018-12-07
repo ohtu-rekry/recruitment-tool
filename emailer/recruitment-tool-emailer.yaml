@@ -1,4 +1,4 @@
-apiVersion: batch/v2alpha1
+apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: recruitment-tool-emailer
@@ -6,9 +6,6 @@ metadata:
     app: recruitment-tool-emailer
 spec:
   schedule: "0 8 * * *"
-  selector:
-    matchLabels:
-      app: recruitment-tool-emailer
   jobTemplate:
     spec:
       template:
@@ -36,3 +33,4 @@ spec:
           - name: gcloud-service-account
             secret:
               secretName: gcloud-service-account
+          restartPolicy: OnFailure
