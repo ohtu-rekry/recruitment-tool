@@ -1,0 +1,38 @@
+apiVersion: batch/v2alpha1
+kind: CronJob
+metadata:
+  name: recruitment-tool-emailer
+  labels:
+    app: recruitment-tool-emailer
+spec:
+  schedule: "0 8 * * *"
+  selector:
+    matchLabels:
+      app: recruitment-tool-emailer
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: recruitment-tool-emailer
+          labels:
+            app: recruitment-tool-emailer
+        spec:
+          containers:
+          - name: recruitment-tool-emailer
+            image: rekrysofta/recruitmenttool_emailer
+            ports:
+            - containerPort: 8877
+            env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /etc/gcloud-service-account/emblica-212815-8c1abce476a1.json
+            envFrom:
+            - secretRef:
+                name: database-staging
+            volumeMounts:
+            - name: gcloud-service-account
+              mountPath: /etc/gcloud-service-account
+              readOnly: true
+          volumes:
+          - name: gcloud-service-account
+            secret:
+              secretName: gcloud-service-account

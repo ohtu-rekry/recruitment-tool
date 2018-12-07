@@ -25,4 +25,4 @@ gcloud config set project emblica-212815
 gcloud config set compute/region europe-north1
 gcloud container clusters get-credentials emblica-cluster-1 --region europe-north1
 
-kubectl set image deployment/${K8S_DEPLOYMENT_NAME} ${K8S_DEPLOYMENT_NAME}=${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER} -n rekrysofta
+kubectl set image ${K8S_RESOURCE_KIND}/${K8S_RESOURCE_NAME} ${K8S_RESOURCE_NAME}=${DOCKER_IMAGE}:${TRAVIS_BUILD_NUMBER} -n rekrysofta
