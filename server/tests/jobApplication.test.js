@@ -376,7 +376,7 @@ describe('GET all applications', async () => {
       const application = response.body.find(appl => appl.id === applications[0].id)
       expect(application.applicationComments).toHaveLength(comments.length)
 
-      const returnedComments = application.applicationComments.map( comment => comment.comment )
+      const returnedComments = application.applicationComments.map(comment => comment.comment)
       expect(returnedComments).toContain(comments[0].comment)
       expect(returnedComments).toContain(comments[1].comment)
     })

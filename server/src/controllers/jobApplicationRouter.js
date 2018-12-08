@@ -40,6 +40,7 @@ jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
       }
     })
 
+    //put to the validator?
     if (!firstPostingStage) {
       return res.status(400).json({ error: 'Could not find posting stage' })
     }

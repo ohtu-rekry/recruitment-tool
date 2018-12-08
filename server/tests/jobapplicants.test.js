@@ -40,6 +40,12 @@ describe('FETCH applicants for jobPosting', async () => {
     applicantEmail: 'runnerup@whitehouse.com'
   }
 
+  const stages = [
+    'stage1',
+    'stage2',
+    'stage3'
+  ]
+
   let jobPosting = ''
   let jobPostingId = ''
 
@@ -60,9 +66,42 @@ describe('FETCH applicants for jobPosting', async () => {
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
-    jobPostingId = jobPosting.body.id
-    newApplicant.jobPostingId = jobPostingId
-    newApplicant2.jobPostingId = jobPostingId
+    await stages.map((stage, index) => {
+      PostingStage.create({
+        stageName: stage,
+        orderNumber: index,
+        jobPostingId: jobPosting.body.id
+      })
+    })
+
+    const firstPostingStage = await PostingStage.findOne({
+      where: {
+        jobPostingId: jobPosting.body.id,
+        orderNumber: 0
+      }
+    })
+
+    newApplicant.postingStageId = firstPostingStage.id
+    newApplicant2.postingStageId = firstPostingStage.id
+
+    console.log('JEE')
+    console.log('JEE')
+    console.log('JEE')
+    console.log('JEE')
+    console.log('JEE')
+    console.log('JEE')
+    console.log('JEE')
+    console.log('JEE')
+    console.log('JEE')
+    console.log('JEE')
+    console.log('JEE')
+    console.log('JEE')
+    console.log('JEE')
+    console.log('JEE')
+
+
+    console.log(newApplicant)
+
 
     await api
       .post('/api/jobapplication')
