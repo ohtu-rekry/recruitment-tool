@@ -4,8 +4,8 @@ import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { ExitToApp } from '@material-ui/icons'
-import { ActionButton, LinkButton } from './Buttons'
+import ExitToApp from '@material-ui/icons/ExitToApp'
+import { LinkButton } from './Buttons'
 import MobileMenu from './MobileMenu'
 
 import * as actions from '../redux/actions/actions'

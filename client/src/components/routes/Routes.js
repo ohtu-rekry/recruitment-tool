@@ -21,11 +21,11 @@ class Routes extends Component {
     this.state = { willBeLoggedIn }
   }
 
-  componentDidMount() {
-    const loggedUser = JSON.parse(window.localStorage.getItem('loggedUser'))
+  componentDidMount = async () => {
+    const loggedUser = await JSON.parse(window.localStorage.getItem('loggedUser'))
 
     if (loggedUser) {
-      this.props.loginSuccess(loggedUser)
+      await this.props.loginSuccess(loggedUser)
       this.setState({ willBeLoggedIn: false })
     }
   }

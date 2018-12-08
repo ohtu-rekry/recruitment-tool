@@ -2,27 +2,42 @@
   font-family: 'Roboto', sans-serif;
   
   &__title {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: nowrap;
     margin: 10px 15px 0 10px;
     font-size: 20px;
     font-weight: 700;
   }
 
-  &__button {
-    background-color: #002234;
+  &__navigate-back {
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: $gray-darkest;
     border: none;
-    color: white;
+    outline: none;
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+  }
+
+  &__navigate-back:hover {
+    box-shadow: 0 0.5px 0.5px 0.5px rgba(0,0,0,0.3);
+  }
+
+  &__button {
+    background-color: $gray-darkest;
+    border: none;
     height: 23px;
     border-radius: 15px;
     padding: 3px 10px; 
     font-size: 12px;
     cursor: pointer;
     outline: none;
-    display: inline-block;
   }
 
   &__button:hover {
-    box-shadow: 0 0 1px 1.5px rgba(0,0,0,0.2);
+    box-shadow: 0 0.5px 0.5px 0.5px rgba(0,0,0,0.3);
   }
 }
 

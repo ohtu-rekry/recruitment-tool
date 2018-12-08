@@ -4,7 +4,8 @@ import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { Menu, ExitToApp } from '@material-ui/icons'
+import Menu from '@material-ui/icons/Menu'
+import ExitToApp from '@material-ui/icons/ExitToApp'
 import * as actions from '../redux/actions/actions'
 
 export class MobileMenu extends Component {
@@ -13,10 +14,38 @@ export class MobileMenu extends Component {
     this.state = {
       isEnlarged: false
     }
+    this.dropdownRef = React.createRef()
+    this.menuRef = React.createRef()
+  }
+
+  componentWillMount() {
+    document.addEventListener('mousedown', this.handleClick)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClick)
   }
 
   componentDidUpdate(pProps) {
     if (pProps.location !== this.props.location) {
+      this.setState({ isEnlarged: false })
+    }
+  }
+
+  handleClick = (e) => {
+    const iconElem = document.getElementById('navigation-bar__icon')
+
+    if (
+      this.menuRef.current === e.target ||
+      iconElem === e.target ||
+      (
+        e.target &&
+        this.dropdownRef.current &&
+        this.dropdownRef.current.contains(e.target)
+      )
+    ) {
+      return
+    } else if (this.dropdownRef.current !== e.target) {
       this.setState({ isEnlarged: false })
     }
   }
@@ -36,12 +65,19 @@ export class MobileMenu extends Component {
         <button
           className='navigation-bar__hamburger-menu'
           onClick={this.onMenuClick}
+          ref={this.menuRef}
         >
-          <Menu style={{ fontSize: 35 }}/>
+          <Menu
+            style={{ fontSize: 35 }}
+            id='navigation-bar__icon'
+          />
         </button>
 
         {isEnlarged &&
-          <div className='navigation-bar__drop-down-menu'>
+          <div
+            className='navigation-bar__drop-down-menu'
+            ref={this.dropdownRef}
+          >
             <NavLink
               to='/positions'
               className='navigation-bar__drop-down-menu-item'

@@ -6,6 +6,8 @@ import * as actions from '../../redux/actions/actions'
 import { Link } from 'react-router-dom'
 import { LinkButton } from '../Buttons'
 
+import NavigateBefore from '@material-ui/icons/NavigateBefore'
+
 import ApplicationStage from './ApplicationStage'
 import ApplicantModal from './ApplicantModal'
 
@@ -94,15 +96,26 @@ export class Applicants extends Component {
 
   render() {
     let { stages, jobPosting, applicants, adminView } = this.props
+    let title = jobPosting.title
     if (applicants) {
       stages = applicants
+      title = 'All applicants'
     }
 
     return (
       <div className='applicants'>
         <div className='applicants__title'>
-          {applicants ? 'All applicants' :
-            <LinkButton link={`/position/${jobPosting.id}`} text={jobPosting.title}/>}
+          {!applicants &&
+          <Link
+            to={{ pathname: `/position/${jobPosting.id}` }}
+            style={{ textDecoration: 'none' }}
+          >
+            <button className='applicants__navigate-back'>
+              <NavigateBefore style={{ height: 18, width: 18 }}/>
+            </button>
+          </Link>
+          }
+          {title}
         </div>
         {!adminView &&
           <Link
