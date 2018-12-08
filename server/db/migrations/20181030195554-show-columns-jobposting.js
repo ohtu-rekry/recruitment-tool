@@ -5,17 +5,12 @@ module.exports = {
     const jobPostings = 'JobPostings'
     const showFrom = 'showFrom'
     const showTo = 'showTo'
-    const tableDefinition = await queryInterface.describeTable(jobPostings)
 
-    if (!tableDefinition[showFrom])
-      await queryInterface.addColumn(
-        jobPostings,
-        showFrom,
-        Sequelize.DATE,
-      )
-
-    if (tableDefinition[showTo])
-      return Promise.resolve()
+    await queryInterface.addColumn(
+      jobPostings,
+      showFrom,
+      Sequelize.DATE,
+    )
 
     return queryInterface.addColumn(
       jobPostings,

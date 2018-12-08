@@ -22,6 +22,26 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - DATABASE_URL=postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
 
+  emailer:
+    build:
+      context: ./emailer/
+      target: development
+    user: root
+    command: node src/emailer.js
+    volumes:
+      - ./emailer/:/usr/app
+      - /usr/app/node_modules
+    ports:
+      - "8877:8877"
+    links: 
+      - database 
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - DATABASE_URL=postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
+
   database:
     image: postgres:10
     ports:

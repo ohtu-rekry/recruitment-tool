@@ -18,6 +18,13 @@ class FrontPage extends Component {
     this.props.emptyTokenExpired()
   }
 
+  componentDidUpdate(pProps) {
+    const { fetchJobPostings, loggedIn } = this.props
+    if (pProps.loggedIn !== loggedIn) {
+      fetchJobPostings(loggedIn)
+    }
+  }
+
   render() {
     const titleStyle = {
       color: '#002234'
@@ -33,7 +40,7 @@ class FrontPage extends Component {
         <div className='job-postings'>
           <div className='job-postings__list' >
             {this.props.jobPostings !== undefined && this.props.jobPostings.map(posting =>
-              <JobPostingListing key={posting.id} data={posting} onClick={() => this.handleJobPostingClick(posting.id)} />
+              <JobPostingListing key={posting.id} data={posting} />
             )}
           </div>
         </div>

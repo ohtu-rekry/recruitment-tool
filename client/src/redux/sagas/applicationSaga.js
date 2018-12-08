@@ -12,8 +12,8 @@ function* sendApplication({ payload }) {
     }
     const response = yield call(jobApplicationApi.add, application)
 
-    if (response.status === 200) {
-      yield put(actions.applySuccess('Application sent succesfully'))
+    if (response.status === 201) {
+      yield put(actions.applySuccess())
     }
   } catch (e) {
     yield put(actions.applyFailure('Something went wrong, application not sent.'))

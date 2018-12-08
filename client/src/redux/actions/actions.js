@@ -31,6 +31,8 @@ export const timespanHasBeenSet = createAction('TIMESPAN_HAS_BEEN_SET')
 export const setStages = createAction('SET_STAGES', (stages) => ({ stages }))
 export const clearStages = createAction('CLEAR_STAGES')
 
+export const clearErrorMessage = createAction('CLEAR_ERROR_MESSAGE')
+
 export const sendApplication = createAction(
   'SEND_APPLICATION', (applicantName, applicantEmail, jobPostingId, attachments) => ({
     applicantName, applicantEmail, jobPostingId, attachments

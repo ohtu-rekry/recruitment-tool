@@ -28,10 +28,16 @@ env:
   matrix:
     - PROJECT_DIR=server
       DOCKER_IMAGE=rekrysofta/recruitmenttool_server
-      K8S_DEPLOYMENT_NAME=recruitment-tool-server
+      K8S_RESOURCE_NAME=recruitment-tool-server
+      K8S_RESOURCE_KIND=deployment
     - PROJECT_DIR=client
       DOCKER_IMAGE=rekrysofta/recruitmenttool_client
-      K8S_DEPLOYMENT_NAME=recruitment-tool-client
+      K8S_RESOURCE_NAME=recruitment-tool-client
+      K8S_RESOURCE_KIND=deployment
+    - PROJECT_DIR=emailer
+      DOCKER_IMAGE=rekrysofta/recruitmenttool_emailer
+      K8S_RESOURCE_NAME=recruitment-tool-emailer
+      K8S_RESOURCE_KIND=cronjob
 
 stages:
   - name: script
