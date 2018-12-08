@@ -32,19 +32,15 @@ describe('FETCH applicants for jobPosting', async () => {
 
   const newApplicant = {
     applicantName: 'Donald Trump',
-    applicantEmail: 'potus@whitehouse.com'
+    applicantEmail: 'potus@whitehouse.com',
+    attachments: []
   }
 
   const newApplicant2 = {
     applicantName: 'Hillary Clinton',
-    applicantEmail: 'runnerup@whitehouse.com'
+    applicantEmail: 'runnerup@whitehouse.com',
+    attachments: []
   }
-
-  const stages = [
-    'stage1',
-    'stage2',
-    'stage3'
-  ]
 
   let jobPosting = ''
   let jobPostingId = ''
@@ -66,42 +62,9 @@ describe('FETCH applicants for jobPosting', async () => {
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
-    await stages.map((stage, index) => {
-      PostingStage.create({
-        stageName: stage,
-        orderNumber: index,
-        jobPostingId: jobPosting.body.id
-      })
-    })
-
-    const firstPostingStage = await PostingStage.findOne({
-      where: {
-        jobPostingId: jobPosting.body.id,
-        orderNumber: 0
-      }
-    })
-
-    newApplicant.postingStageId = firstPostingStage.id
-    newApplicant2.postingStageId = firstPostingStage.id
-
-    console.log('JEE')
-    console.log('JEE')
-    console.log('JEE')
-    console.log('JEE')
-    console.log('JEE')
-    console.log('JEE')
-    console.log('JEE')
-    console.log('JEE')
-    console.log('JEE')
-    console.log('JEE')
-    console.log('JEE')
-    console.log('JEE')
-    console.log('JEE')
-    console.log('JEE')
-
-
-    console.log(newApplicant)
-
+    jobPostingId = jobPosting.body.id
+    newApplicant.jobPostingId = jobPostingId
+    newApplicant2.jobPostingId = jobPostingId
 
     await api
       .post('/api/jobapplication')
@@ -123,8 +86,9 @@ describe('FETCH applicants for jobPosting', async () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body.length === 3)
-
+    expect(response.body.length === 2)
+    expect(response.body[0].length === 1)
+    expect(response.body[1].length === 0)
   })
 
   test('applicants cannot be fetched when not logged in', async () => {
