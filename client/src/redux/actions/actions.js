@@ -30,6 +30,8 @@ export const timespanHasBeenSet = createAction('TIMESPAN_HAS_BEEN_SET')
 
 export const setStages = createAction('SET_STAGES', (stages) => ({ stages }))
 export const clearStages = createAction('CLEAR_STAGES')
+export const renamePostingStage = createAction('RENAME_POSTING_STAGE', (postingStage, stageUnderEdit) => ({ postingStage, stageUnderEdit }))
+export const setStageError = createAction('SET_STAGE_ERROR', (errorMessage) => ( errorMessage ))
 
 export const clearErrorMessage = createAction('CLEAR_ERROR_MESSAGE')
 
@@ -59,11 +61,9 @@ export const moveApplicant = createAction('MOVE_APPLICANT', (applicant, newStage
 export const getApplicants = createAction('GET_APPLICANTS')
 export const getApplicantsSuccess = createAction('GET_APPLICANTS_SUCCESS')
 
-export const addComment = createAction('ADD_COMMENT',
-  (comment, applicationId, attachments) => ({ comment, applicationId, attachments }))
+export const addComment = createAction('ADD_COMMENT', (comment, applicationId, attachments) => ({ comment, applicationId, attachments }))
 export const addCommentSuccess = createAction('ADD_COMMENT_SUCCESS')
 
 export const getComments = createAction('GET_COMMENTS')
 export const getCommentsSuccess = createAction('GET_COMMENTS_SUCCESS')
 export const emptyComments = createAction('EMPTY_COMMENTS')
-

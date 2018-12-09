@@ -152,18 +152,19 @@ jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request,
     .filter(stage => stage.jobApplications.length > 0)
     .map(stage => stage.id)
 
-  const stagesInUpdatedJobPosting
-    = body.stages
-      .filter(stage => stage.stageName)
-      .filter(stage => !deletedStagesNoApplicants.includes(stage.id))
+  const stagesInUpdatedJobPosting = body.stages
+    .filter(stage => stage.stageName)
+    .filter(stage => !deletedStagesNoApplicants.includes(stage.id))
 
-  const orderedStages = stagesInUpdatedJobPosting.map((stage, index) => ({ ...stage, order: index }))
+  const orderedStages = stagesInUpdatedJobPosting.map((stage, index) => (
+    { ...stage, order: index }
+  ))
 
   const existingOrNewStages = orderedStages.filter(stage =>
     !deletedStages
       .map(deleted => deleted.id)
-      .includes(stage.id)
-  )
+      .includes(stage.id))
+
   const newStages = existingOrNewStages.filter(stage =>
     !existingStages
       .map(existing => existing.id)
@@ -188,9 +189,10 @@ jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request,
 
   await Promise.all(orderedStages
     .filter(stage => existingStages.map(existing => existing.id).includes(stage.id))
-    .map(stage => PostingStage.update(
-      { orderNumber: stage.order },
-      { where: { id: stage.id } }
+    .map(stage => PostingStage.update({
+      stageName: stage.stageName,
+      orderNumber: stage.order },
+    { where: { id: stage.id } }
     )))
 
   await Promise.all(
