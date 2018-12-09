@@ -113,7 +113,6 @@ export class JobPosting extends Component {
         {jobPosting.isHidden &&
           <HiddenNotification showFrom={jobPosting.showFrom} showTo={jobPosting.showTo} />
         }
-        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
         <div className='job-posting__content'>
           <ReactMarkdown source={jobPosting.content} />
         </div>

@@ -59,6 +59,7 @@ export class TimespanPicker extends Component {
         showTo: null
       })
       this.props.addShowFrom(null)
+      return
     }
 
     if (!this.state.showTo || date.isSameOrBefore(this.state.showTo)) {
