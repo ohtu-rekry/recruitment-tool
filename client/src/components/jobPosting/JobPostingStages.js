@@ -35,8 +35,9 @@ export class JobPostingStages extends Component {
 
     this.props.addNewStageForJobPosting({ stageName: this.state.newStageName, canRemove: true })
     this.props.setStageError({ errorMessage: '' })
+    const newStageName = this.state.newStageName
     this.setState({
-      currentStages: [...this.state.currentStages, this.state.newStageName],
+      currentStages: [...this.state.currentStages, newStageName],
       newStageName: ''
     })
   }
@@ -48,24 +49,22 @@ export class JobPostingStages extends Component {
   }
 
   handleNameChange = (e) => {
+    if (this.props.stageError) {
+      this.props.setStageError({ errorMessage: '' })
+    }
     this.setState({
       newStageName: e.target.value,
-      error: false
     })
   }
 
   verifyStageName = (stageName) => {
+    const currentStageNames = this.props.jobPostingStages.map((stage) => stage.stageName)
     if (!stageName.trim()
       || stageName.length > 255
-      || this.state.currentStages.includes(stageName)
-      || this.props.defaultStageNames.includes(stageName)) {
+      || currentStageNames.includes(stageName)) {
       return false
     }
     return true
-  }
-
-  handleStageDelete = (stage) => {
-    this.props.removeStageInJobPosting(stage)
   }
 
   render() {
@@ -96,7 +95,7 @@ export class JobPostingStages extends Component {
         </div>
         <div className={classNames + '__stage-list'}>
           {this.props.jobPostingStages.map((jobPostingStage, index) => (
-            <div key={index} className={classNames + '__single-stage'}>
+            <div key={jobPostingStage.stageName} className={classNames + '__single-stage'}>
               <JobPostingStage jobPostingStage={jobPostingStage} index={index} className={classNames} />
             </div>
           ))}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Chip } from '@material-ui/core'
+import Chip from '@material-ui/core/Chip'
 
 import { renamePostingStage, setStageError, removeStageInJobPosting } from '../../redux/actions/actions'
 
@@ -10,22 +10,13 @@ export class JobPostingStage extends Component {
     this.state = {
       stageUnderEdit: '',
       chipHidden: false,
-      inputClassName: '__hidden',
-      currentStages: []
+      inputClassName: '__hidden'
     }
     this.textInput = React.createRef()
   }
 
-  componentDidMount() {
-    const currentStageNames = this.props.jobPostingStages.map((stage) =>
-      stage.stageName)
-    this.setState({
-      currentStages: currentStageNames
-    })
-  }
-
-  handleStageDelete = (stage) => {
-    this.props.removeStageInJobPosting(stage)
+  handleStageDelete = (deletedStage) => {
+    this.props.removeStageInJobPosting(deletedStage)
   }
 
   handleStageClick = async () => {
@@ -56,12 +47,9 @@ export class JobPostingStage extends Component {
     if (this.verifyStageName(this.state.stageUnderEdit)) {
       this.props.renamePostingStage(jobPostingStage, this.state.stageUnderEdit)
       this.props.setStageError({ errorMessage: '' })
-      const updatedCurrentStages = this.state.currentStages.map((stage) =>
-        stage === jobPostingStage.stageName ? this.state.stageUnderEdit : jobPostingStage.stageName)
       this.setState({
         chipHidden: false,
         inputClassName: '__hidden',
-        currentStages: updatedCurrentStages,
         stageUnderEdit: ''
       })
     } else {
@@ -70,10 +58,10 @@ export class JobPostingStage extends Component {
   }
 
   verifyStageName = (stageName) => {
+    const currentStageNames = this.props.jobPostingStages.map((stage) => stage.stageName)
     if (!stageName.trim()
       || stageName.length > 255
-      || this.state.currentStages.includes(stageName)
-      || this.props.defaultStageNames.includes(stageName)) {
+      || currentStageNames.includes(stageName)) {
       return false
     }
     return true
@@ -93,8 +81,12 @@ export class JobPostingStage extends Component {
               label={(this.props.index + 1) + '. ' + jobPostingStage.stageName}
               onClick={() => this.handleStageClick()}
               onDelete={() => this.handleStageDelete(jobPostingStage)} />
-            <form className={className + '__stage-name-edit' + this.state.inputClassName} onChange={this.handleStageRenameChange} onSubmit={(e) => this.handleStageRename(e, jobPostingStage)}>
-              <input ref={this.textInput} onBlur={() => this.handleStageHide(jobPostingStage)} className={className + '__stage-name-edit__input'} type="text"></input>
+            <form className={className + '__stage-name-edit' + this.state.inputClassName}
+              onChange={this.handleStageRenameChange}
+              onSubmit={(e) => this.handleStageRename(e, jobPostingStage)}>
+              <input defaultValue={jobPostingStage.stageName} ref={this.textInput}
+                onBlur={() => this.handleStageHide(jobPostingStage)}
+                className={className + '__stage-name-edit__input'} type="text"></input>
             </form>
           </div>
         }
@@ -103,12 +95,17 @@ export class JobPostingStage extends Component {
             && !this.props.defaultStageNames.includes(jobPostingStage.stageName)) &&
           <div>
             <Chip
+              style={{ display: chipClassName }}
               id={jobPostingStage.stageName + '_chip'}
               label={(this.props.index + 1) + '. ' + jobPostingStage.stageName}
-              onClick={() => this.handleStageClick(jobPostingStage)}
+              onClick={() => this.handleStageClick()}
             />
-            <form className={className + '__stage-name-edit' + this.state.inputClassName} onChange={this.handleStageRenameChange} onSubmit={(e) => this.handleStageRename(e, jobPostingStage)}>
-              <input ref={this.textInput} onBlur={() => this.handleStageHide(jobPostingStage)} className={className + '__stage-name-edit__input'} type="text"></input>
+            <form className={className + '__stage-name-edit' + this.state.inputClassName}
+              onChange={this.handleStageRenameChange}
+              onSubmit={(e) => this.handleStageRename(e, jobPostingStage)}>
+              <input defaultValue={jobPostingStage.stageName} ref={this.textInput}
+                onBlur={() => this.handleStageHide(jobPostingStage)}
+                className={className + '__stage-name-edit__input'} type="text"></input>
             </form>
           </div>
         }
