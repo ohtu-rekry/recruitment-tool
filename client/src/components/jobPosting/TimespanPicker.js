@@ -29,6 +29,14 @@ export class TimespanPicker extends Component {
       if (this.props.showTo) this.setState({ showTo: moment(this.props.showTo) })
 
       this.props.timespanHasBeenSet()
+    } else if (!this.props.setTimespan) {
+
+      const now = moment().startOf('day')
+      this.setState({ showFrom: now })
+
+      const formattedDate = now.toLocaleString()
+      this.props.addShowFrom(formattedDate)
+
     }
   }
 
@@ -45,21 +53,22 @@ export class TimespanPicker extends Component {
   }
 
   async handleShowFromChange(date) {
-    if (date !== undefined && (date === null || !this.state.showTo || date.isBefore(this.state.showTo))) {
-      if (date === null) {
-        await this.setState({
-          showFrom: null,
-          showTo: null
-        })
-        this.props.addShowFrom(null)
-      } else {
-        await this.setState({
-          showFrom: date,
-          error: ''
-        })
-        const formattedDate = date.toLocaleString()
-        this.props.addShowFrom(formattedDate)
-      }
+    if (!date) {
+      await this.setState({
+        showFrom: null,
+        showTo: null
+      })
+      this.props.addShowFrom(null)
+      return
+    }
+
+    if (!this.state.showTo || date.isSameOrBefore(this.state.showTo)) {
+      await this.setState({
+        showFrom: date,
+        error: ''
+      })
+      const formattedDate = date.toLocaleString()
+      this.props.addShowFrom(formattedDate)
     } else {
       this.setState({
         error: 'Selected date needs to be before end date'
@@ -68,7 +77,7 @@ export class TimespanPicker extends Component {
   }
 
   async handleShowToChange(date) {
-    if (date !== undefined && (date === null || date.isAfter(this.state.showFrom))) {
+    if (date !== undefined && (date === null || date.isSameOrAfter(this.state.showFrom))) {
       await this.setState({
         showTo: date,
         error: ''
@@ -81,7 +90,7 @@ export class TimespanPicker extends Component {
 
     } else if (date) {
       this.setState({
-        error: 'Selected date needs to be after start date'
+        error: 'Selected date needs to be same or after start date'
       })
     }
   }
@@ -90,7 +99,7 @@ export class TimespanPicker extends Component {
     const { showFrom } = this.state
     const now = moment()
     const laterDateOfShowFromAndNow = showFrom && now.isBefore(showFrom) ? showFrom : now
-    const showToMinDate = moment(laterDateOfShowFromAndNow).add(1, 'd')
+    const showToMinDate = moment(laterDateOfShowFromAndNow)
 
     return (
       <div>
@@ -99,7 +108,7 @@ export class TimespanPicker extends Component {
           <DatePicker
             className='timespan-picker__datepicker'
             selected={this.state.showFrom}
-            dateFormat='DD-MM-YYYY'
+            dateFormat='DD.MM.YYYY'
             timeFormat='timeFormat="HH:mm'
             placeholderText='Select start date'
             isClearable={true}
@@ -109,7 +118,7 @@ export class TimespanPicker extends Component {
           <DatePicker
             className='timespan-picker__datepicker'
             selected={this.state.showTo}
-            dateFormat='DD-MM-YYYY'
+            dateFormat='DD.MM.YYYY'
             timeFormat='timeFormat="HH:mm'
             placeholderText='Select end date'
             isClearable={true}
