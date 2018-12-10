@@ -58,36 +58,41 @@ jobPostingRouter.post('/', jwtMiddleware, jobPostingValidator, async (req, res) 
 })
 
 jobPostingRouter.get('/:id/applicants', jwtMiddleware, async (request, response) => {
-  const postId = request.params.id
 
-  const stages = await PostingStage.findAll({
-    where: {
-      jobPostingId: postId
-    }
-  })
+  try {
+    const postId = request.params.id
 
-  const stagesWithApplicants = await Promise.all(
-    stages.map(async stage => {
-      const applicants = await JobApplication.findAll({
-        where: {
-          postingStageId: stage.id
-        },
-        include: [{
-          model: ApplicationComment,
-          as: 'applicationComments'
-        }]
-      })
-
-      //TODO: jotain järkevää tähän alapuolelle. Mitä hittoa oikeesti :d
-      const res = JSON.parse(JSON.stringify(stage))
-      res.applicants = [...applicants]
-
-      return res
-
+    const stages = await PostingStage.findAll({
+      where: {
+        jobPostingId: postId
+      }
     })
-  )
 
-  response.status(200).json(stagesWithApplicants)
+    const stagesWithApplicants = await Promise.all(
+      stages.map(async stage => {
+        const applicants = await JobApplication.findAll({
+          where: {
+            postingStageId: stage.id
+          },
+          include: [{
+            model: ApplicationComment,
+            as: 'applicationComments'
+          }]
+        })
+
+        //TODO: jotain järkevää tähän alapuolelle. Mitä hittoa oikeesti :d
+        const res = JSON.parse(JSON.stringify(stage))
+        res.applicants = [...applicants]
+
+        return res
+
+      })
+    )
+
+    response.status(200).json(stagesWithApplicants)
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 jobPostingRouter.get('/:id', jwtMiddleware, async (request, response) => {

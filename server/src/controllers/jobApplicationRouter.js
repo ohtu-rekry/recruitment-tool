@@ -1,10 +1,11 @@
 const jobApplicationRouter = require('express-promise-router')()
 const { jwtMiddleware } = require('../../utils/middleware')
-const { JobApplication, PostingStage, JobPosting, ApplicationComment } = require('../../db/models')
+const { JobApplication, PostingStage, JobPosting, ApplicationComment, Attachment } = require('../../db/models')
 const {
   jobApplicationValidator,
   applicationPatchValidator,
   applicationCommentValidator } = require('../../utils/validators')
+const { handleAttachmentSending } = require('../../utils/attachmentHandler')
 
 jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
   const jobApplications = await JobApplication.findAll({
@@ -18,32 +19,52 @@ jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
       {
         model: ApplicationComment,
         as: 'applicationComments'
+      },
+      {
+        model: Attachment,
+        as: 'attachments'
       }]
   })
   response.json(jobApplications)
 })
 
 jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
-  const body = req.body
+  try {
+    const body = req.body
+    let attachments = []
 
-  const firstPostingStage = await PostingStage.findOne({
-    where: {
-      jobPostingId: body.jobPostingId,
-      orderNumber: 0
+    const firstPostingStage = await PostingStage.findOne({
+      where: {
+        jobPostingId: body.jobPostingId,
+        orderNumber: 0
+      }
+    })
+
+    //put to the validator?
+    if (!firstPostingStage) {
+      return res.status(400).json({ error: 'Could not find posting stage' })
     }
-  })
 
-  if (!firstPostingStage) {
-    return res.status(400).json({ error: 'Could not find posting stage' })
+    const jobApplication = await JobApplication.create({
+      applicantName: body.applicantName,
+      applicantEmail: body.applicantEmail,
+      postingStageId: firstPostingStage.id
+    })
+
+    if (body.attachments.length > 0) {
+      attachments = await handleAttachmentSending(body.attachments)
+      await attachments.forEach(attachment => {
+        Attachment.create({
+          path: attachment,
+          jobApplicationId: jobApplication.id
+        })
+      })
+    }
+
+    res.status(201).json(jobApplication)
+  } catch (error) {
+    throw error
   }
-
-  const jobApplication = await JobApplication.create({
-    applicantName: body.applicantName,
-    applicantEmail: body.applicantEmail,
-    postingStageId: firstPostingStage.id
-  })
-
-  res.status(201).json(jobApplication)
 
 })
 

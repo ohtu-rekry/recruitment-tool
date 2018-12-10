@@ -58,15 +58,19 @@ export class JobPosting extends Component {
     })
   }
 
+
   handleClose = () => {
     this.setState({ showError: false })
     this.props.clearErrorMessage()
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault()
     const { applicantName, applicantEmail, attachments } = this.state
     const { sendApplication } = this.props
+
+    let promiseAttachments = []
+    let attachmentObjectArray = []
 
     if (!applicantName.trim()) {
       this.setState({ inputError: 'Please enter a name' })
@@ -78,8 +82,23 @@ export class JobPosting extends Component {
       return
     }
 
+    if (attachments.length > 0) {
+      promiseAttachments = await attachments.map((attachment) => {
+        return this.readFile(attachment)
+      })
+      let base64typeAttachments = await Promise.all(promiseAttachments)
+
+      attachmentObjectArray = attachments.map((attachment, index) => {
+        return {
+          fileName: attachment.name,
+          base64: base64typeAttachments[index]
+        }
+      })
+    }
+
+
     const jobPostingId = window.location.href.split('/')[4]
-    sendApplication(applicantName, applicantEmail, jobPostingId, attachments)
+    sendApplication(applicantName, applicantEmail, jobPostingId, attachmentObjectArray)
   }
 
   handleDropAttachment = (e) => {
@@ -100,13 +119,30 @@ export class JobPosting extends Component {
     this.setState({ attachments, inputError: null })
   }
 
+  //Reads the attachment and converts it to base64
+  readFile(attachment) {
+    let reader = new FileReader()
+    let file = attachment
+    return new Promise((resolve, reject) => {
+      reader.addEventListener('load', function () {
+        resolve(this.result)
+      }, false)
+      if (file) {
+        return reader.readAsDataURL(file)
+      } else {
+        reject('foo')
+      }
+    })
+  }
+
   render() {
     const { applicantName, applicantEmail, inputError, attachments, showError } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
 
     return (
-      <div className='job-posting'>
-        {loggedIn &&
+      <div className='job-posting' >
+        {
+          loggedIn &&
           <AdminButtons id={jobPosting.id} />
         }
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
@@ -147,7 +183,7 @@ export class JobPosting extends Component {
               {attachments.length === 0 &&
                 <div>
                   Drop attachments here, or click to select files to upload
-                  <br/>
+                  <br />
                   Accepted file types are .zip and .pdf
                 </div>}
               <div>
@@ -172,11 +208,11 @@ export class JobPosting extends Component {
           </div>
         </form>
         {errorMessage &&
-        <Snackbar
-          onClose={this.handleClose}
-          open={showError}
-          message={<span>{errorMessage}</span>}
-        />
+          <Snackbar
+            onClose={this.handleClose}
+            open={showError}
+            message={<span>{errorMessage}</span>}
+          />
         }
       </div>
     )

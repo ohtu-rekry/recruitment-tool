@@ -98,6 +98,7 @@ export class Applicants extends Component {
       stages = applicants
     }
 
+
     return (
       <div className='applicants'>
         <div className='applicants__title'>
