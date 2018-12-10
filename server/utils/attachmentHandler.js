@@ -10,7 +10,7 @@ const handleAttachmentSending = async (base64array) => {
 
   await base64array.forEach(base64object => {
     let file = base64object.base64,
-      fileName = base64object.fileName.replace(/ /g, '') + Date.now(),
+      fileName = Date.now() + base64object.fileName.replace(/ /g, ''),
       mimeType = mime.contentType(base64object.fileName),
       base64EncodedFileString = file.replace(/^data:[a-zA-Z0-9]+\/\w+;base64,/, ''),
       fileBuffer = new Buffer(base64EncodedFileString, 'base64')

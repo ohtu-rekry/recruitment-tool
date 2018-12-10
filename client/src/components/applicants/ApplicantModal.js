@@ -93,7 +93,7 @@ class ApplicantModal extends React.Component {
             {applicant.attachments.map((attachment, index) => {
               return <Chip
                 key={index}
-                label={this.truncateString(attachment.path.substring(44), 10)}
+                label={this.truncateString(attachment.path.substring(57), 10)}
                 clickable={true}
                 onClick={() => window.open(attachment.path)} />
             })}
