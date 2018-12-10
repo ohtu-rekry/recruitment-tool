@@ -90,26 +90,33 @@ jobPostingRouter.get('/:id/applicants', jwtMiddleware, async (request, response)
   response.status(200).json(stagesWithApplicants)
 })
 
-jobPostingRouter.get('/:id', jwtMiddleware, async (request, response) => {
+jobPostingRouter.get('/:id', jwtNotRequired, async (request, response) => {
   const jobPostingId = request.params.id
+  let jobPosting = null
 
-  const jobPostingWithStages = await JobPosting.findOne({
-    where: { id: jobPostingId },
-    include: [{
-      model: PostingStage,
-      as: 'postingStages',
+  if (request.user) {
+    jobPosting = await JobPosting.findOne({
+      where: { id: jobPostingId },
       include: [{
-        model: JobApplication,
-        as: 'jobApplications'
+        model: PostingStage,
+        as: 'postingStages',
+        include: [{
+          model: JobApplication,
+          as: 'jobApplications'
+        }]
       }]
-    }]
-  })
+    })
+  } else {
+    jobPosting = await JobPosting.findOne({
+      where: { id: jobPostingId }
+    })
+  }
 
-  if (!jobPostingWithStages) {
+  if (!jobPosting) {
     return response.status(404).json({ error: 'Invalid job posting ID' })
   }
 
-  response.status(200).json(jobPostingWithStages)
+  response.status(200).json(jobPosting)
 })
 
 jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request, response) => {

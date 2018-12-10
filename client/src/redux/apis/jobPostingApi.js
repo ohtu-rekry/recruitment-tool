@@ -15,8 +15,12 @@ export default class jobPostingApi {
   }
 
   static getOne(payload) {
-    const config = {
-      headers: { 'Authorization': 'bearer ' + payload.token }
+    let config = null
+
+    if (payload.token) {
+      config = {
+        headers: { 'Authorization': 'bearer ' + payload.token }
+      }
     }
     return axios.get(`${root}/${payload.id}`, config)
   }

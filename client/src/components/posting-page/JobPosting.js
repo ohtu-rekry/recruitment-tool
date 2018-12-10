@@ -100,6 +100,11 @@ export class JobPosting extends Component {
     this.setState({ attachments, inputError: null })
   }
 
+  handleClickToEditView = () => {
+    const { setTimeSpan, jobPosting } = this.props
+    setTimeSpan(jobPosting.showFrom, jobPosting.showTo)
+  }
+
   render() {
     const { applicantName, applicantEmail, inputError, attachments, showError } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
@@ -107,7 +112,10 @@ export class JobPosting extends Component {
     return (
       <div className='job-posting'>
         {loggedIn &&
-          <AdminButtons id={jobPosting.id} />
+          <AdminButtons
+            id={jobPosting.id}
+            handleClickToEditView={this.handleClickToEditView}
+          />
         }
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
         {jobPosting.isHidden &&
@@ -183,7 +191,7 @@ export class JobPosting extends Component {
   }
 }
 
-const AdminButtons = ({ id }) => {
+const AdminButtons = ({ id, handleClickToEditView }) => {
   const LinkToApplicants = props => <Link to={`/position/${id}/applicants`} {...props} />
   const LinkToEditPage = props => <Link to={`/position/${id}/edit`} {...props} />
 
@@ -196,7 +204,8 @@ const AdminButtons = ({ id }) => {
       </Button>
       <Button
         className='job-posting__link'
-        component={LinkToEditPage}>
+        component={LinkToEditPage}
+        onClick={handleClickToEditView}>
         Edit
       </Button>
     </div>
@@ -236,7 +245,8 @@ JobPosting.propTypes = {
   jobPosting: PropTypes.object.isRequired,
   loggedIn: PropTypes.object,
   emptyJobPosting: PropTypes.func.isRequired,
-  fetchJobPosting: PropTypes.func.isRequired
+  fetchJobPosting: PropTypes.func.isRequired,
+  setTimeSpan: PropTypes.func.isRequired
 }
 
 InputErrorMessage.propTypes = {
