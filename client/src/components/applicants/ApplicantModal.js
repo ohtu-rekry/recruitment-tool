@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Modal, Button, Chip } from '@material-ui/core'
+import { Modal, Button, Chip, Tooltip } from '@material-ui/core'
 import { Clear, Person, Email, CalendarToday } from '@material-ui/icons'
 import ApplicantModalDropzone from './ApplicantModalDropzone'
 import ApplicationComment from '../comments/ApplicationComment'
@@ -91,11 +91,15 @@ class ApplicantModal extends React.Component {
           <div>
             <h5>Application's attachments</h5>
             {applicant.attachments.map((attachment, index) => {
-              return <Chip
-                key={index}
-                label={this.truncateString(attachment.path.substring(57), 10)}
-                clickable={true}
-                onClick={() => window.open(attachment.path)} />
+              return (
+                <Tooltip title={attachment.path.substring(57)}>
+                  <Chip
+                    key={index}
+                    label={this.truncateString(attachment.path.substring(57), 10)}
+                    clickable={true}
+                    onClick={() => window.open(attachment.path)} />
+                </Tooltip>
+              )
             })}
           </div>
           <ApplicantModalDropzone applicationId={id} />

@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactMarkdown from 'react-markdown'
+import { Chip, Tooltip } from '@material-ui/core'
 
-class ApplicationComment extends React.Component {
+class ApplicationComment extends Component {
+
+  truncateString(str, length) {
+    const dots = str.length > length ? '...' : ''
+    return str.substring(0, length) + dots
+  }
+
   render() {
-    const { createdAt, recruiterUsername, comment } = this.props.comment
+    const { createdAt, recruiterUsername, comment, attachments } = this.props.comment
 
     const date = new Date(createdAt).toLocaleString([], {
       weekday: 'long',
@@ -22,7 +29,22 @@ class ApplicationComment extends React.Component {
           <div className='comment__date'>{date}</div>
         </div>
         <div className='comment__content'>
-          <ReactMarkdown source={comment}/>
+          <ReactMarkdown source={comment} />
+        </div>
+        <div className='comment__attachments'>
+          {attachments.map((attachment, index) => {
+            return (
+              <div className='comment__attachment'>
+                <Tooltip key={index} title={attachment.path.substring(57)}>
+                  <Chip
+                    key={index}
+                    label={this.truncateString(attachment.path.substring(57), 10)}
+                    clickable={true}
+                    onClick={() => window.open(attachment.path)} />
+                </Tooltip>
+              </div>
+            )
+          })}
         </div>
       </div>
     )

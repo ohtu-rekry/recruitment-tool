@@ -91,28 +91,39 @@ jobApplicationRouter.patch('/', jwtMiddleware, applicationPatchValidator, async 
 
 })
 
-jobApplicationRouter.post('/:id/comment', jwtMiddleware, applicationCommentValidator, async (request, response) => {
-  const decodedToken = request.user
+jobApplicationRouter.post('/:id/comment', jwtMiddleware, applicationCommentValidator, async (req, res) => {
+  const decodedToken = req.user
+  const body = req.body
+  let attachments = []
+
 
   const jobApplication = await JobApplication.findOne({
     where: {
-      id: request.params.id
+      id: req.params.id
     }
   })
 
   if (!jobApplication) {
-    return response.status(404).json({ error: 'Invalid job application ID' })
+    return res.status(404).json({ error: 'Invalid job application ID' })
   }
 
   const newComment = await ApplicationComment.create({
-    comment: request.body.comment,
-    jobApplicationId: request.params.id,
+    comment: body.comment,
+    jobApplicationId: req.params.id,
     recruiterId: decodedToken.id,
     recruiterUsername: decodedToken.username
   })
 
-  response.status(201).json(newComment)
-
+  if (body.attachments.length > 0) {
+    attachments = await handleAttachmentSending(body.attachments)
+    await attachments.forEach(attachment => {
+      Attachment.create({
+        path: attachment,
+        applicationCommentId: newComment.id
+      })
+    })
+  }
+  res.status(201).json(newComment)
 })
 
 jobApplicationRouter.get('/:id/comment', jwtMiddleware, async (request, response) => {
@@ -122,7 +133,13 @@ jobApplicationRouter.get('/:id/comment', jwtMiddleware, async (request, response
     const comments = await ApplicationComment.findAll({
       where: {
         jobApplicationId: id
-      }
+      },
+      include: [
+        {
+          model: Attachment,
+          as: 'attachments'
+        }
+      ]
     })
     response.json(comments)
   } catch (error) {

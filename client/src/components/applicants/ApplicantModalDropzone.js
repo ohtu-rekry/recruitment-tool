@@ -17,13 +17,30 @@ class ApplicantModalDropzone extends React.Component {
     }
   }
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const { comment, attachments } = this.state
+
+    let promiseAttachments = []
+    let attachmentObjectArray = []
+
+    if (attachments.length > 0) {
+      promiseAttachments = await attachments.map((attachment) => {
+        return this.readFile(attachment)
+      })
+      let base64typeAttachments = await Promise.all(promiseAttachments)
+
+      attachmentObjectArray = attachments.map((attachment, index) => {
+        return {
+          fileName: attachment.name,
+          base64: base64typeAttachments[index]
+        }
+      })
+    }
 
     if (!comment.trim() && attachments.length === 0) {
       this.setState({ inputError: 'Cannot send empty comment' })
     } else {
-      this.props.addComment(comment, this.props.applicationId, attachments)
+      this.props.addComment(comment, this.props.applicationId, attachmentObjectArray)
       this.setState({ comment: '', attachments: [] })
     }
   }
@@ -70,6 +87,21 @@ class ApplicantModalDropzone extends React.Component {
 
   handleAttachmentButtonClick = (e) => {
     e.openBrowse = true
+  }
+
+  readFile(attachment) {
+    let reader = new FileReader()
+    let file = attachment
+    return new Promise((resolve, reject) => {
+      reader.addEventListener('load', function () {
+        resolve(this.result)
+      }, false)
+      if (file) {
+        return reader.readAsDataURL(file)
+      } else {
+        reject('foo')
+      }
+    })
   }
 
   render() {
