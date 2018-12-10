@@ -92,6 +92,7 @@ function* fetchJobPosting({ payload }) {
 
 function* fetchJobPostingWithStages({ payload }) {
   try {
+    yield delay(10)
     const recruiter = yield select(getCurrentUser)
 
     if (!recruiter) {

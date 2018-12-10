@@ -26,7 +26,7 @@ export class JobPosting extends Component {
   }
 
   componentDidMount() {
-    const jobPostingId = window.location.href.split('/')[4]
+    const jobPostingId = this.props.match.params.id
     this.props.fetchJobPosting(jobPostingId, this.props.loggedIn)
   }
 
@@ -78,7 +78,7 @@ export class JobPosting extends Component {
       return
     }
 
-    const jobPostingId = window.location.href.split('/')[4]
+    const jobPostingId = this.props.match.params.id
     sendApplication(applicantName, applicantEmail, jobPostingId, attachments)
   }
 
