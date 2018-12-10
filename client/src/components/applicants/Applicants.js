@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { DragDropContext } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import * as actions from '../../redux/actions/actions'
@@ -54,7 +54,8 @@ export class Applicants extends Component {
   }
 
   onDrop = (result) => {
-    const { destination, source, draggableId } = result
+    const { destination, source, draggableId, type } = result
+    const { stages, moveStage, moveApplicant } = this.props
 
     if (!destination) { return }
 
@@ -65,12 +66,23 @@ export class Applicants extends Component {
       return
     }
 
-    this.props.moveApplicant(
+    if (type === 'column') {
+      if (
+        destination.index === 0 ||
+        destination.index === stages.length - 1 ||
+        destination.index === stages.length - 2
+      ) return
+
+      moveStage(source.index, destination.index, stages)
+      return
+    }
+
+    moveApplicant(
       parseInt(draggableId, 10),
       parseInt(destination.droppableId, 10),
       parseInt(source.droppableId, 10),
       source.index,
-      this.props.stages
+      stages
     )
   }
 
@@ -103,18 +115,32 @@ export class Applicants extends Component {
           </Link>
         }
         <DragDropContext onDragEnd={this.onDrop}>
-          <div className='application-stages'>
-            {stages
-              .sort((a, b) => a.orderNumber - b.orderNumber)
-              .map(stage =>
-                <ApplicationStage
-                  stage={stage}
-                  key={stage.id}
-                  adminView={adminView}
-                  toggleShowModal={this.toggleShowModal}
-                />
-              )}
-          </div>
+          <Droppable
+            droppableId='all-stages'
+            direction='horizontal'
+            type='column'
+          >
+            {(provided) => (
+              <div
+                className='application-stages'
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {stages
+                  .sort((a, b) => a.orderNumber - b.orderNumber)
+                  .map((stage, index) =>
+                    <ApplicationStage
+                      stage={stage}
+                      key={stage.id}
+                      index={index}
+                      adminView={adminView}
+                      toggleShowModal={this.toggleShowModal}
+                    />
+                  )}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
         </DragDropContext>
         {this.state.modalApplicant &&
           <ApplicantModal
@@ -130,7 +156,8 @@ export class Applicants extends Component {
 Applicants.propTypes = {
   loggedIn: PropTypes.object,
   jobPosting: PropTypes.object,
-  stages: PropTypes.array
+  stages: PropTypes.array,
+  adminView: PropTypes.bool
 }
 
 const mapStateToProps = (state) => ({

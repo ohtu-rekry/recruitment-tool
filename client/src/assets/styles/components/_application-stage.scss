@@ -33,11 +33,15 @@
   align-items: flex-start;
   user-select: none;
   width: 100%;
-  height: calc(100vh - 113px);
+  height: calc(100vh - 117px);
 }
 
 .stages-copy-button {
   display: inline;
+}
+
+.application-stage-wrapper {
+  height: 100%;
 }
 
 .application-stage {
@@ -54,7 +58,7 @@
   &__content {
     overflow-x: hidden;
     overflow-y: auto;
-    min-height: 20px;
+    min-height: 50px;
     max-height: calc(100vh - 210px);
   }
 

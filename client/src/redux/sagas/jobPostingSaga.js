@@ -152,7 +152,51 @@ function* fetchJobPostingApplicants({ payload }) {
   }
 }
 
+function* updateJobPostingStages({ payload }) {
+  try {
+    const recruiter = yield select(getCurrentUser)
+    const stages = yield select(getCurrentStages)
+    const posting = yield select(getCurrentJobPosting)
+
+    /*
+    First remove the moved stage from old index with splice.
+    Then move it to its new index, again with splice.
+    */
+    let newStageOrder = Array.from(stages)
+    const movedStage = newStageOrder.splice(payload.oldIndex, 1)[0]
+    newStageOrder.splice(payload.newIndex, 0, movedStage)
+
+    /*
+    Because stages are sorted by orderNumber, change orderNumbers to match new order.
+    */
+
+    const reOrderedStages = newStageOrder.map((stage, index) => {
+      return { ...stage, orderNumber: index }
+    })
+
+    yield put(actions.moveStageSuccess(reOrderedStages))
+
+    const jobPosting = { ...posting, stages: reOrderedStages }
+    delete jobPosting.isHidden, jobPosting.postingStages
+
+    const response = yield call(
+      jobPostingApi.edit,
+      { jobPosting, recruiter, id: posting.id }
+    )
+
+    if (response.status === 200) {
+      yield put(actions.fetchApplicants(posting.id))
+    }
+  }
+  catch (e) {
+    console.log(e)
+    yield put(actions.moveStageSuccess(payload.oldStages))
+  }
+}
+
 export const getCurrentUser = state => state.loginReducer.loggedIn
+export const getCurrentStages = state => state.postingReducer.stages
+export const getCurrentJobPosting = state => state.postingReducer.jobPosting
 
 export const watchFetchJobPostings = takeLatest(actions.fetchJobPostings().type, fetchJobPostings)
 export const watchFetchJobPosting = takeLatest(actions.fetchJobPosting().type, fetchJobPosting)
@@ -160,6 +204,7 @@ export const watchFetchJobPostingWithStages = takeLatest(actions.fetchJobPosting
 export const watchSubmitJobPosting = takeEvery(actions.submitJobPosting().type, submitJobPosting)
 export const watchNewStageToJobPosting = takeEvery(actions.addNewStageForJobPosting().type, addNewStageForJobPosting)
 export const watchRemoveStageInJobPosting = takeEvery(actions.removeStageInJobPosting().type, removeStageInJobPosting)
+export const watchMoveJobPostingStage = takeEvery(actions.moveStage().type, updateJobPostingStages)
 export const watchFetchApplicants = takeEvery(
   actions.fetchApplicants().type,
   fetchJobPostingApplicants
