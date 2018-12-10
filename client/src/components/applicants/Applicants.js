@@ -3,7 +3,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import * as actions from '../../redux/actions/actions'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { LinkButton } from '../Buttons'
 
 import ApplicationStage from './ApplicationStage'
@@ -170,7 +170,7 @@ const mapDispatchToProps = {
   ...actions
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Applicants)
+)(Applicants))
