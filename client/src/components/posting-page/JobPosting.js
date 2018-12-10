@@ -146,7 +146,9 @@ export class JobPosting extends Component {
           <AdminButtons id={jobPosting.id} />
         }
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
-        {jobPosting.isHidden && <HiddenNotification jobPosting={jobPosting} />}
+        {jobPosting.isHidden &&
+          <HiddenNotification showFrom={jobPosting.showFrom} showTo={jobPosting.showTo} />
+        }
         <div className='job-posting__content'>
           <ReactMarkdown source={jobPosting.content} />
         </div>
@@ -237,10 +239,22 @@ const AdminButtons = ({ id }) => {
   )
 }
 
-const HiddenNotification = ({ jobPosting }) => {
+const HiddenNotification = ({ showFrom, showTo }) => {
+  let visibilityMessage = 'Permanently hidden'
+
+  if (showFrom && !showTo) {
+
+    visibilityMessage = `Visible from ${showFrom}`
+
+  } else if (showFrom && showTo) {
+
+    visibilityMessage = `Visible from ${showFrom} to ${showTo}`
+
+  }
+
   return (
     <div className='job-posting__hidden-notification'>
-      Visible from {jobPosting.showFrom} to {jobPosting.showTo}
+      {visibilityMessage}
     </div>
   )
 }
@@ -263,6 +277,11 @@ JobPosting.propTypes = {
 
 InputErrorMessage.propTypes = {
   errorMessage: PropTypes.string
+}
+
+HiddenNotification.propTypes = {
+  showFrom: PropTypes.string.isRequired,
+  showTo: PropTypes.string.isRequired
 }
 
 const mapStateToProps = (state) => ({

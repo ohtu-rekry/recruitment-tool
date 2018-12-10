@@ -70,6 +70,37 @@
     &__single-stage {
       padding: 5px;
     }
+    &__single-stage-editable {
+      display:inline-flex;
+    }
+    &__stage-name-edit {
+      display: none;
+
+      &__input {
+        padding: 8px 10px;
+        background-color: #e0e0e0;
+        border: 0px;
+        border-radius: 20px;
+        outline: none;
+        margin-right: 4px;
+      }
+      &__hidden {
+        display: none;
+      }
+      &__visible {
+        display: block;
+      }
+    }
+
+    &__chip {
+      
+      &__hidden {
+        display: none;
+      }
+      &__visible {
+        display: inline-flex;
+      }
+    }
   }
 
 .timespan-picker {

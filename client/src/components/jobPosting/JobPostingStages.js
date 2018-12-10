@@ -1,19 +1,26 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { TextField, Button, Chip } from '@material-ui/core'
+import { TextField, Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import PropTypes from 'prop-types'
+import JobPostingStage from './JobPostingStage'
 
-import { addNewStageForJobPosting, removeStageInJobPosting, clearStages } from '../../redux/actions/actions'
+import { addNewStageForJobPosting, removeStageInJobPosting, clearStages, setStageError } from '../../redux/actions/actions'
 
 export class JobPostingStages extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      newStageName: '',
-      helperText: props.helperText,
-      error: false
+      currentStages: [],
+      newStageName: ''
     }
+  }
+
+  componentDidMount() {
+    const stageNames = this.props.jobPostingStages.map((stage) => stage.stageName)
+    this.setState({
+      currentStages: stageNames
+    })
   }
 
   componentWillUnmount() {
@@ -21,20 +28,16 @@ export class JobPostingStages extends Component {
   }
 
   addNewStage = () => {
-    const newName = this.state.newStageName
-
-    if (newName.length === 0
-      || !newName.trim()
-      || newName.length > 255
-      || this.props.defaultStageNames.map(name =>
-        name.toLowerCase()).includes(newName.trim().toLowerCase())
-    ) {
-      this.setState({ error: true })
+    if (!this.verifyStageName(this.state.newStageName)) {
+      this.props.setStageError({ errorMessage: 'Invalid stage name. Stage was not added' })
       return
     }
 
-    this.props.addNewStageForJobPosting({ stageName: newName, canRemove: true })
+    this.props.addNewStageForJobPosting({ stageName: this.state.newStageName, canRemove: true })
+    this.props.setStageError({ errorMessage: '' })
+    const newStageName = this.state.newStageName
     this.setState({
+      currentStages: [...this.state.currentStages, newStageName],
       newStageName: ''
     })
   }
@@ -46,24 +49,32 @@ export class JobPostingStages extends Component {
   }
 
   handleNameChange = (e) => {
+    if (this.props.stageError) {
+      this.props.setStageError({ errorMessage: '' })
+    }
     this.setState({
       newStageName: e.target.value,
-      error: false
     })
   }
 
-  handleStageDelete = (stage) => {
-    this.props.removeStageInJobPosting(stage)
+  verifyStageName = (stageName) => {
+    const currentStageNames = this.props.jobPostingStages.map((stage) => stage.stageName)
+    if (!stageName.trim()
+      || stageName.length > 255
+      || currentStageNames.includes(stageName)) {
+      return false
+    }
+    return true
   }
 
   render() {
-    const error = this.state.error
-    const helperText = error ? 'Invalid stage name. Stage was not added' : this.state.helperText
+    const error = this.props.stageError ? this.props.stageError : ''
 
+    const classNames = 'job-posting-form-stages'
     return (
-      <div className='job-posting-form-stages' onKeyPress={this.handleKeyPress}>
+      <div className={classNames}>
         <h3>Define stages for this job posting</h3>
-        <div className='job-posting-form-stages__new-stage-name'>
+        <div className={classNames + '__new-stage-name'}>
           <TextField
             fullWidth
             id="stageName"
@@ -71,30 +82,21 @@ export class JobPostingStages extends Component {
             value={this.state.newStageName}
             label={`Add ${this.props.jobPostingStages.length - 1}. stage (optional)`}
             onChange={this.handleNameChange}
+            onKeyPress={this.handleKeyPress}
             variant="outlined"
-            helperText={helperText}
-            error={error}
+            helperText={error}
+            error={!!error}
           />
         </div>
-        <div className='job-posting-form-stages__new-stage-add-button'>
+        <div className={classNames + '__new-stage-add-button'}>
           <Button mini variant="fab" color="inherit" aria-label="Add" onClick={() => this.addNewStage()}>
             <AddIcon />
           </Button>
         </div>
-        <div className='job-posting-form-stages__stage-list'>
+        <div className={classNames + '__stage-list'}>
           {this.props.jobPostingStages.map((jobPostingStage, index) => (
-            <div key={index} className='job-posting-form-stages__single-stage'>
-              {jobPostingStage.canRemove === true &&
-                <Chip
-                  label={index + 1 + '. ' + jobPostingStage.stageName}
-                  onDelete={() => this.handleStageDelete(jobPostingStage)}
-                />
-              }
-              {jobPostingStage.canRemove === false &&
-                <Chip
-                  label={index + 1 + '. ' + jobPostingStage.stageName}
-                />
-              }
+            <div key={jobPostingStage.stageName} className={classNames + '__single-stage'}>
+              <JobPostingStage jobPostingStage={jobPostingStage} index={index} className={classNames} />
             </div>
           ))}
         </div>
@@ -110,13 +112,16 @@ JobPostingStages.propTypes = {
 
 const mapStateToProps = (state) => ({
   jobPostingStages: state.jobPostingReducer.jobPostingStages,
-  defaultStageNames: state.jobPostingReducer.defaultStageNames
+  stages: state.jobPostingReducer.copiedStages,
+  defaultStageNames: state.jobPostingReducer.defaultStageNames,
+  stageError: state.jobPostingReducer.stageError
 })
 
 const mapDispatchToProps = {
   addNewStageForJobPosting,
   removeStageInJobPosting,
-  clearStages
+  clearStages,
+  setStageError
 }
 
 export default connect(

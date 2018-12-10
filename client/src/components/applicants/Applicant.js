@@ -52,6 +52,7 @@ class Applicant extends Component {
 
 Applicant.propTypes = {
   applicant: PropTypes.object.isRequired,
+  adminView: PropTypes.bool,
   toggleShowModal: PropTypes.func.isRequired
 }
 

@@ -302,7 +302,7 @@ describe('POST method', async () => {
   })
 })
 
-describe('GET single job posting', async ()  => {
+describe('GET single job posting', async () => {
 
   let token, jobPostingId
   const testStageName = 'the best stage ever'
@@ -579,6 +579,29 @@ describe('PUT method', async () => {
       expect(response.body.stages.filter(stage =>
         stage.id === postingStages[0].id)).toHaveLength(1)
     })
+
+    test('a stage can be renamed', async () => {
+      const modifiedPosting = {
+        ...jobPostings[0],
+        stages: [{
+          id: 14368722,
+          stageName: 'jobposting-test-example-stage2-renamed',
+          orderNumber: 1,
+          jobPostingId: jobPostings[0].id
+        }]
+      }
+
+      const response = await api
+        .put(`/api/jobposting/${modifiedPosting.id}`)
+        .send(modifiedPosting)
+        .set('authorization', token)
+        .expect(200)
+
+      const renamedStage = response.body.stages.filter(stage => stage.stageName === 'jobposting-test-example-stage2-renamed')
+      expect(renamedStage).toHaveLength(1)
+      expect(response.body.stages).toHaveLength(2)
+    })
+
   })
 
   describe('when user is not logged in', async () => {

@@ -11,8 +11,9 @@ const initialState = {
   creationRequestStatus: null,
   showFrom: null,
   showTo: null,
-  setTimespan: false,
-  defaultStageNames
+  defaultStageNames,
+  stageError: '',
+  setTimespan: false
 }
 
 const reducer = handleActions(
@@ -66,6 +67,19 @@ const reducer = handleActions(
     [actions.clearStages]: (state) => ({
       ...state,
       jobPostingStages: defaultStages
+    }),
+    [actions.renamePostingStage]: (state, action) => ({
+      ...state,
+      jobPostingStages: [...state.jobPostingStages.map(stage => {
+        if (stage.stageName === action.payload.postingStage.stageName) {
+          return { ...stage, stageName: action.payload.stageUnderEdit }
+        }
+        return stage
+      })]
+    }),
+    [actions.setStageError]: (state, action) => ({
+      ...state,
+      stageError: action.payload.errorMessage
     }),
     [actions.addShowFrom]: (state, action) => ({
       ...state,

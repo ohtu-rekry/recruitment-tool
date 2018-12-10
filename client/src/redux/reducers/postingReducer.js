@@ -35,18 +35,14 @@ const reducer = handleActions(
       jobPosting: {},
       stages: []
     }),
-    [actions.fetchApplicantsSuccess]: (state, action) => (
-      {
-        ...state,
-        stages: action.payload
-      }
-    ),
-    [actions.getApplicantsSuccess]: (state, action) => (
-      {
-        ...state,
-        stages: action.payload
-      }
-    ),
+    [actions.fetchApplicantsSuccess]: (state, action) => ({
+      ...state,
+      stages: action.payload
+    }),
+    [actions.getApplicantsSuccess]: (state, action) => ({
+      ...state,
+      stages: action.payload
+    }),
     [actions.addCommentSuccess]: (state, action) => ({
       ...state,
       stages: action.payload
@@ -63,7 +59,11 @@ const reducer = handleActions(
       ...state,
       errorMessage: null,
       applicationSuccessful: false
-    })
+    }),
+    [actions.moveStageSuccess]: (state, action) => ({
+      ...state,
+      stages: action.payload
+    }),
   },
   initialState
 )
