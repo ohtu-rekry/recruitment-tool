@@ -145,7 +145,7 @@ export class JobPosting extends Component {
           loggedIn &&
           <AdminButtons id={jobPosting.id} />
         }
-        < h2 className='job-posting__title' > {jobPosting.title}</h2>
+        <h2 className='job-posting__title'>{jobPosting.title}</h2>
         {jobPosting.isHidden && <HiddenNotification jobPosting={jobPosting} />}
         <div className='job-posting__content'>
           <ReactMarkdown source={jobPosting.content} />

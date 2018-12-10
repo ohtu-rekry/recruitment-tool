@@ -44,6 +44,8 @@ describe('When applying to a job opening', () => {
     expect(app.find('ReactMarkdown').prop('source')).toBe(postings[0].content)
 
     expect(app.find('.job-posting__title')).toHaveLength(1)
+    console.log(postings)
+    console.log(app.find('.job-posting__title').prop('children'))
     expect(app.find('.job-posting__title').prop('children')).toBe(postings[0].title)
   })
 
