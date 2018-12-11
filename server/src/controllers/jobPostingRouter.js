@@ -3,7 +3,12 @@ const { JobPosting, PostingStage, JobApplication, ApplicationComment } = require
 const { jwtMiddleware, jwtNotRequired } = require('../../utils/middleware')
 const { jobPostingValidator, postingPutValidator } = require('../../utils/validators')
 const Sequelize = require('sequelize')
-const { validateDate, handleJobPostingsForAdmin, handleJobPostingsForGuest } = require('../../utils/jobPostingDateHandlers')
+const {
+  validateDate,
+  handleJobPostingsForAdmin,
+  handleJobPostingsForGuest,
+  getPostingWithStagesForAdmin
+} = require('../../utils/jobPostingDateHandlers')
 
 
 jobPostingRouter.get('/', jwtNotRequired, async (req, res) => {
@@ -95,17 +100,7 @@ jobPostingRouter.get('/:id', jwtNotRequired, async (request, response) => {
   let jobPosting = null
 
   if (request.user) {
-    jobPosting = await JobPosting.findOne({
-      where: { id: jobPostingId },
-      include: [{
-        model: PostingStage,
-        as: 'postingStages',
-        include: [{
-          model: JobApplication,
-          as: 'jobApplications'
-        }]
-      }]
-    })
+    jobPosting = await getPostingWithStagesForAdmin(jobPostingId)
   } else {
     jobPosting = await JobPosting.findOne({
       where: { id: jobPostingId }

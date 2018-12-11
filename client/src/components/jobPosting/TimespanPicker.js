@@ -14,47 +14,52 @@ export class TimespanPicker extends Component {
       showTo: null,
       error: ''
     }
-    this.handleShowFromChange = this.handleShowFromChange.bind(this)
-    this.handleShowToChange = this.handleShowToChange.bind(this)
   }
 
   componentDidMount() {
-    if (this.props.setTimespan && this.props.showFrom) {
+    const { setTimespan, showFrom, showTo,
+      isEditMode, timespanHasBeenSet, addShowFrom } = this.props
+
+    if (setTimespan && showFrom) {
       const now = moment()
-      const copiedShowFrom = moment(this.props.showFrom)
+      const copiedShowFrom = moment(showFrom, 'DD.MM.YYYY')
+      let stateShowFrom = now
+      let stateShowTo = null
 
-      const notEditing = this.props.modeIsNotEdit
-      if (notEditing && now.isBefore(copiedShowFrom)) {
-        this.setState({ showFrom: copiedShowFrom })
-      } else {
-        this.setState({ showFrom: now })
+      if (isEditMode || now.isBefore(copiedShowFrom)) {
+        stateShowFrom = copiedShowFrom
       }
 
-      if (this.props.showTo) {
-        this.setState({ showTo: moment(this.props.showTo) })
+      if (showTo) {
+        stateShowTo = moment(showTo, 'DD.MM.YYYY')
       }
-      this.props.timespanHasBeenSet()
-    } else if (!this.props.setTimespan) {
+
+      this.setState({ showFrom: stateShowFrom, showTo: stateShowTo })
+      timespanHasBeenSet()
+    } else if (!setTimespan) {
 
       const now = moment().startOf('day')
       this.setState({ showFrom: now })
 
       const formattedDate = now.toLocaleString()
-      this.props.addShowFrom(formattedDate)
+      addShowFrom(formattedDate)
 
     }
   }
 
   componentDidUpdate() {
-    if (this.props.setTimespan && this.props.showFrom) {
+    const { setTimespan, showFrom, showTo, timespanHasBeenSet }
+      = this.props
 
-      this.setState({ showFrom: moment(this.props.showFrom) })
+    if (setTimespan && showFrom) {
 
-      if (this.props.showTo) {
-        this.setState({ showTo: moment(this.props.showTo) })
+      this.setState({ showFrom: moment(showFrom, 'DD.MM.YYYY') })
+
+      if (showTo) {
+        this.setState({ showTo: moment(showTo, 'DD.MM.YYYY') })
       }
 
-      this.props.timespanHasBeenSet()
+      timespanHasBeenSet()
     }
   }
 
@@ -62,7 +67,7 @@ export class TimespanPicker extends Component {
     this.props.clearShowFromAndShowTo()
   }
 
-  handleShowFromChange = async date => {
+  handleShowFromChange = async (date) => {
     if (!date) {
       await this.setState({
         showFrom: null,
@@ -87,18 +92,25 @@ export class TimespanPicker extends Component {
     }
   }
 
-  handleShowToChange = async date => {
+  handleShowToChange = async (date) => {
 
-    if (date !== undefined && (date === null || date.isSameOrAfter(this.state.showFrom))) {
+    if (!date) {
+      await this.setState({ showTo: null })
+
+      this.props.addShowTo(null)
+      return
+    }
+
+    if (date.isSameOrAfter(this.state.showFrom)) {
       await this.setState({
         showTo: date,
         error: ''
       })
 
-      const formattedDate = date ? date.toLocaleString() : null
+      const formattedDate = date.toLocaleString()
       this.props.addShowTo(formattedDate)
 
-    } else if (date) {
+    } else {
       this.setState({
         error: 'Selected date needs to be same or after start date'
       })
@@ -108,8 +120,8 @@ export class TimespanPicker extends Component {
   render() {
     const { showFrom, showTo } = this.state
     const now = moment()
-    const laterDateOfShowFromAndNow = showFrom && now.isBefore(showFrom) ? showFrom : now
-    const showToMinDate = moment(laterDateOfShowFromAndNow)
+    const showToMinDate = showFrom && now.isBefore(showFrom)
+      ? moment(showFrom, 'DD.MM.YYYY') : now
 
     return (
       <div>
@@ -145,7 +157,7 @@ TimespanPicker.propTypes = {
   showFrom: PropTypes.string,
   showTo: PropTypes.string,
   setTimespan: PropTypes.bool,
-  notEditing: PropTypes.bool
+  isEditMode: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = (state) => ({

@@ -100,7 +100,7 @@ export class JobPosting extends Component {
     this.setState({ attachments, inputError: null })
   }
 
-  handleClickToEditView = () => {
+  handleClickEdit = () => {
     const { setTimeSpan, jobPosting } = this.props
     setTimeSpan(jobPosting.showFrom, jobPosting.showTo)
   }
@@ -114,7 +114,7 @@ export class JobPosting extends Component {
         {loggedIn &&
           <AdminButtons
             id={jobPosting.id}
-            handleClickToEditView={this.handleClickToEditView}
+            handleClickEdit={this.handleClickEdit}
           />
         }
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
@@ -191,7 +191,7 @@ export class JobPosting extends Component {
   }
 }
 
-const AdminButtons = ({ id, handleClickToEditView }) => {
+const AdminButtons = ({ id, handleClickEdit }) => {
   const LinkToApplicants = props => <Link to={`/position/${id}/applicants`} {...props} />
   const LinkToEditPage = props => <Link to={`/position/${id}/edit`} {...props} />
 
@@ -205,7 +205,7 @@ const AdminButtons = ({ id, handleClickToEditView }) => {
       <Button
         className='job-posting__link'
         component={LinkToEditPage}
-        onClick={handleClickToEditView}>
+        onClick={handleClickEdit}>
         Edit
       </Button>
     </div>
@@ -254,8 +254,8 @@ InputErrorMessage.propTypes = {
 }
 
 HiddenNotification.propTypes = {
-  showFrom: PropTypes.string.isRequired,
-  showTo: PropTypes.string.isRequired
+  showFrom: PropTypes.string,
+  showTo: PropTypes.string
 }
 
 const mapStateToProps = (state) => ({

@@ -19,6 +19,11 @@ function* submitJobPosting({ payload }) {
       return
     }
 
+    jobPosting.showFrom = jobPosting.showFrom
+      ? new Date(jobPosting.showFrom).toJSON() : null
+    jobPosting.showTo = jobPosting.showTo
+      ? new Date(jobPosting.showTo).toJSON() : null
+
     const id = payload.id
 
     let response
@@ -179,8 +184,11 @@ function* updateJobPostingStages({ payload }) {
     const jobPosting = { ...posting, stages: reOrderedStages }
     delete jobPosting.isHidden
     delete jobPosting.postingStages
-    jobPosting.showTo = new Date(jobPosting.showTo).toJSON()
-    jobPosting.showFrom = new Date(jobPosting.showFrom).toJSON()
+
+    jobPosting.showFrom = jobPosting.showFrom
+      ? new Date(jobPosting.showFrom).toJSON() : null
+    jobPosting.showTo = jobPosting.showTo
+      ? new Date(jobPosting.showTo).toJSON() : null
 
     const response = yield call(
       jobPostingApi.edit,
