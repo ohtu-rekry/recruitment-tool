@@ -18,7 +18,6 @@ const emailSender = (jobPosting, applicantName) => {
     } else {
       root = 'http://localhost:3000'
       mailConfig = {
-        //logger: true,
         host: 'smtp.ethereal.email',
         port: 587,
         auth: {

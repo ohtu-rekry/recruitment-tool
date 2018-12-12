@@ -52,7 +52,6 @@ try {
   } else {
     root = 'http://localhost:3000'
     mailConfig = {
-      //logger: true,
       host: 'smtp.ethereal.email',
       port: 587,
       auth: {
@@ -65,21 +64,19 @@ try {
   const emailAddress = 'Recruitment Tool <careers@emblica.com>'
   let transporter = nodemailer.createTransport(mailConfig, { to: emailAddress, from: emailAddress })
 
-  const inactiveApplications = getInactiveApplications()
-  inactiveApplications.then(res => res.map((application) => {
-    const emailSubject = `Inactivity alert: ${application.title}`
-    const emailText = `Inactivity alert: applicant ${application.applicantName} in "${application.title}".
+  getInactiveApplications()
+    .then(res => res.map((application) => {
+      const emailSubject = `Inactivity alert: ${application.title}`
+      const emailText = `Inactivity alert: applicant ${application.applicantName} in "${application.title}".
                       \n${root}/position/${application.jobPostingId}`
 
-    transporter.sendMail({
-      subject: emailSubject,
-      text: emailText
-    })
-  })).catch(e => console.log(e))
+      transporter.sendMail({
+        subject: emailSubject,
+        text: emailText
+      })
+    })).catch(e => console.log(e))
 
   transporter.close
 } catch (e) {
   console.log(e)
 }
-
-module.exports = { getInactiveApplications, client, databaseURL }
