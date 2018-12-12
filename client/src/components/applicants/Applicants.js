@@ -21,7 +21,7 @@ export class Applicants extends Component {
 
   componentDidMount() {
     const { fetchApplicants, loggedIn, adminView } = this.props
-    const postingId = this.props.match.params.id
+    const postingId = this.props.match.params.id ? this.props.match.params.id : window.location.href.split('/')[4]
     if (loggedIn && !adminView) {
       fetchApplicants(postingId)
       this.setState({ isLoaded: true })
@@ -30,7 +30,7 @@ export class Applicants extends Component {
 
   componentWillReceiveProps(nProps) {
     const { fetchApplicants, fetchJobPosting, adminView } = this.props
-    const postingId = this.props.match.params.id
+    const postingId = this.props.match.params.id ? this.props.match.params.id : window.location.href.split('/')[4]
     if (nProps.loggedIn && !this.state.isLoaded && !adminView) {
       fetchJobPosting(postingId)
       fetchApplicants(postingId)
