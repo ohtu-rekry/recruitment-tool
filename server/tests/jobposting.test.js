@@ -342,10 +342,13 @@ describe('GET single job posting', async () => {
     expect(JSON.stringify(response.body)).toContain(testStageName)
   })
 
-  test('job posting cannot be fetched when user is not logged in', async () => {
-    await api
+  test('job posting is not fetched with stages when user is not logged in', async () => {
+    const response = await api
       .get(`/api/jobposting/${jobPostingId}`)
-      .expect(401)
+      .expect(200)
+
+    expect(response.body.title).toEqual(testJobPosting.title)
+    expect(response.body.stages).not.toBeDefined()
   })
 
   afterAll(async () => {

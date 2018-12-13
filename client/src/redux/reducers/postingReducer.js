@@ -7,8 +7,7 @@ const initialState = {
   jobPosting: {},
   stages: [],
   applicants: [],
-  comments: [],
-  attachments: []
+  comments: []
 }
 
 const reducer = handleActions(

@@ -1,14 +1,14 @@
 const mime = require('mime-types')
 const { Storage } = require('@google-cloud/storage')
 
-const handleAttachmentSending = async (base64array) => {
+const handleAttachmentSending = (base64array) => {
   const storage = new Storage({
     projectId: 'emblica-212815'
   })
   const bucket = storage.bucket('rekrysofta')
   let attachmentLinks = []
 
-  await base64array.forEach(base64object => {
+  base64array.forEach(base64object => {
     let file = base64object.base64,
       fileName = Date.now() + base64object.fileName.replace(/ /g, ''),
       mimeType = mime.contentType(base64object.fileName),

@@ -34,7 +34,8 @@ services:
     ports:
       - "8877:8877"
     links: 
-      - database 
+      - database
+      - server
     env_file:
       - .env
     environment:

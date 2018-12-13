@@ -3,7 +3,12 @@ const { JobPosting, PostingStage, JobApplication, ApplicationComment } = require
 const { jwtMiddleware, jwtNotRequired } = require('../../utils/middleware')
 const { jobPostingValidator, postingPutValidator } = require('../../utils/validators')
 const Sequelize = require('sequelize')
-const { validateDate, handleJobPostingsForAdmin, handleJobPostingsForGuest } = require('../../utils/jobPostingDateHandlers')
+const {
+  validateDate,
+  handleJobPostingsForAdmin,
+  handleJobPostingsForGuest,
+  getPostingWithStagesForAdmin
+} = require('../../utils/jobPostingDateHandlers')
 
 
 jobPostingRouter.get('/', jwtNotRequired, async (req, res) => {
@@ -95,26 +100,23 @@ jobPostingRouter.get('/:id/applicants', jwtMiddleware, async (request, response)
   }
 })
 
-jobPostingRouter.get('/:id', jwtMiddleware, async (request, response) => {
+jobPostingRouter.get('/:id', jwtNotRequired, async (request, response) => {
   const jobPostingId = request.params.id
+  let jobPosting = null
 
-  const jobPostingWithStages = await JobPosting.findOne({
-    where: { id: jobPostingId },
-    include: [{
-      model: PostingStage,
-      as: 'postingStages',
-      include: [{
-        model: JobApplication,
-        as: 'jobApplications'
-      }]
-    }]
-  })
+  if (request.user) {
+    jobPosting = await getPostingWithStagesForAdmin(jobPostingId)
+  } else {
+    jobPosting = await JobPosting.findOne({
+      where: { id: jobPostingId }
+    })
+  }
 
-  if (!jobPostingWithStages) {
+  if (!jobPosting) {
     return response.status(404).json({ error: 'Invalid job posting ID' })
   }
 
-  response.status(200).json(jobPostingWithStages)
+  response.status(200).json(jobPosting)
 })
 
 jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request, response) => {

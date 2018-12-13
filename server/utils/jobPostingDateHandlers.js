@@ -1,7 +1,7 @@
 const moment = require('moment')
 const momentTz = require('moment-timezone')
 
-const { JobPosting } = require('../db/models')
+const { JobPosting, PostingStage, JobApplication } = require('../db/models')
 
 const nowIsAfterFrom = (showFrom, showTo, now) => {
   return showFrom && !showTo && moment(now).isSameOrAfter(showFrom)
@@ -38,7 +38,7 @@ async function handleJobPostingsForAdmin() {
 
     jobposting.isHidden =
       !(nowIsBetweenFromTo(from, to, now)
-      || nowIsAfterFrom(from, to, now))
+        || nowIsAfterFrom(from, to, now))
 
     jobposting.showFrom = formatDate(from)
     jobposting.showTo = formatDate(to)
@@ -61,5 +61,33 @@ async function handleJobPostingsForGuest() {
   return filtered
 }
 
+const getPostingWithStagesForAdmin = async (id) => {
+  let jobPosting = await JobPosting.findOne({
+    where: { id },
+    include: [{
+      model: PostingStage,
+      as: 'postingStages',
+      include: [{
+        model: JobApplication,
+        as: 'jobApplications'
+      }]
+    }]
+  })
 
-module.exports = { validateDate, handleJobPostingsForAdmin, handleJobPostingsForGuest }
+  jobPosting = jobPosting.dataValues
+
+  const now = validateDate(moment().startOf('day'))
+
+  const from = validateDate(jobPosting.showFrom)
+  const to = validateDate(jobPosting.showTo)
+
+  jobPosting.isHidden =
+    !(nowIsBetweenFromTo(from, to, now)
+      || nowIsAfterFrom(from, to, now))
+
+  jobPosting.showFrom = formatDate(from)
+  jobPosting.showTo = formatDate(to)
+  return jobPosting
+}
+
+module.exports = { validateDate, handleJobPostingsForAdmin, handleJobPostingsForGuest, getPostingWithStagesForAdmin }

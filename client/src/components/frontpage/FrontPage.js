@@ -18,6 +18,10 @@ class FrontPage extends Component {
     this.props.emptyTokenExpired()
   }
 
+  compareJobPostings = (a, b) => {
+    return a.isHidden - b.isHidden || a.title.localeCompare(b.title)
+  }
+
   componentDidUpdate(pProps) {
     const { fetchJobPostings, loggedIn } = this.props
     if (pProps.loggedIn !== loggedIn) {
@@ -39,9 +43,12 @@ class FrontPage extends Component {
         </Typography>
         <div className='job-postings'>
           <div className='job-postings__list' >
-            {this.props.jobPostings !== undefined && this.props.jobPostings.map(posting =>
-              <JobPostingListing key={posting.id} data={posting} />
-            )}
+            {this.props.jobPostings !== undefined &&
+            this.props.jobPostings
+              .sort(this.compareJobPostings)
+              .map(posting =>
+                <JobPostingListing key={posting.id} data={posting} />
+              )}
           </div>
         </div>
       </div>

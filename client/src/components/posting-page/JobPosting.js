@@ -83,7 +83,7 @@ export class JobPosting extends Component {
     }
 
     if (attachments.length > 0) {
-      promiseAttachments = await attachments.map((attachment) => {
+      promiseAttachments = attachments.map((attachment) => {
         return this.readFile(attachment)
       })
       let base64typeAttachments = await Promise.all(promiseAttachments)
@@ -122,17 +122,21 @@ export class JobPosting extends Component {
   //Reads the attachment and converts it to base64
   readFile(attachment) {
     let reader = new FileReader()
-    let file = attachment
     return new Promise((resolve, reject) => {
       reader.addEventListener('load', function () {
         resolve(this.result)
       }, false)
-      if (file) {
-        return reader.readAsDataURL(file)
+      if (attachment) {
+        return reader.readAsDataURL(attachment)
       } else {
-        reject('foo')
+        reject('There was a problem when converting the file')
       }
     })
+  }
+
+  handleClickEdit = () => {
+    const { setTimeSpan, jobPosting } = this.props
+    setTimeSpan(jobPosting.showFrom, jobPosting.showTo)
   }
 
   render() {
@@ -140,10 +144,12 @@ export class JobPosting extends Component {
     const { errorMessage, jobPosting, loggedIn } = this.props
 
     return (
-      <div className='job-posting' >
-        {
-          loggedIn &&
-          <AdminButtons id={jobPosting.id} />
+      <div className='job-posting'>
+        {loggedIn &&
+          <AdminButtons
+            id={jobPosting.id}
+            handleClickEdit={this.handleClickEdit}
+          />
         }
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
         {jobPosting.isHidden &&
@@ -219,7 +225,7 @@ export class JobPosting extends Component {
   }
 }
 
-const AdminButtons = ({ id }) => {
+const AdminButtons = ({ id, handleClickEdit }) => {
   const LinkToApplicants = props => <Link to={`/position/${id}/applicants`} {...props} />
   const LinkToEditPage = props => <Link to={`/position/${id}/edit`} {...props} />
 
@@ -232,7 +238,8 @@ const AdminButtons = ({ id }) => {
       </Button>
       <Button
         className='job-posting__link'
-        component={LinkToEditPage}>
+        component={LinkToEditPage}
+        onClick={handleClickEdit}>
         Edit
       </Button>
     </div>
@@ -272,7 +279,8 @@ JobPosting.propTypes = {
   jobPosting: PropTypes.object.isRequired,
   loggedIn: PropTypes.object,
   emptyJobPosting: PropTypes.func.isRequired,
-  fetchJobPosting: PropTypes.func.isRequired
+  fetchJobPosting: PropTypes.func.isRequired,
+  setTimeSpan: PropTypes.func.isRequired
 }
 
 InputErrorMessage.propTypes = {
@@ -280,8 +288,8 @@ InputErrorMessage.propTypes = {
 }
 
 HiddenNotification.propTypes = {
-  showFrom: PropTypes.string.isRequired,
-  showTo: PropTypes.string.isRequired
+  showFrom: PropTypes.string,
+  showTo: PropTypes.string
 }
 
 const mapStateToProps = (state) => ({
