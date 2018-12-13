@@ -101,6 +101,7 @@ export class Applicants extends Component {
       title = 'All applicants'
     }
 
+
     return (
       <div className='applicants'>
         <div className='applicants__title'>

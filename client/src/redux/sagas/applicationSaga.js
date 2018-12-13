@@ -87,6 +87,7 @@ function* getApplicants() {
     const token = recruiter.token
 
     const response = yield call(jobApplicationApi.get, { token })
+
     let stages = []
     if (response.status === 200) {
       response.data.forEach(applicant => {
@@ -105,6 +106,7 @@ function* getApplicants() {
               applicationComments: applicant.applicationComments,
               createdAt: applicant.createdAt,
               jobPosting: applicant.PostingStage.JobPosting.title,
+              attachments: applicant.attachments,
               jobPostingId: applicant.PostingStage.JobPosting.id
             }]
           }
@@ -121,7 +123,7 @@ function* getApplicants() {
         let result = res.find(stage =>
           stage.stageName.toLowerCase().trim() === stg.stageName.toLowerCase().trim()
         )
-        if(!result) return res.concat(stg)
+        if (!result) return res.concat(stg)
         const index = res.findIndex(existingStage =>
           existingStage.stageName.toLowerCase().trim() === stg.stageName.toLowerCase().trim()
         )
@@ -187,15 +189,15 @@ function* addComment({ payload }) {
         if (commentedApplicant) {
           const newApplicant = { ...commentedApplicant }
           newApplicant.applicationComments = newApplicant.applicationComments
-            ? [ ...newApplicant.applicationComments, response.data ]
-            : [ response.data ]
+            ? [...newApplicant.applicationComments, response.data]
+            : [response.data]
 
           const notCommentedApplicants = [
             ...stage.applicants.filter(applicant =>
               applicant.id !== payload.applicationId)
           ]
 
-          newStage.applicants = [ ...notCommentedApplicants, newApplicant ]
+          newStage.applicants = [...notCommentedApplicants, newApplicant]
         }
         return newStage
       })

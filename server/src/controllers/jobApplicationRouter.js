@@ -1,11 +1,12 @@
 const jobApplicationRouter = require('express-promise-router')()
 const { jwtMiddleware } = require('../../utils/middleware')
+const { JobApplication, PostingStage, JobPosting, ApplicationComment, Attachment } = require('../../db/models')
 const { emailSender } = require('../../utils/emailSender')
-const { JobApplication, PostingStage, JobPosting, ApplicationComment } = require('../../db/models')
 const {
   jobApplicationValidator,
   applicationPatchValidator,
   applicationCommentValidator } = require('../../utils/validators')
+const { handleAttachmentSending } = require('../../utils/attachmentHandler')
 
 jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
   const jobApplications = await JobApplication.findAll({
@@ -19,13 +20,19 @@ jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
       {
         model: ApplicationComment,
         as: 'applicationComments'
+      },
+      {
+        model: Attachment,
+        as: 'attachments'
       }]
   })
   response.json(jobApplications)
 })
 
 jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
+
   const body = req.body
+  let attachments = []
 
   const firstPostingStage = await PostingStage.findOne({
     where: {
@@ -43,6 +50,16 @@ jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
     applicantEmail: body.applicantEmail,
     postingStageId: firstPostingStage.id
   })
+
+  if (body.attachments.length > 0) {
+    attachments = await handleAttachmentSending(body.attachments)
+    await attachments.forEach(attachment => {
+      Attachment.create({
+        path: attachment,
+        jobApplicationId: jobApplication.id
+      })
+    })
+  }
 
   const jobPosting = await JobPosting.findOne({
     where: {

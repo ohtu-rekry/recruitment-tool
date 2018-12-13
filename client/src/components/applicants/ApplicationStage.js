@@ -66,7 +66,7 @@ export class ApplicationStage extends Component {
                     {...provided.droppableProps}
                   >
                     {stage.applicants && stage.applicants
-                      .sort((a,b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
                       .map((applicant, index) =>
                         <Applicant
                           key={applicant.id}
