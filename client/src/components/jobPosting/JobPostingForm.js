@@ -155,7 +155,7 @@ export class JobPostingForm extends Component {
               disabled={!loggedIn}
             />
             <br />
-            <TimespanPicker />
+            <TimespanPicker isEditMode={this.state.mode === 'edit'}/>
           </form>
           <div className='job-posting-form__form'>
             <JobPostingStages helperText={stageHelperText} />

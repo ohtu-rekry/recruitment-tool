@@ -26,6 +26,7 @@ describe('When applying to a job opening', () => {
 
   beforeEach(() => {
     mock.onGet(postingRoot).reply(200, postings)
+    mock.onGet(`${postingRoot}/${postings[0].id}`).reply(200, postings[0])
     setWindowLocation(`https://localhost:3000/position/${postings[0].id}/`)
     app = mount(getApp(<JobPosting />))
 
