@@ -168,7 +168,7 @@ module.exports = {
     await queryInterface.bulkDelete('JobApplications', null, {})
     await queryInterface.bulkDelete('PostingStages', null, {})
     await queryInterface.bulkDelete('JobPostings', null, {})
-    return queryInterface.bulkDelete('Recruiters', null, {
+    return queryInterface.bulkDelete('Recruiters', {
       where: { username: { [Sequelize.Op.in]: ['test', 'roslin'] } }
     })
   }
