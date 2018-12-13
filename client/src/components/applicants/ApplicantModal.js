@@ -1,8 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Modal, Button } from '@material-ui/core'
-import { Clear, Person, Email, CalendarToday } from '@material-ui/icons'
+import Button from '@material-ui/core/Button'
+import Modal from '@material-ui/core/Modal'
+import Clear from '@material-ui/icons/Clear'
+import Person from '@material-ui/icons/Person'
+import Email from '@material-ui/icons/Email'
+import Work from '@material-ui/icons/Work'
+import CalendarToday from '@material-ui/icons/CalendarToday'
 
 import ApplicantModalDropzone from './ApplicantModalDropzone'
 import ApplicationComment from '../comments/ApplicationComment'
@@ -30,7 +36,8 @@ class ApplicantModal extends React.Component {
       applicantName,
       applicantEmail,
       createdAt,
-      jobPosting
+      jobPosting,
+      jobPostingId
     } = applicant
 
     let dateTime = new Date(createdAt).toLocaleString([], {
@@ -80,9 +87,18 @@ class ApplicantModal extends React.Component {
             </div>
           </div>
           {jobPosting &&
-            <div className='applicant-modal__date'>
-              Applied for: {jobPosting}
-            </div>}
+            <div>
+              <Work className='applicant-modal__icon' />
+              <Link to={`/position/${jobPostingId}`} className='applicant-modal__link'>
+                <Button
+                  style={buttonStyle}
+                  color='inherit'
+                >
+                  {jobPosting}
+                </Button>
+              </Link>
+            </div>
+          }
           <ApplicantModalDropzone applicationId={id} />
           <div className='applicant-modal__comments-title'>Comments ({comments.length})</div>
           {comments && <div className='applicant-modal__comments'>
@@ -112,7 +128,7 @@ const mapDispatchToProps = {
   ...actions
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(ApplicantModal)
+)(ApplicantModal))

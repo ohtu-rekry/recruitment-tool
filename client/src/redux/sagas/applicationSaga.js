@@ -104,7 +104,8 @@ function* getApplicants() {
               applicantName: applicant.applicantName,
               applicationComments: applicant.applicationComments,
               createdAt: applicant.createdAt,
-              jobPosting: applicant.PostingStage.JobPosting.title
+              jobPosting: applicant.PostingStage.JobPosting.title,
+              jobPostingId: applicant.PostingStage.JobPosting.id
             }]
           }
         ]
