@@ -59,9 +59,6 @@ class ApplicantModal extends React.Component {
       alignSelf: 'flex-end'
     }
 
-    console.log(applicant)
-
-
     return (
       <Modal
         open={true}

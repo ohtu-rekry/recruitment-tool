@@ -536,18 +536,6 @@ describe('POST a comment to an application', async () => {
         .expect(201)
         .expect('Content-Type', /application\/json/)
 
-      console.log('OLLI')
-      console.log('OLLI')
-      console.log('OLLI')
-      console.log('OLLI')
-      console.log('OLLI')
-      console.log('OLLI')
-      console.log('OLLI')
-      console.log('OLLI')
-
-      console.log('OLLI')
-      console.log('OLLI')
-      console.log(response.body)
       expect(response.body.comment).toEqual(validComment.comment)
       expect(response.body.jobApplicationId).toEqual(application.id)
     })

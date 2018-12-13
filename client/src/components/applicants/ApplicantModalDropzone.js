@@ -5,7 +5,7 @@ import { addComment } from '../../redux/actions/actions'
 import { Button, Chip, TextField } from '@material-ui/core'
 import { AttachFile } from '@material-ui/icons'
 import Dropzone from 'react-dropzone'
-
+import { readFile } from '../../utils/readFile'
 class ApplicantModalDropzone extends React.Component {
 
   constructor(props) {
@@ -25,7 +25,7 @@ class ApplicantModalDropzone extends React.Component {
 
     if (attachments.length > 0) {
       promiseAttachments = await attachments.map((attachment) => {
-        return this.readFile(attachment)
+        return readFile(attachment)
       })
       let base64typeAttachments = await Promise.all(promiseAttachments)
 
@@ -87,21 +87,6 @@ class ApplicantModalDropzone extends React.Component {
 
   handleAttachmentButtonClick = (e) => {
     e.openBrowse = true
-  }
-
-  readFile(attachment) {
-    let reader = new FileReader()
-    let file = attachment
-    return new Promise((resolve, reject) => {
-      reader.addEventListener('load', function () {
-        resolve(this.result)
-      }, false)
-      if (file) {
-        return reader.readAsDataURL(file)
-      } else {
-        reject('foo')
-      }
-    })
   }
 
   render() {

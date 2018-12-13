@@ -11,6 +11,7 @@ import Snackbar from '@material-ui/core/Snackbar'
 import EmailValidator from 'email-validator'
 import ReactMarkdown from 'react-markdown'
 import Dropzone from 'react-dropzone'
+import { readFile } from '../../utils/readFile'
 
 
 export class JobPosting extends Component {
@@ -84,7 +85,7 @@ export class JobPosting extends Component {
 
     if (attachments.length > 0) {
       promiseAttachments = attachments.map((attachment) => {
-        return this.readFile(attachment)
+        return readFile(attachment)
       })
       let base64typeAttachments = await Promise.all(promiseAttachments)
 
@@ -117,21 +118,6 @@ export class JobPosting extends Component {
       .filter((attachment, index) => index !== deleteIndex)
 
     this.setState({ attachments, inputError: null })
-  }
-
-  //Reads the attachment and converts it to base64
-  readFile(attachment) {
-    let reader = new FileReader()
-    return new Promise((resolve, reject) => {
-      reader.addEventListener('load', function () {
-        resolve(this.result)
-      }, false)
-      if (attachment) {
-        return reader.readAsDataURL(attachment)
-      } else {
-        reject('There was a problem when converting the file')
-      }
-    })
   }
 
   handleClickEdit = () => {
