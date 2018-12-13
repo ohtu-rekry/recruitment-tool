@@ -58,15 +58,19 @@ export class JobPosting extends Component {
     })
   }
 
+
   handleClose = () => {
     this.setState({ showError: false })
     this.props.clearErrorMessage()
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault()
     const { applicantName, applicantEmail, attachments } = this.state
     const { sendApplication } = this.props
+
+    let promiseAttachments = []
+    let attachmentObjectArray = []
 
     if (!applicantName.trim()) {
       this.setState({ inputError: 'Please enter a name' })
@@ -79,7 +83,22 @@ export class JobPosting extends Component {
     }
 
     const jobPostingId = this.props.match.params.id ? this.props.match.params.id : window.location.href.split('/')[4]	
-    sendApplication(applicantName, applicantEmail, jobPostingId, attachments)
+    if (attachments.length > 0) {
+      promiseAttachments = attachments.map((attachment) => {
+        return this.readFile(attachment)
+      })
+      let base64typeAttachments = await Promise.all(promiseAttachments)
+
+      attachmentObjectArray = attachments.map((attachment, index) => {
+        return {
+          fileName: attachment.name,
+          base64: base64typeAttachments[index]
+        }
+      })
+    }
+
+
+    sendApplication(applicantName, applicantEmail, jobPostingId, attachmentObjectArray)
   }
 
   handleDropAttachment = (e) => {
@@ -100,6 +119,26 @@ export class JobPosting extends Component {
     this.setState({ attachments, inputError: null })
   }
 
+  //Reads the attachment and converts it to base64
+  readFile(attachment) {
+    let reader = new FileReader()
+    return new Promise((resolve, reject) => {
+      reader.addEventListener('load', function () {
+        resolve(this.result)
+      }, false)
+      if (attachment) {
+        return reader.readAsDataURL(attachment)
+      } else {
+        reject('There was a problem when converting the file')
+      }
+    })
+  }
+
+  handleClickEdit = () => {
+    const { setTimeSpan, jobPosting } = this.props
+    setTimeSpan(jobPosting.showFrom, jobPosting.showTo)
+  }
+
   render() {
     const { applicantName, applicantEmail, inputError, attachments, showError } = this.state
     const { errorMessage, jobPosting, loggedIn } = this.props
@@ -107,7 +146,10 @@ export class JobPosting extends Component {
     return (
       <div className='job-posting'>
         {loggedIn &&
-          <AdminButtons id={jobPosting.id} />
+          <AdminButtons
+            id={jobPosting.id}
+            handleClickEdit={this.handleClickEdit}
+          />
         }
         <h2 className='job-posting__title'>{jobPosting.title}</h2>
         {jobPosting.isHidden &&
@@ -147,7 +189,7 @@ export class JobPosting extends Component {
               {attachments.length === 0 &&
                 <div>
                   Drop attachments here, or click to select files to upload
-                  <br/>
+                  <br />
                   Accepted file types are .zip and .pdf
                 </div>}
               <div>
@@ -172,18 +214,18 @@ export class JobPosting extends Component {
           </div>
         </form>
         {errorMessage &&
-        <Snackbar
-          onClose={this.handleClose}
-          open={showError}
-          message={<span>{errorMessage}</span>}
-        />
+          <Snackbar
+            onClose={this.handleClose}
+            open={showError}
+            message={<span>{errorMessage}</span>}
+          />
         }
       </div>
     )
   }
 }
 
-const AdminButtons = ({ id }) => {
+const AdminButtons = ({ id, handleClickEdit }) => {
   const LinkToApplicants = props => <Link to={`/position/${id}/applicants`} {...props} />
   const LinkToEditPage = props => <Link to={`/position/${id}/edit`} {...props} />
 
@@ -196,7 +238,8 @@ const AdminButtons = ({ id }) => {
       </Button>
       <Button
         className='job-posting__link'
-        component={LinkToEditPage}>
+        component={LinkToEditPage}
+        onClick={handleClickEdit}>
         Edit
       </Button>
     </div>
@@ -236,7 +279,8 @@ JobPosting.propTypes = {
   jobPosting: PropTypes.object.isRequired,
   loggedIn: PropTypes.object,
   emptyJobPosting: PropTypes.func.isRequired,
-  fetchJobPosting: PropTypes.func.isRequired
+  fetchJobPosting: PropTypes.func.isRequired,
+  setTimeSpan: PropTypes.func.isRequired
 }
 
 InputErrorMessage.propTypes = {
@@ -244,8 +288,8 @@ InputErrorMessage.propTypes = {
 }
 
 HiddenNotification.propTypes = {
-  showFrom: PropTypes.string.isRequired,
-  showTo: PropTypes.string.isRequired
+  showFrom: PropTypes.string,
+  showTo: PropTypes.string
 }
 
 const mapStateToProps = (state) => ({

@@ -73,7 +73,8 @@ describe('CREATE OR CHANGE JOBAPPLICATION', async () => {
       const newJobApplication = {
         applicantName: 'Mikko',
         applicantEmail: 'mikko@mallikas.fi',
-        jobPostingId: jobPostingId
+        jobPostingId: jobPostingId,
+        attachments: []
       }
 
       const response = await api
@@ -93,7 +94,8 @@ describe('CREATE OR CHANGE JOBAPPLICATION', async () => {
       const newJobApplication = {
         applicantName: 'Roope Ankka',
         applicantEmail: 'roope@ankka.fi',
-        jobPostingId: jobPostingId
+        jobPostingId: jobPostingId,
+        attachments: []
       }
 
       const jobApplicationResponse = await api.post('/api/jobapplication').send(newJobApplication)
@@ -376,7 +378,7 @@ describe('GET all applications', async () => {
       const application = response.body.find(appl => appl.id === applications[0].id)
       expect(application.applicationComments).toHaveLength(comments.length)
 
-      const returnedComments = application.applicationComments.map( comment => comment.comment )
+      const returnedComments = application.applicationComments.map(comment => comment.comment)
       expect(returnedComments).toContain(comments[0].comment)
       expect(returnedComments).toContain(comments[1].comment)
     })
@@ -506,7 +508,8 @@ describe('POST a comment to an application', async () => {
       .send({
         applicantName: 'jobposting-test-example-applicant',
         applicantEmail: 'jobposting-test@example.email',
-        jobPostingId: jobPosting.id
+        jobPostingId: jobPosting.id,
+        attachments: []
       })
 
     application = response.body

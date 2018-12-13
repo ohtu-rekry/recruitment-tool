@@ -32,12 +32,14 @@ describe('FETCH applicants for jobPosting', async () => {
 
   const newApplicant = {
     applicantName: 'Donald Trump',
-    applicantEmail: 'potus@whitehouse.com'
+    applicantEmail: 'potus@whitehouse.com',
+    attachments: []
   }
 
   const newApplicant2 = {
     applicantName: 'Hillary Clinton',
-    applicantEmail: 'runnerup@whitehouse.com'
+    applicantEmail: 'runnerup@whitehouse.com',
+    attachments: []
   }
 
   let jobPosting = ''

@@ -14,7 +14,8 @@ const HOST = '0.0.0.0'
 
 const app = express()
 app.use(morgan('dev'))
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '50mb' }))
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }))
 
 app.use('/api/login', loginRouter)
 app.use('/api/recruiter', recruiterRouter)
@@ -46,3 +47,5 @@ if (!module.parent) {
 }
 
 module.exports = { app, server }
+
+

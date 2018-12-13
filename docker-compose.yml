@@ -10,6 +10,7 @@ services:
     volumes:
       - ./server/:/usr/app
       - /usr/app/node_modules
+      - ~/.config/gcloud/application_default_credentials.json:/usr/application_default_credentials.json
     ports:
       - "8080:8080"
     links: 
@@ -33,7 +34,8 @@ services:
     ports:
       - "8877:8877"
     links: 
-      - database 
+      - database
+      - server
     env_file:
       - .env
     environment:

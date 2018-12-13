@@ -80,6 +80,7 @@ describe('Application view for one posting when user is logged in', () => {
 
   beforeAll(() => {
     mock.onGet(postingRoot).reply(200, postings)
+    mock.onGet(`${postingRoot}/${postings[0].id}`).reply(200, postings[0])
     mock.onGet(`${postingRoot}/${postings[0].id}/applicants`).reply(200, stages)
     setWindowLocation(`https://localhost:3000/position/${postings[0].id}/`)
     store.getState().loginReducer.loggedIn = testAdmin
