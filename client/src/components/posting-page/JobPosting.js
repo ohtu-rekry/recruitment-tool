@@ -82,7 +82,7 @@ export class JobPosting extends Component {
       return
     }
 
-    const jobPostingId = this.props.match.params.id ? this.props.match.params.id : window.location.href.split('/')[4]	
+    const jobPostingId = this.props.match.params.id ? this.props.match.params.id : window.location.href.split('/')[4]
     if (attachments.length > 0) {
       promiseAttachments = attachments.map((attachment) => {
         return this.readFile(attachment)
