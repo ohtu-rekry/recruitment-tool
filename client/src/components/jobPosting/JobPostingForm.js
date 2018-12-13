@@ -29,7 +29,7 @@ export class JobPostingForm extends Component {
 
   componentDidMount() {
     if (this.state.mode === 'edit') {
-      const jobPostingId = this.props.match.params.id ? this.props.match.params.id : window.location.href.split('/')[4]	
+      const jobPostingId = this.props.match.params.id ? this.props.match.params.id : window.location.href.split('/')[4]
       this.setState({ id: jobPostingId })
       this.props.fetchJobPostingWithStages(jobPostingId)
     }
