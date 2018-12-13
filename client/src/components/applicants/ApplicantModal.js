@@ -59,6 +59,9 @@ class ApplicantModal extends React.Component {
       alignSelf: 'flex-end'
     }
 
+    console.log(applicant)
+
+
     return (
       <Modal
         open={true}
@@ -101,7 +104,7 @@ class ApplicantModal extends React.Component {
             <h5>Application's attachments</h5>
             {applicant.attachments.map((attachment, index) => {
               return (
-                <Tooltip title={attachment.path.substring(57)}>
+                <Tooltip key={index} title={attachment.path.substring(57)}>
                   <Chip
                     key={index}
                     label={this.truncateString(attachment.path.substring(57), 10)}
@@ -120,17 +123,16 @@ class ApplicantModal extends React.Component {
               {jobPosting}
             </Button>
           </Link>
+          <ApplicantModalDropzone applicationId={id} />
+          <div className='applicant-modal__comments-title'>Comments ({comments.length})</div>
+          {comments && <div className='applicant-modal__comments'>
+            {comments
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map(comment =>
+                <ApplicationComment key={comment.id} comment={comment} />
+              )}
+          </div>}
         </div>
-        }
-        <ApplicantModalDropzone applicationId={id} />
-        <div className='applicant-modal__comments-title'>Comments ({comments.length})</div>
-        {comments && <div className='applicant-modal__comments'>
-          {comments
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            .map(comment =>
-              <ApplicationComment key={comment.id} comment={comment} />
-            )}
-        </div>}
       </Modal>
     )
   }

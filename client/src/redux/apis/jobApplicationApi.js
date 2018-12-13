@@ -12,6 +12,7 @@ export default class jobApplicationApi {
   }
 
   static add(payload) {
+    console.log(payload)
     return axios.post(root, payload)
   }
 
