@@ -47,22 +47,6 @@ export class TimespanPicker extends Component {
     }
   }
 
-  componentDidUpdate() {
-    const { setTimespan, showFrom, showTo, timespanHasBeenSet }
-      = this.props
-
-    if (setTimespan && showFrom) {
-
-      this.setState({ showFrom: moment(showFrom, 'DD.MM.YYYY') })
-
-      if (showTo) {
-        this.setState({ showTo: moment(showTo, 'DD.MM.YYYY') })
-      }
-
-      timespanHasBeenSet()
-    }
-  }
-
   componentWillUnmount() {
     this.props.clearShowFromAndShowTo()
   }
