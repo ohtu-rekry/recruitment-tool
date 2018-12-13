@@ -51,17 +51,17 @@ const stages = [{
   id: 2,
   stageName: 'Homework',
   orderNumber: 2,
-  applicants: [ applications[0] ]
+  applicants: [applications[0]]
 }, {
   id: 3,
   stageName: 'Approved',
   orderNumber: 1,
-  applicants: [ applications[1], applications[2] ]
+  applicants: [applications[1], applications[2]]
 }, {
   id: 4,
   stageName: 'Rejected',
   orderNumber: 3,
-  applicants: [ applications[3] ]
+  applicants: [applications[3]]
 }]
 
 it('Application view does not render applications or stages when user is not logged in', () => {

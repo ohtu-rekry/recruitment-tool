@@ -3,7 +3,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import * as actions from '../../redux/actions/actions'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 import NavigateBefore from '@material-ui/icons/NavigateBefore'
 
@@ -21,7 +21,7 @@ export class Applicants extends Component {
 
   componentDidMount() {
     const { fetchApplicants, loggedIn, adminView } = this.props
-    const postingId = window.location.href.split('/')[4]
+    const postingId = this.props.match.params.id ? this.props.match.params.id : window.location.href.split('/')[4]
     if (loggedIn && !adminView) {
       fetchApplicants(postingId)
       this.setState({ isLoaded: true })
@@ -30,7 +30,7 @@ export class Applicants extends Component {
 
   componentWillReceiveProps(nProps) {
     const { fetchApplicants, fetchJobPosting, adminView } = this.props
-    const postingId = window.location.href.split('/')[4]
+    const postingId = this.props.match.params.id ? this.props.match.params.id : window.location.href.split('/')[4]
     if (nProps.loggedIn && !this.state.isLoaded && !adminView) {
       fetchJobPosting(postingId)
       fetchApplicants(postingId)
@@ -183,7 +183,7 @@ const mapDispatchToProps = {
   ...actions
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Applicants)
+)(Applicants))

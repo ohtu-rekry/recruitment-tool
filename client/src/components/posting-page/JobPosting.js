@@ -26,7 +26,7 @@ export class JobPosting extends Component {
   }
 
   componentDidMount() {
-    const jobPostingId = window.location.href.split('/')[4]
+    const jobPostingId = this.props.match.params.id ? this.props.match.params.id : window.location.href.split('/')[4]
     this.props.fetchJobPosting(jobPostingId, this.props.loggedIn)
   }
 
@@ -82,6 +82,7 @@ export class JobPosting extends Component {
       return
     }
 
+    const jobPostingId = this.props.match.params.id ? this.props.match.params.id : window.location.href.split('/')[4]
     if (attachments.length > 0) {
       promiseAttachments = attachments.map((attachment) => {
         return this.readFile(attachment)
@@ -97,7 +98,6 @@ export class JobPosting extends Component {
     }
 
 
-    const jobPostingId = window.location.href.split('/')[4]
     sendApplication(applicantName, applicantEmail, jobPostingId, attachmentObjectArray)
   }
 

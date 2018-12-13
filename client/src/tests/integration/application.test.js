@@ -5,7 +5,6 @@ import { mock, getApp, setWindowLocation } from '../../setupTests'
 
 import JobPosting from '../../components/posting-page/JobPosting'
 
-import { root as applicationRoot } from '../../redux/apis/jobApplicationApi'
 import { root as postingRoot } from '../../redux/apis/jobPostingApi'
 
 const postings = [{
