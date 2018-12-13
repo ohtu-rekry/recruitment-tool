@@ -1,5 +1,6 @@
 const jobApplicationRouter = require('express-promise-router')()
 const { jwtMiddleware } = require('../../utils/middleware')
+const { emailSender } = require('../../utils/emailSender')
 const { JobApplication, PostingStage, JobPosting, ApplicationComment } = require('../../db/models')
 const {
   jobApplicationValidator,
@@ -43,6 +44,13 @@ jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
     postingStageId: firstPostingStage.id
   })
 
+  const jobPosting = await JobPosting.findOne({
+    where: {
+      id: body.jobPostingId
+    }
+  })
+
+  emailSender(jobPosting.dataValues, body.applicantName)
   res.status(201).json(jobApplication)
 
 })

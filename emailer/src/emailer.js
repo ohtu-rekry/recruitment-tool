@@ -1,4 +1,6 @@
 const pg = require('pg')
+const nodemailer = require('nodemailer')
+
 const productionEnv = process.env.NODE_ENV === 'production'
 
 if (!productionEnv) {
@@ -16,9 +18,12 @@ const getInactiveApplications = async () => {
   await client.connect()
 
   const result = await client.query(
-    `SELECT * FROM "JobApplications"
+    `SELECT "applicantName", "title", "jobPostingId"
+    FROM "JobApplications"
     LEFT JOIN "PostingStages"
-    ON "PostingStages"."id" = "JobApplications"."postingStageId"
+      ON "PostingStages"."id" = "JobApplications"."postingStageId"
+    LEFT JOIN "JobPostings"
+      ON "JobPostings"."id" = "PostingStages"."jobPostingId"
     WHERE "JobApplications"."updatedAt" <= now() - interval '1 week'
     AND "PostingStages"."stageName" NOT IN ('${finalStages[0]}', '${finalStages[1]}')`
   ).catch(e => {
@@ -27,7 +32,51 @@ const getInactiveApplications = async () => {
 
   await client.end()
 
-  return result
+  return result.rows
 }
 
-module.exports = { getInactiveApplications, client }
+try {
+  let root, mailConfig
+  if (productionEnv) {
+    root = process.env.SITE_URL
+    mailConfig = {
+      host: 'smtp.sendgrid.net',
+      port: 587,
+      pool: true,
+      secure: false,
+      auth: {
+        user: 'apikey',
+        pass: process.env.SENDGRID_APIKEY
+      }
+    }
+  } else {
+    root = 'http://localhost:3000'
+    mailConfig = {
+      host: 'smtp.ethereal.email',
+      port: 587,
+      auth: {
+        user: process.env.ETHEREAL_USERNAME,
+        pass: process.env.ETHEREAL_PASSWORD
+      }
+    }
+  }
+
+  const emailAddress = 'Recruitment Tool <careers@emblica.com>'
+  let transporter = nodemailer.createTransport(mailConfig, { to: emailAddress, from: emailAddress })
+
+  getInactiveApplications()
+    .then(res => res.map((application) => {
+      const emailSubject = `Inactivity alert: ${application.title}`
+      const emailText = `Inactivity alert: applicant ${application.applicantName} in "${application.title}".
+                      \n${root}/position/${application.jobPostingId}`
+
+      transporter.sendMail({
+        subject: emailSubject,
+        text: emailText
+      })
+    })).catch(e => console.log(e))
+
+  transporter.close
+} catch (e) {
+  console.log(e)
+}

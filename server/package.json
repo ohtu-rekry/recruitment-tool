@@ -32,6 +32,7 @@
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.23",
     "morgan": "^1.9.1",
+    "nodemailer": "^4.7.0",
     "npm": "^6.4.1",
     "path": "^0.12.7",
     "pg": "^7.4.3",
