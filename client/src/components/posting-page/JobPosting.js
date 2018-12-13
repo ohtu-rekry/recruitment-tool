@@ -83,7 +83,7 @@ export class JobPosting extends Component {
     }
 
     if (attachments.length > 0) {
-      promiseAttachments = await attachments.map((attachment) => {
+      promiseAttachments = attachments.map((attachment) => {
         return this.readFile(attachment)
       })
       let base64typeAttachments = await Promise.all(promiseAttachments)
@@ -122,15 +122,14 @@ export class JobPosting extends Component {
   //Reads the attachment and converts it to base64
   readFile(attachment) {
     let reader = new FileReader()
-    let file = attachment
     return new Promise((resolve, reject) => {
       reader.addEventListener('load', function () {
         resolve(this.result)
       }, false)
-      if (file) {
-        return reader.readAsDataURL(file)
+      if (attachment) {
+        return reader.readAsDataURL(attachment)
       } else {
-        reject('foo')
+        reject('There was a problem when converting the file')
       }
     })
   }

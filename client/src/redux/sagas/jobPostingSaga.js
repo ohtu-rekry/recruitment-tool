@@ -177,7 +177,8 @@ function* updateJobPostingStages({ payload }) {
     yield put(actions.moveStageSuccess(reOrderedStages))
 
     const jobPosting = { ...posting, stages: reOrderedStages }
-    delete jobPosting.isHidden, jobPosting.postingStages
+    delete jobPosting.isHidden
+    delete jobPosting.postingStages
 
     const response = yield call(
       jobPostingApi.edit,

@@ -29,42 +29,38 @@ jobApplicationRouter.get('/', jwtMiddleware, async (request, response) => {
 })
 
 jobApplicationRouter.post('/', jobApplicationValidator, async (req, res) => {
-  try {
-    const body = req.body
-    let attachments = []
 
-    const firstPostingStage = await PostingStage.findOne({
-      where: {
-        jobPostingId: body.jobPostingId,
-        orderNumber: 0
-      }
-    })
+  const body = req.body
+  let attachments = []
 
-    //put to the validator?
-    if (!firstPostingStage) {
-      return res.status(400).json({ error: 'Could not find posting stage' })
+  const firstPostingStage = await PostingStage.findOne({
+    where: {
+      jobPostingId: body.jobPostingId,
+      orderNumber: 0
     }
+  })
 
-    const jobApplication = await JobApplication.create({
-      applicantName: body.applicantName,
-      applicantEmail: body.applicantEmail,
-      postingStageId: firstPostingStage.id
-    })
-
-    if (body.attachments.length > 0) {
-      attachments = await handleAttachmentSending(body.attachments)
-      await attachments.forEach(attachment => {
-        Attachment.create({
-          path: attachment,
-          jobApplicationId: jobApplication.id
-        })
-      })
-    }
-
-    res.status(201).json(jobApplication)
-  } catch (error) {
-    throw error
+  if (!firstPostingStage) {
+    return res.status(400).json({ error: 'Could not find posting stage' })
   }
+
+  const jobApplication = await JobApplication.create({
+    applicantName: body.applicantName,
+    applicantEmail: body.applicantEmail,
+    postingStageId: firstPostingStage.id
+  })
+
+  if (body.attachments.length > 0) {
+    attachments = await handleAttachmentSending(body.attachments)
+    await attachments.forEach(attachment => {
+      Attachment.create({
+        path: attachment,
+        jobApplicationId: jobApplication.id
+      })
+    })
+  }
+
+  res.status(201).json(jobApplication)
 
 })
 
