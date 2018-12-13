@@ -21,11 +21,11 @@ class Routes extends Component {
     this.state = { willBeLoggedIn }
   }
 
-  componentDidMount() {
-    const loggedUser = JSON.parse(window.localStorage.getItem('loggedUser'))
+  componentDidMount = async () => {
+    const loggedUser = await JSON.parse(window.localStorage.getItem('loggedUser'))
 
     if (loggedUser) {
-      this.props.loginSuccess(loggedUser)
+      await this.props.loginSuccess(loggedUser)
       this.setState({ willBeLoggedIn: false })
     }
   }
@@ -37,42 +37,44 @@ class Routes extends Component {
     return (
       <Router>
         <div>
-          <Header />
-          <Switch>
-            <Route path="/admin/login" render={() =>
-              loggedIn
-                ? <Redirect to="/" />
-                : <Login />
-            } />
-            <Route exact path="/" render={() =>
-              willBeLoggedIn || loggedIn
-                ? <Redirect to='/applications' />
-                : <Redirect to='/positions' />
-            } />
-            <Route path="/position/new" render={() =>
-              willBeLoggedIn || loggedIn
-                ? <JobPostingForm mode='create' />
-                : <Redirect to='/positions' />
-            } />
-            <Route exact path="/position/:id/applicants" render={() =>
-              willBeLoggedIn || loggedIn
-                ? <Applicants adminView={false} />
-                : <Redirect to="/positions" />
-            } />
-            <Route exact path="/position/:id/edit" render={() =>
-              willBeLoggedIn || loggedIn
-                ? <JobPostingForm mode='edit' />
-                : <Redirect to='/positions' />
-            } />
-            <Route exact path="/position/:id" render={() => <JobPosting />} />
-            <Route exact path="/applications" render={() =>
-              willBeLoggedIn || loggedIn
-                ? <AdminFrontPage />
-                : <Redirect to='/positions' />
-            } />
-            <Route exact path="/positions" render={() => <App />} />
-            <Route exact path="/success" render={() => <ApplicationSuccess />} />
-          </Switch>
+          <Header/>
+          <div className='container'>
+            <Switch>
+              <Route path="/admin/login" render={() =>
+                loggedIn
+                  ? <Redirect to="/" />
+                  : <Login />
+              } />
+              <Route exact path="/" render={() =>
+                willBeLoggedIn || loggedIn
+                  ? <Redirect to='/applications' />
+                  : <Redirect to='/positions' />
+              } />
+              <Route path="/position/new" render={() =>
+                willBeLoggedIn || loggedIn
+                  ? <JobPostingForm mode='create' />
+                  : <Redirect to='/admin/login' />
+              } />
+              <Route exact path="/position/:id/applicants" render={() =>
+                willBeLoggedIn || loggedIn
+                  ? <Applicants adminView={false} />
+                  : <Redirect to="/admin/login" />
+              } />
+              <Route exact path="/position/:id/edit" render={() =>
+                willBeLoggedIn || loggedIn
+                  ? <JobPostingForm mode='edit' />
+                  : <Redirect to='/admin/login' />
+              } />
+              <Route exact path="/position/:id" render={() => <JobPosting />} />
+              <Route exact path="/applications" render={() =>
+                willBeLoggedIn || loggedIn
+                  ? <AdminFrontPage />
+                  : <Redirect to='/positions' />
+              } />
+              <Route exact path="/positions" render={() => <App />} />
+              <Route exact path="/success" render={() => <ApplicationSuccess />} />
+            </Switch>
+          </div>
         </div>
       </Router>
     )

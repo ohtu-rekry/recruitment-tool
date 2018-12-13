@@ -106,8 +106,9 @@ function* getApplicants() {
               applicationComments: applicant.applicationComments,
               createdAt: applicant.createdAt,
               jobPosting: applicant.PostingStage.JobPosting.title,
-              attachments: applicant.attachments
-            }],
+              attachments: applicant.attachments,
+              jobPostingId: applicant.PostingStage.JobPosting.id
+            }]
           }
         ]
       })

@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 import { getApp, store, mock } from '../../setupTests'
 
 import Header from '../../components/Header'
-import { ActionButton, LinkButton } from '../../components/Buttons'
+import { LinkButton } from '../../components/Buttons'
 import { root as loginRoot } from '../../redux/apis/loginApi'
 
 const testAdmin = {
@@ -30,7 +30,7 @@ describe('<Header />', () => {
 
     it('does not render logout button', () => {
       app.update()
-      expect(app.find(ActionButton).find('[text="Log out"]')).toHaveLength(0)
+      expect(app.find('.navigation-bar__button')).toHaveLength(0)
     })
 
     it('does not render button for adding postings ', () => {
@@ -56,7 +56,7 @@ describe('<Header />', () => {
 
     it('renders logout button', () => {
       app.update()
-      expect(app.find(ActionButton).find('[text="Log out"]')).toHaveLength(1)
+      expect(app.find('.navigation-bar__button')).toHaveLength(1)
     })
 
     it('renders button for adding postings ', () => {
