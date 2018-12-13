@@ -5,11 +5,12 @@ import PropTypes from 'prop-types'
 import Modal from '@material-ui/core/Modal'
 import Button from '@material-ui/core/Button'
 import Chip from '@material-ui/core/Chip'
+import Tooltip from '@material-ui/core/Tooltip'
 import Clear from '@material-ui/icons/Clear'
 import Person from '@material-ui/icons/Person'
 import Email from '@material-ui/icons/Email'
-import Work from '@material-ui/icons/Work'
 import CalendarToday from '@material-ui/icons/CalendarToday'
+import Work from '@material-ui/icons/Work'
 import ApplicantModalDropzone from './ApplicantModalDropzone'
 import ApplicationComment from '../comments/ApplicationComment'
 import * as actions from '../../redux/actions/actions'
@@ -99,11 +100,15 @@ class ApplicantModal extends React.Component {
           <div>
             <h5>Application's attachments</h5>
             {applicant.attachments.map((attachment, index) => {
-              return <Chip
-                key={index}
-                label={this.truncateString(attachment.path.substring(57), 10)}
-                clickable={true}
-                onClick={() => window.open(attachment.path)} />
+              return (
+                <Tooltip key={index} title={attachment.path.substring(57)}>
+                  <Chip
+                    key={index}
+                    label={this.truncateString(attachment.path.substring(57), 10)}
+                    clickable={true}
+                    onClick={() => window.open(attachment.path)} />
+                </Tooltip>
+              )
             })}
           </div>
           <Work className='applicant-modal__icon' />
@@ -115,17 +120,16 @@ class ApplicantModal extends React.Component {
               {jobPosting}
             </Button>
           </Link>
+          <ApplicantModalDropzone applicationId={id} />
+          <div className='applicant-modal__comments-title'>Comments ({comments.length})</div>
+          {comments && <div className='applicant-modal__comments'>
+            {comments
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map(comment =>
+                <ApplicationComment key={comment.id} comment={comment} />
+              )}
+          </div>}
         </div>
-        }
-        <ApplicantModalDropzone applicationId={id} />
-        <div className='applicant-modal__comments-title'>Comments ({comments.length})</div>
-        {comments && <div className='applicant-modal__comments'>
-          {comments
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            .map(comment =>
-              <ApplicationComment key={comment.id} comment={comment} />
-            )}
-        </div>}
       </Modal>
     )
   }

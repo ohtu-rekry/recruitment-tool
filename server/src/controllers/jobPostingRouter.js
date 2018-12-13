@@ -1,5 +1,5 @@
 const jobPostingRouter = require('express-promise-router')()
-const { JobPosting, PostingStage, JobApplication, ApplicationComment } = require('../../db/models')
+const { JobPosting, PostingStage, JobApplication, ApplicationComment, Attachment } = require('../../db/models')
 const { jwtMiddleware, jwtNotRequired } = require('../../utils/middleware')
 const { jobPostingValidator, postingPutValidator } = require('../../utils/validators')
 const Sequelize = require('sequelize')
@@ -82,10 +82,13 @@ jobPostingRouter.get('/:id/applicants', jwtMiddleware, async (request, response)
           include: [{
             model: ApplicationComment,
             as: 'applicationComments'
+          },
+          {
+            model: Attachment,
+            as: 'attachments'
           }]
         })
 
-        //TODO: jotain järkevää tähän alapuolelle. Mitä hittoa oikeesti :d
         const res = JSON.parse(JSON.stringify(stage))
         res.applicants = [...applicants]
 
@@ -198,8 +201,8 @@ jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request,
     .filter(stage => existingStages.map(existing => existing.id).includes(stage.id))
     .map(stage => PostingStage.update({
       stageName: stage.stageName,
-      orderNumber: stage.order },
-    { where: { id: stage.id } }
+      orderNumber: stage.order
+    }, { where: { id: stage.id } }
     )))
 
   await Promise.all(

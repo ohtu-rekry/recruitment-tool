@@ -5,7 +5,7 @@ import { addComment } from '../../redux/actions/actions'
 import { Button, Chip, TextField } from '@material-ui/core'
 import { AttachFile } from '@material-ui/icons'
 import Dropzone from 'react-dropzone'
-
+import { readFile } from '../../utils/readFile'
 class ApplicantModalDropzone extends React.Component {
 
   constructor(props) {
@@ -17,13 +17,30 @@ class ApplicantModalDropzone extends React.Component {
     }
   }
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const { comment, attachments } = this.state
+
+    let promiseAttachments = []
+    let attachmentObjectArray = []
+
+    if (attachments.length > 0) {
+      promiseAttachments = await attachments.map((attachment) => {
+        return readFile(attachment)
+      })
+      let base64typeAttachments = await Promise.all(promiseAttachments)
+
+      attachmentObjectArray = attachments.map((attachment, index) => {
+        return {
+          fileName: attachment.name,
+          base64: base64typeAttachments[index]
+        }
+      })
+    }
 
     if (!comment.trim() && attachments.length === 0) {
       this.setState({ inputError: 'Cannot send empty comment' })
     } else {
-      this.props.addComment(comment, this.props.applicationId, attachments)
+      this.props.addComment(comment, this.props.applicationId, attachmentObjectArray)
       this.setState({ comment: '', attachments: [] })
     }
   }

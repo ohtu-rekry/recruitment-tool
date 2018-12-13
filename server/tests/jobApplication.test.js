@@ -468,7 +468,8 @@ describe('POST a comment to an application', async () => {
     password: 'fsdGSDjugs22'
   }
   const validComment = {
-    comment: 'A valid comment on a job application'
+    comment: 'A valid comment on a job application',
+    attachments: []
   }
   let jobPosting, token, application
 
