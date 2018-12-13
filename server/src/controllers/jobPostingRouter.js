@@ -202,8 +202,7 @@ jobPostingRouter.put('/:id', jwtMiddleware, postingPutValidator, async (request,
     .map(stage => PostingStage.update({
       stageName: stage.stageName,
       orderNumber: stage.order
-    },
-      { where: { id: stage.id } }
+    }, { where: { id: stage.id } }
     )))
 
   await Promise.all(
