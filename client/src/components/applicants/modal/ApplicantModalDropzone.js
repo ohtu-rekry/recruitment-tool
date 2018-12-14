@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { addComment } from '../../redux/actions/actions'
+import { addComment } from '../../../redux/actions/actions'
 import { Button, Chip, TextField } from '@material-ui/core'
 import { AttachFile } from '@material-ui/icons'
 import Dropzone from 'react-dropzone'
-import { readFile } from '../../utils/readFile'
-class ApplicantModalDropzone extends React.Component {
+import { readFile } from '../../../utils/readFile'
 
+class ApplicantModalDropzone extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -109,11 +109,11 @@ class ApplicantModalDropzone extends React.Component {
         acceptClassName='applicant-modal__attachment-dropzone__visible'
         onClick={this.handleDropzoneClick}
       >
-        <div className='applicant-modal__comment-input'>
+        <div >
           <TextField
             multiline
             required
-            rowsMax='10'
+            rowsMax='6'
             fullWidth
             id='comment'
             type='text'
