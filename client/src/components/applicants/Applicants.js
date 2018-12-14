@@ -8,7 +8,7 @@ import { Link, withRouter } from 'react-router-dom'
 import NavigateBefore from '@material-ui/icons/NavigateBefore'
 
 import ApplicationStage from './ApplicationStage'
-import ApplicantModal from './ApplicantModal'
+import ApplicantModal from './modal/ApplicantModal'
 
 export class Applicants extends Component {
   constructor(props) {

@@ -1,47 +1,61 @@
 .applicant-modal {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 17px;
   background-color: $gray-lightest;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 16px;
-  margin: 115px auto;
+  box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.2);
+  margin: 70px auto;
   width: 60vw;
-  min-height: 250px;
-  max-height: 70vh;
-  padding: 15px 15px 20px 20px;
+  overflow-y: hidden;
+  padding: 25px 20px 5px;
   display: flex;
   flex-direction: column;
   outline: none;
+  position: relative;
 
-  &__link {
-    text-decoration: none;
-    color: black;
-  }
-
-  &__icon {
+  &__metadata-container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
     vertical-align: middle;
   }
 
-  &__name {
-    font-size: 18px;
-    font-weight: 700;
-    word-break: break-all;
-    padding: 0px 10px 10px 16px;
-    display: inline-flex;
+  &__metadata-item {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
   }
 
-  &__email, &__date {
-    word-break: break-all;
-    padding: 10px 16px;
-    display: inline-flex;
+  &__metadata-item-content {
+    line-height: 24px;
+    margin: 0 10px;
   }
 
-  &__date {
-    font-size: 15px;
+  &__link {
+    text-decoration: none;
+    border-radius: 6px;
+    padding: 3px 8px;
+    color: $emblica-blue;
+    background-color: $gray-darker;
+    box-shadow: 0 0.5px 0.5px -1px rgba(0, 0, 0, 0.3);
   }
 
-  &__comment-input {
-    width: 100%;
+  &__link:hover {
+    background-color: $gray-darkest;
+    box-shadow: 0 1.5px 1px -1px rgba(0, 0, 0, 0.3);
+  }
+
+  &__close-button {
+    cursor: pointer;
+    border: none;
+    background-color: $gray-lightest;
+    border-radius: 6px;
+    outline: none;
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    text-align: center;
   }
 
   &__comment-buttons {
@@ -56,12 +70,7 @@
   }
 
   &__attachment-dropzone {
-    margin: 10px -10px 10px;
-    padding: 5px;
     font-size: 14px;
-    border-style: dotted;
-    border-color: $gray-lightest;
-    min-height: 40px;
     width: 100%;
     overflow: auto;
 
@@ -90,12 +99,6 @@
     font-weight: 700;
   }
 
-  &__comments {
-    max-height: 40vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-  }
-
   ::-webkit-scrollbar {
     background: transparent;
     width: 5px;
@@ -104,4 +107,16 @@
   ::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.2);
   }
+}
+
+.overlay {
+  background-color: rgba(0,0,0,.64);
+  display: none;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  overflow-y: scroll;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
