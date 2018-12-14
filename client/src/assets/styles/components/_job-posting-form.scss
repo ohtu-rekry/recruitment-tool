@@ -7,6 +7,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 30px;
   
   @media screen and (min-width: 750px){
     max-width: 80%
@@ -14,6 +15,7 @@
   
     &__headline {
       color: $emblica-blue;
+      padding: 20px;
     }
 
     &__form {
@@ -64,7 +66,7 @@
     }
 
     &__stage-list {
-      padding: 5px 0 5px 0;
+      padding: 10px 0;
     }
 
     &__single-stage {
@@ -83,6 +85,7 @@
         border-radius: 20px;
         outline: none;
         margin-right: 4px;
+        font-size: 12px;
       }
       &__hidden {
         display: none;
