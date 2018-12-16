@@ -2,7 +2,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 import { getApp, store, mock } from '../../setupTests'
 
-import Header from '../../components/Header'
+import Header from '../../components/header/Header'
 import { LinkButton } from '../../components/Buttons'
 import { root as loginRoot } from '../../redux/apis/loginApi'
 

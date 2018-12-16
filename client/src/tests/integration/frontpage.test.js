@@ -2,8 +2,8 @@ import React from 'react'
 import { mount } from 'enzyme'
 import { mock, getApp } from '../../setupTests'
 
-import FrontPage from '../../components/frontpage/FrontPage'
-import JobPostingListing from '../../components/frontpage/JobPostingListing'
+import JobPostings from '../../components/jobPostings/JobPostings'
+import JobPostingListing from '../../components/jobPostings/JobPostingListing'
 
 import { root as postingRoot } from '../../redux/apis/jobPostingApi'
 
@@ -20,11 +20,11 @@ const jobPostings = [
   }
 ]
 
-describe('<FrontPage />', () => {
+describe('<JobPostings />', () => {
   let app
 
   beforeAll(() => {
-    app = mount(getApp(<FrontPage />))
+    app = mount(getApp(<JobPostings />))
     mock.onGet(postingRoot).reply(200, jobPostings)
   })
 

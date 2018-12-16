@@ -7,9 +7,7 @@ import MockAdapter from 'axios-mock-adapter'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import createSagaMiddleWare from 'redux-saga'
-import jobPostingReducer from './redux/reducers/jobPostingReducer'
-import loginReducer from './redux/reducers/loginReducer'
-import postingReducer from './redux/reducers/postingReducer'
+import { reducers } from './redux/reducers/reducers'
 import rootSaga from './redux/sagas/sagas'
 
 configure({ adapter: new Adapter() })
@@ -29,7 +27,7 @@ window.localStorage = localStorageMock
 const sagaMiddleware = createSagaMiddleWare()
 
 export const store = createStore(
-  combineReducers({ loginReducer, postingReducer, jobPostingReducer }),
+  combineReducers(reducers),
   applyMiddleware(sagaMiddleware),
 )
 
