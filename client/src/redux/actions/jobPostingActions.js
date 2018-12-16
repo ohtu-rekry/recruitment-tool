@@ -21,7 +21,7 @@ export const timespanHasBeenSet = createAction('TIMESPAN_HAS_BEEN_SET')
 
 export const setStages = createAction('SET_STAGES', (stages) => ({ stages }))
 export const clearStages = createAction('CLEAR_STAGES')
-export const renamePostingStage = createAction('RENAME_POSTING_STAGE', (postingStage, stageUnderEdit) => ({ postingStage, stageUnderEdit }))
+export const renameStage = createAction('RENAME_STAGE', (postingStage, stageUnderEdit) => ({ postingStage, stageUnderEdit }))
 export const setStageError = createAction('SET_STAGE_ERROR', (errorMessage) => ( errorMessage ))
 
 export const fetchJobPosting = createAction(

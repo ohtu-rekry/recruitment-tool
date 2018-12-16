@@ -70,7 +70,7 @@ const reducer = handleActions(
       ...state,
       jobPostingStages: defaultStages
     }),
-    [actions.renamePostingStage]: (state, action) => ({
+    [actions.renameStage]: (state, action) => ({
       ...state,
       jobPostingStages: [...state.jobPostingStages.map(stage => {
         if (stage.stageName === action.payload.postingStage.stageName) {

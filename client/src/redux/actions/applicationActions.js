@@ -6,7 +6,7 @@ export const sendApplication = createAction(
   }))
 
 export const applySuccess = createAction('APPLY_SUCCESS')
-export const applyFailure = createAction('APPLY_FAIL')
+export const applyFailure = createAction('APPLY_FAILURE')
 
 export const fetchApplicants = createAction('FETCH_APPLICANTS')
 
