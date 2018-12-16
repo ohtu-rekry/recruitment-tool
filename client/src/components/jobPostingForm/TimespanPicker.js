@@ -56,8 +56,6 @@ export class TimespanPicker extends Component {
 
   handleShowFromChange = async (date) => {
     if (!date) {
-      console.log(date)
-      
       await this.setState({
         showFrom: null,
         showTo: null

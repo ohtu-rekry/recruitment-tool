@@ -5,14 +5,14 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import * as actions from '../../redux/actions/actions'
 import * as selectors from '../../redux/selectors/selectors'
 
-import Header from '../Header'
+import Header from '../header/Header'
 import Login from '../admin/Login'
-import AdminFrontPage from '../frontpage/AdminFrontPage'
-import JobPostingForm from '../jobPosting/JobPostingForm'
-import JobPosting from '../posting-page/JobPosting'
+import AdminFrontPage from '../admin/AllApplicantsAdminView'
+import JobPostingForm from '../jobPostingForm/JobPostingForm'
+import JobPosting from '../jobPosting/JobPosting'
 import Applicants from '../applicants/Applicants'
-import FrontPage from '../frontpage/FrontPage'
-import ApplicationSuccess from '../applicationSuccess/ApplicationSuccess'
+import FrontPage from '../jobPostings/JobPostings'
+import ApplicationSuccess from '../jobPosting/redirect/ApplicationSuccess'
 
 class Routes extends Component {
   constructor(props) {

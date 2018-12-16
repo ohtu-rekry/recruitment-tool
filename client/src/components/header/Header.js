@@ -5,13 +5,13 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import ExitToApp from '@material-ui/icons/ExitToApp'
-import { LinkButton } from './Buttons'
+import { LinkButton } from '../Buttons'
 import MobileMenu from './MobileMenu'
 
-import * as actions from '../redux/actions/actions'
-import * as selectors from '../redux/selectors/selectors'
+import * as actions from '../../redux/actions/actions'
+import * as selectors from '../../redux/selectors/selectors'
 
-const emblicaLogo = require('../assets/img/emblica-logo.svg')
+const emblicaLogo = require('../../assets/img/emblica-logo.svg')
 
 export class Header extends Component {
   constructor(props) {
