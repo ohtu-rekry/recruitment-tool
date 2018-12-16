@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import * as actions from '../../redux/actions/actions'
 import { Link, withRouter } from 'react-router-dom'
 
 import NavigateBefore from '@material-ui/icons/NavigateBefore'
 
 import ApplicationStage from './ApplicationStage'
 import ApplicantModal from './modal/ApplicantModal'
+import * as actions from '../../redux/actions/actions'
+import * as selectors from '../../redux/selectors/selectors'
 
 export class Applicants extends Component {
   constructor(props) {
@@ -94,18 +95,16 @@ export class Applicants extends Component {
   }
 
   render() {
-    let { stages, jobPosting, applicants, adminView } = this.props
+    let { stages, jobPosting, adminView } = this.props
     let title = jobPosting.title
-    if (applicants) {
-      stages = applicants
+    if (adminView) {
       title = 'All applicants'
     }
-
 
     return (
       <div className='applicants'>
         <div className='applicants__title'>
-          {!applicants &&
+          {!adminView &&
           <Link
             to={{ pathname: `/position/${jobPosting.id}` }}
             style={{ textDecoration: 'none' }}
@@ -174,9 +173,9 @@ Applicants.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.loginReducer.loggedIn,
-  jobPosting: state.postingReducer.jobPosting,
-  stages: state.postingReducer.stages
+  loggedIn: selectors.getUser(state),
+  jobPosting: selectors.getJobPosting(state),
+  stages: selectors.getStages(state)
 })
 
 const mapDispatchToProps = {

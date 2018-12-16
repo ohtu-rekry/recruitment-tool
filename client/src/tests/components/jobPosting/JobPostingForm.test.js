@@ -1,7 +1,7 @@
 import React from 'react'
 import { createShallow } from '@material-ui/core/test-utils'
 import { expect } from 'chai'
-import { JobPostingForm } from '../../../components/jobPosting/JobPostingForm'
+import { JobPostingForm } from '../../../components/jobPostingForm/JobPostingForm'
 
 describe('JobPostingForm', () => {
   let shallow, emptyJobPostings, emptyObject, emptyFunction,

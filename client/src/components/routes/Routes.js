@@ -3,15 +3,16 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 
 import * as actions from '../../redux/actions/actions'
+import * as selectors from '../../redux/selectors/selectors'
 
-import Header from '../Header'
+import Header from '../header/Header'
 import Login from '../admin/Login'
-import AdminFrontPage from '../frontpage/AdminFrontPage'
-import JobPostingForm from '../jobPosting/JobPostingForm'
-import JobPosting from '../posting-page/JobPosting'
+import AdminFrontPage from '../admin/AllApplicantsAdminView'
+import JobPostingForm from '../jobPostingForm/JobPostingForm'
+import JobPosting from '../jobPosting/JobPosting'
 import Applicants from '../applicants/Applicants'
-import App from '../App'
-import ApplicationSuccess from '../applicationSuccess/ApplicationSuccess'
+import FrontPage from '../jobPostings/JobPostings'
+import ApplicationSuccess from '../jobPosting/redirect/ApplicationSuccess'
 
 class Routes extends Component {
   constructor(props) {
@@ -71,7 +72,7 @@ class Routes extends Component {
                   ? <AdminFrontPage />
                   : <Redirect to='/positions' />
               } />
-              <Route exact path="/positions" render={() => <App />} />
+              <Route exact path="/positions" render={() => <FrontPage />} />
               <Route exact path="/success" render={() => <ApplicationSuccess />} />
             </Switch>
           </div>
@@ -83,7 +84,7 @@ class Routes extends Component {
 
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.loginReducer.loggedIn
+  loggedIn: selectors.getUser(state)
 })
 
 const mapDispatchToProps = {

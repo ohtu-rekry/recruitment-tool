@@ -4,6 +4,7 @@ import { Lock, Person, Visibility, VisibilityOff } from '@material-ui/icons'
 import PropTypes from 'prop-types'
 
 import * as actions from '../../redux/actions/actions'
+import * as selectors from '../../redux/selectors/selectors'
 
 export class Login extends Component {
   constructor(props) {
@@ -100,8 +101,8 @@ Login.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.loginReducer.loggedIn,
-  loginError: state.loginReducer.loginError
+  loggedIn: selectors.getUser(state),
+  loginError: selectors.getLoginError(state)
 })
 
 const mapDispatchToProps = {

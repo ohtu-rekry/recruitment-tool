@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 import { MemoryRouter } from 'react-router-dom'
 import { mock, getApp, setWindowLocation } from '../../setupTests'
 
-import JobPosting from '../../components/posting-page/JobPosting'
+import JobPosting from '../../components/jobPosting/JobPosting'
 
 import { root as postingRoot } from '../../redux/apis/jobPostingApi'
 

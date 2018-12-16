@@ -1,5 +1,6 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects'
 import * as actions from '../actions/actions'
+import * as selectors from '../selectors/selectors'
 import jobApplicationApi from '../apis/jobApplicationApi'
 
 function* sendApplication({ payload }) {
@@ -22,13 +23,14 @@ function* sendApplication({ payload }) {
 
 function* moveApplicant({ payload }) {
   try {
-    const recruiter = yield select(getCurrentUser)
+    const recruiter = yield select(selectors.getUser)
 
     if (!recruiter) {
       return
     }
 
-    const stages = yield select(getStages)
+    const stages = yield select(selectors.getStages)
+
     const token = recruiter.token
     const { applicant, newStage, oldStage, oldIndex } = payload
     const data = {
@@ -61,104 +63,24 @@ function* moveApplicant({ payload }) {
           : { ...stage }
     )
 
-    yield put(actions.fetchApplicantsSuccess(reArrangedStages))
+    yield put(actions.updateStages(reArrangedStages))
 
     const response = yield call(jobApplicationApi.moveApplicants, { token, data })
 
     if (response.status === 200) {
-      const jobPosting = yield select(getCurrentJobPosting)
+      const jobPosting = yield select(selectors.getJobPosting)
       yield put(actions.fetchApplicants(jobPosting.id))
     }
 
   } catch (e) {
     console.log(e)
-    yield put(actions.fetchApplicantsSuccess(payload.oldStages))
-  }
-}
-
-function* getApplicants() {
-  try {
-    const recruiter = yield select(getCurrentUser)
-
-    if (!recruiter) {
-      return
-    }
-
-    const token = recruiter.token
-
-    const response = yield call(jobApplicationApi.get, { token })
-
-    let stages = []
-    if (response.status === 200) {
-      response.data.forEach(applicant => {
-        stages = [
-          ...stages,
-          {
-            id: applicant.PostingStage.id,
-            jobPostingId: applicant.PostingStage.jobPostingId,
-            orderNumber: applicant.PostingStage.orderNumber,
-            stageName: applicant.PostingStage.stageName,
-            applicants: [{
-              id: applicant.id,
-              postingStageId: applicant.postingStageId,
-              applicantEmail: applicant.applicantEmail,
-              applicantName: applicant.applicantName,
-              applicationComments: applicant.applicationComments,
-              createdAt: applicant.createdAt,
-              jobPosting: applicant.PostingStage.JobPosting.title,
-              attachments: applicant.attachments,
-              jobPostingId: applicant.PostingStage.JobPosting.id
-            }]
-          }
-        ]
-      })
-      /*
-      Returns an array of unique stages.
-      First checks final results array res for a Stage object with identical name.
-      If there isn't one, it adds the stage to the final array. If there is,
-      it finds that stage object and combines applicants from that and the stage with
-      identical name.
-      */
-      const uniqueStages = stages.reduce((res, stg) => {
-        let result = res.find(stage =>
-          stage.stageName.toLowerCase().trim() === stg.stageName.toLowerCase().trim()
-        )
-        if (!result) return res.concat(stg)
-        const index = res.findIndex(existingStage =>
-          existingStage.stageName.toLowerCase().trim() === stg.stageName.toLowerCase().trim()
-        )
-        res[index].applicants = [...res[index].applicants, ...stg.applicants]
-        return res
-      }, [])
-
-      /*
-      Sorts unique stages based on their order number.
-      Makes sure Accepted and Rejected stages are shown last.
-      */
-      const sortedUniqueStages = uniqueStages.map(stage => {
-        const highestOrderNumber = uniqueStages.reduce((a, b) =>
-          a.orderNumber > b.orderNumber ? a.orderNumber : b.orderNumber
-        )
-
-        if (stage.stageName === 'Rejected') {
-          return { ...stage, orderNumber: highestOrderNumber + 2 }
-        } else if (stage.stageName === 'Accepted') {
-          return { ...stage, orderNumber: highestOrderNumber + 1 }
-        }
-        return stage
-      })
-
-      yield put(actions.getApplicantsSuccess(sortedUniqueStages))
-    }
-
-  } catch (e) {
-    console.log(e)
+    yield put(actions.updateStages(payload.oldStages))
   }
 }
 
 function* addComment({ payload }) {
   try {
-    const recruiter = yield select(getCurrentUser)
+    const recruiter = yield select(selectors.getUser)
 
     if (!recruiter) {
       return
@@ -176,7 +98,7 @@ function* addComment({ payload }) {
     const response = yield call(jobApplicationApi.addComment, data)
 
     if (response.status === 201) {
-      const stages = yield select(getStages)
+      const stages = yield select(selectors.getStages)
 
       const newStages = stages.map(stage => {
         const commentedApplicant
@@ -202,7 +124,7 @@ function* addComment({ payload }) {
         return newStage
       })
 
-      yield put(actions.addCommentSuccess(newStages))
+      yield put(actions.updateStages(newStages))
       yield put(actions.getComments(payload.applicationId))
     }
 
@@ -213,7 +135,7 @@ function* addComment({ payload }) {
 
 function* getComments({ payload }) {
   try {
-    const recruiter = yield select(getCurrentUser)
+    const recruiter = yield select(selectors.getUser)
 
     if (!recruiter) {
       return
@@ -235,12 +157,7 @@ function* getComments({ payload }) {
   }
 }
 
-export const getCurrentUser = state => state.loginReducer.loggedIn
-export const getCurrentJobPosting = state => state.postingReducer.jobPosting
-export const getStages = state => state.postingReducer.stages
-
 export const watchMoveApplicant = takeLatest(actions.moveApplicant().type, moveApplicant)
 export const watchSendApplication = takeLatest(actions.sendApplication().type, sendApplication)
-export const watchGetApplicants = takeLatest(actions.getApplicants().type, getApplicants)
 export const watchAddComment = takeLatest(actions.addComment().type, addComment)
 export const watchGetComments = takeLatest(actions.getComments().type, getComments)

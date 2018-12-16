@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { addComment } from '../../../redux/actions/actions'
+import * as actions from '../../../redux/actions/actions'
 import { Button, Chip, TextField } from '@material-ui/core'
 import { AttachFile } from '@material-ui/icons'
 import Dropzone from 'react-dropzone'
@@ -164,7 +164,7 @@ ApplicantModalDropzone.propTypes = {
 }
 
 const mapDispatchToProps = {
-  addComment
+  ...actions
 }
 
 export default connect(

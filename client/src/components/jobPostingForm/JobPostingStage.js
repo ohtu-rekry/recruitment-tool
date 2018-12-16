@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Chip from '@material-ui/core/Chip'
 
-import { renamePostingStage, setStageError, removeStageInJobPosting } from '../../redux/actions/actions'
+import * as actions from '../../redux/actions/actions'
+import * as selectors from '../../redux/selectors/selectors'
 
 export class JobPostingStage extends Component {
   constructor(props) {
@@ -45,7 +46,7 @@ export class JobPostingStage extends Component {
   handleStageRename = (e, jobPostingStage) => {
     e.preventDefault()
     if (this.verifyStageName(this.state.stageUnderEdit)) {
-      this.props.renamePostingStage(jobPostingStage, this.state.stageUnderEdit)
+      this.props.renameStage(jobPostingStage, this.state.stageUnderEdit)
       this.props.setStageError({ errorMessage: '' })
       this.setState({
         chipHidden: false,
@@ -124,14 +125,12 @@ export class JobPostingStage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  jobPostingStages: state.jobPostingReducer.jobPostingStages,
-  defaultStageNames: state.jobPostingReducer.defaultStageNames
+  jobPostingStages: selectors.getJobPostingStages(state),
+  defaultStageNames: selectors.getDefaultStageNames(state)
 })
 
 const mapDispatchToProps = {
-  renamePostingStage,
-  setStageError,
-  removeStageInJobPosting
+  ...actions
 }
 
 export default connect(

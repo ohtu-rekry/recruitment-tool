@@ -8,9 +8,7 @@ import jwt from 'jsonwebtoken'
 import Routes from './components/routes/Routes'
 import './assets/styles/app.css'
 
-import loginReducer from './redux/reducers/loginReducer'
-import postingReducer from './redux/reducers/postingReducer'
-import jobPostingReducer from './redux/reducers/jobPostingReducer'
+import { reducers } from './redux/reducers/reducers'
 import rootSaga from './redux/sagas/sagas'
 
 const sagaMiddleware = createSagaMiddleware()
@@ -32,7 +30,7 @@ const checkTokenExpirationMiddleware = store => next => action => {
 }
 
 const store = createStore(
-  combineReducers({ loginReducer, postingReducer, jobPostingReducer }),
+  combineReducers(reducers),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(sagaMiddleware, checkTokenExpirationMiddleware)
 )

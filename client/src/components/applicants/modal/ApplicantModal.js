@@ -17,6 +17,7 @@ import ApplicationComments from '../../comments/ApplicationComments'
 import ApplicantModalMetadataItem from './ApplicantModalMetadataItem'
 import ApplicantModalAttachments from './ApplicantModalAttachments'
 import * as actions from '../../../redux/actions/actions'
+import * as selectors from '../../../redux/selectors/selectors'
 
 class ApplicantModal extends React.Component {
 
@@ -117,7 +118,7 @@ ApplicantModal.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  comments: state.postingReducer.comments
+  comments: selectors.getComments(state)
 })
 
 const mapDispatchToProps = {

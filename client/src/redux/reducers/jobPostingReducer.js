@@ -6,24 +6,24 @@ const defaultStages = defaultStageNames.map((name) => ({ stageName: name, canRem
 const creationSuccessMessage = 'Job posting successfully added'
 
 const initialState = {
-  jobPostings: [],
+  jobPosting: {},
   jobPostingStages: defaultStages,
   creationRequestStatus: null,
   showFrom: null,
   showTo: null,
   defaultStageNames,
-  stageError: '',
   setTimespan: false
 }
 
 const reducer = handleActions(
   {
-    [actions.setJobPostings]: (state, action) => ({
+    [actions.setJobPosting]: (state, action) => ({
       ...state,
-      jobPostings: action.payload
+      jobPosting: action.payload
     }),
     [actions.copyJobPosting]: (state, action) => ({
       ...state,
+      jobPosting: action.payload.jobPosting,
       showFrom: action.payload.jobPosting.showFrom,
       showTo: action.payload.jobPosting.showTo,
       setTimespan: true,
@@ -38,10 +38,12 @@ const reducer = handleActions(
       creationRequestStatus: { message: creationSuccessMessage, type: 'success' }
     }),
     [actions.addJobPostingFailure]: (state, action) => ({
-      ...state, creationRequestStatus: { ...action.payload, type: 'error' }
+      ...state,
+      creationRequestStatus: { ...action.payload, type: 'error' }
     }),
     [actions.removeJobPostingStatus]: (state, action) => ({
-      ...state, creationRequestStatus: null
+      ...state,
+      creationRequestStatus: null
     }),
     [actions.addNewStageForJobPosting]: (state, action) => ({
       ...state,
@@ -68,7 +70,7 @@ const reducer = handleActions(
       ...state,
       jobPostingStages: defaultStages
     }),
-    [actions.renamePostingStage]: (state, action) => ({
+    [actions.renameStage]: (state, action) => ({
       ...state,
       jobPostingStages: [...state.jobPostingStages.map(stage => {
         if (stage.stageName === action.payload.postingStage.stageName) {
@@ -76,10 +78,6 @@ const reducer = handleActions(
         }
         return stage
       })]
-    }),
-    [actions.setStageError]: (state, action) => ({
-      ...state,
-      stageError: action.payload.errorMessage
     }),
     [actions.addShowFrom]: (state, action) => ({
       ...state,
@@ -103,7 +101,11 @@ const reducer = handleActions(
       ...state,
       showFrom: null,
       showTo: null
-    })
+    }),
+    [actions.emptyJobPosting]: (state) => ({
+      ...state,
+      jobPosting: {}
+    }),
   },
   initialState
 )
