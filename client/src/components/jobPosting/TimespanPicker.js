@@ -2,8 +2,11 @@ import React, { Component } from 'react'
 import DatePicker from 'react-datepicker'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { addShowFrom, addShowTo, clearShowFromAndShowTo, timespanHasBeenSet } from '../../redux/actions/actions'
 import moment from 'moment'
+
+import * as actions from '../../redux/actions/actions'
+import * as selectors from '../../redux/selectors/selectors'
+
 import 'react-datepicker/dist/react-datepicker.css'
 
 export class TimespanPicker extends Component {
@@ -53,6 +56,8 @@ export class TimespanPicker extends Component {
 
   handleShowFromChange = async (date) => {
     if (!date) {
+      console.log(date)
+      
       await this.setState({
         showFrom: null,
         showTo: null
@@ -145,16 +150,13 @@ TimespanPicker.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  showFrom: state.jobPostingReducer.showFrom,
-  showTo: state.jobPostingReducer.showTo,
-  setTimespan: state.jobPostingReducer.setTimespan
+  showFrom: selectors.getShowFrom(state),
+  showTo: selectors.getShowTo(state),
+  setTimespan: selectors.getSetTimespan(state)
 })
 
 const mapDispatchToProps = {
-  addShowFrom,
-  addShowTo,
-  clearShowFromAndShowTo,
-  timespanHasBeenSet
+  ...actions
 }
 
 export default connect(

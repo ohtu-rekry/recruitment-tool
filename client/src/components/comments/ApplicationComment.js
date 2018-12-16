@@ -35,7 +35,7 @@ class ApplicationComment extends Component {
           {attachments.map((attachment, index) => {
             return (
               <div className='comment__attachment'>
-                <Tooltip key={index} title={attachment.path.substring(57)}>
+                <Tooltip key={index+'tooltip'} title={attachment.path.substring(57)}>
                   <Chip
                     key={index}
                     label={this.truncateString(attachment.path.substring(57), 10)}

@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Typography from '@material-ui/core/Typography'
 
-import { fetchJobPostings, emptyTokenExpired } from '../../redux/actions/actions'
+import * as actions from '../../redux/actions/actions'
+import * as selectors from '../../redux/selectors/selectors'
 import JobPostingListing from './JobPostingListing'
 import LogoutSnackbar from './LogoutSnackbar'
 
@@ -11,7 +12,7 @@ class FrontPage extends Component {
 
   componentDidMount() {
     const { fetchJobPostings } = this.props
-    fetchJobPostings(this.props.loggedIn)
+    fetchJobPostings()
   }
 
   handleCloseSnackbar = () => {
@@ -25,7 +26,7 @@ class FrontPage extends Component {
   componentDidUpdate(pProps) {
     const { fetchJobPostings, loggedIn } = this.props
     if (pProps.loggedIn !== loggedIn) {
-      fetchJobPostings(loggedIn)
+      fetchJobPostings()
     }
   }
 
@@ -63,14 +64,13 @@ FrontPage.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  jobPostings: state.jobPostingReducer.jobPostings,
-  loggedIn: state.loginReducer.loggedIn,
-  tokenExpired: state.loginReducer.tokenExpired
+  jobPostings: selectors.getPostings(state),
+  loggedIn: selectors.getUser(state),
+  tokenExpired: selectors.getTokenExpiredStatus(state)
 })
 
 const mapDispatchToProps = {
-  fetchJobPostings,
-  emptyTokenExpired
+  ...actions
 }
 
 export default connect(

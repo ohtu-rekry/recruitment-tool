@@ -9,6 +9,7 @@ import { LinkButton } from './Buttons'
 import MobileMenu from './MobileMenu'
 
 import * as actions from '../redux/actions/actions'
+import * as selectors from '../redux/selectors/selectors'
 
 const emblicaLogo = require('../assets/img/emblica-logo.svg')
 
@@ -68,7 +69,7 @@ Header.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.loginReducer.loggedIn
+  loggedIn: selectors.getUser(state)
 })
 
 const mapDispatchToProps = {

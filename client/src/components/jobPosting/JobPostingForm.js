@@ -10,8 +10,8 @@ import Typography from '@material-ui/core/Typography'
 
 import TimespanPicker from './TimespanPicker'
 import JobPostingStages from './JobPostingStages'
-import { submitJobPosting, fetchJobPostingWithStages, emptyJobPosting } from '../../redux/actions/actions'
-
+import * as actions from '../../redux/actions/actions'
+import * as selectors from '../../redux/selectors/selectors'
 
 export class JobPostingForm extends Component {
 
@@ -193,18 +193,16 @@ JobPostingForm.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  creationRequestStatus: state.jobPostingReducer.creationRequestStatus,
-  loggedIn: state.loginReducer.loggedIn,
-  jobPostingStages: state.jobPostingReducer.jobPostingStages,
-  showFrom: state.jobPostingReducer.showFrom,
-  showTo: state.jobPostingReducer.showTo,
-  jobPosting: state.postingReducer.jobPosting
+  creationRequestStatus: selectors.getCreationRequestStatus(state),
+  loggedIn: selectors.getUser(state),
+  jobPostingStages: selectors.getJobPostingStages(state),
+  showFrom: selectors.getShowFrom(state),
+  showTo: selectors.getShowTo(state),
+  jobPosting: selectors.getJobPosting(state)
 })
 
 const mapDispatchToProps = {
-  submitJobPosting,
-  fetchJobPostingWithStages,
-  emptyJobPosting
+  ...actions
 }
 
 export default withRouter(connect(

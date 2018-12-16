@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import * as actions from '../../redux/actions/actions'
+import * as selectors from '../../redux/selectors/selectors'
 import Applicants from '../applicants/Applicants'
 
 class AdminFrontPage extends Component {
@@ -14,17 +15,17 @@ class AdminFrontPage extends Component {
   }
 
   componentDidMount() {
-    const { getApplicants, loggedIn } = this.props
+    const { getAllApplicants, loggedIn } = this.props
     if (loggedIn) {
-      getApplicants()
+      getAllApplicants()
       this.setState({ isLoaded: true })
     }
   }
 
   componentWillReceiveProps(nProps) {
-    const { getApplicants } = this.props
+    const { getAllApplicants } = this.props
     if (nProps.loggedIn && !this.state.isLoaded) {
-      getApplicants()
+      getAllApplicants()
       this.setState({ isLoaded: true })
     }
   }
@@ -48,8 +49,8 @@ AdminFrontPage.propTypes = {
 
 
 const mapStateToProps = (state) => ({
-  applicants: state.postingReducer.stages,
-  loggedIn: state.loginReducer.loggedIn
+  applicants: selectors.getStages(state),
+  loggedIn: selectors.getUser(state)
 })
 
 const mapDispatchToProps = {

@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 import Menu from '@material-ui/icons/Menu'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import * as actions from '../redux/actions/actions'
+import * as selectors from '../redux/selectors/selectors'
 
 export class MobileMenu extends Component {
   constructor(props) {
@@ -116,7 +117,7 @@ MobileMenu.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.loginReducer.loggedIn
+  loggedIn: selectors.getUser(state)
 })
 
 const mapDispatchToProps = {

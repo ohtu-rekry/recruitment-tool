@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import * as actions from '../../redux/actions/actions'
 import PropTypes from 'prop-types'
 import { Link, withRouter } from 'react-router-dom'
+import EmailValidator from 'email-validator'
+import ReactMarkdown from 'react-markdown'
+import Dropzone from 'react-dropzone'
 
 import Button from '@material-ui/core/Button'
 import Chip from '@material-ui/core/Chip'
 import Snackbar from '@material-ui/core/Snackbar'
 
-import EmailValidator from 'email-validator'
-import ReactMarkdown from 'react-markdown'
-import Dropzone from 'react-dropzone'
+import * as actions from '../../redux/actions/actions'
+import * as selectors from '../../redux/selectors/selectors'
 import { readFile } from '../../utils/readFile'
 
 
@@ -279,10 +280,10 @@ HiddenNotification.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  errorMessage: state.postingReducer.errorMessage,
-  jobPosting: state.postingReducer.jobPosting,
-  loggedIn: state.loginReducer.loggedIn,
-  applicationSuccessful: state.postingReducer.applicationSuccessful
+  errorMessage: selectors.getErrorMessage(state),
+  jobPosting: selectors.getJobPosting(state),
+  loggedIn: selectors.getUser(state),
+  applicationSuccessful: selectors.getApplicationStatus(state)
 })
 
 const mapDispatchToProps = {

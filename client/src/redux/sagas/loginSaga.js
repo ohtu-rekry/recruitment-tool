@@ -1,6 +1,7 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects'
 import { push } from 'react-router-redux'
 import * as actions from '../actions/actions'
+import * as selectors from '../selectors/selectors'
 import LoginAPI from '../apis/loginApi'
 
 function* requestLogin({ payload }) {
@@ -31,7 +32,7 @@ function* requestLogout({ payload }) {
     yield put(actions.logoutSuccess(payload === true))
     yield put(push('/'))
 
-    const oldPostings = yield select(getCurrentPostings)
+    const oldPostings = yield select(selectors.getPostings)
     const filteredPostings
       = oldPostings.filter(posting => !posting.isHidden)
 
@@ -42,8 +43,6 @@ function* requestLogout({ payload }) {
 
   }
 }
-
-export const getCurrentPostings = state => state.jobPostingReducer.jobPostings
 
 export const watchRequestLogin = takeLatest(actions.login().type, requestLogin)
 export const watchRequestLogout = takeLatest(actions.logout().type, requestLogout)
